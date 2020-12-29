@@ -8,13 +8,6 @@ p {
 
 Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már a megjelenésekor nagyon hamar ismertté vált a tény: **elsősorban az idősekre és krónikus betegre jelent kockázatot**. Ennek a ténynek empirikus teszteléséhez olyan adattáblára van szükségünk, melyben rögzítésre kerülnek a megfertőzöttek demográfiai adatai és az eset végső kimenete (ezt a fajta adattípust nevezik "line list"-nek). 
 
-  author =       {Open COVID-19 Data Working Group},
-  title =        {{Detailed Epidemiological Data from the COVID-19 Outbreak}},
-  howpublished = {Accessed on yyyy-mm-dd from
-                  \url{http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337}},
-  year =         2020
-}
-
 ## Adatok bemutatása
 
 ### Forrás
@@ -47,8 +40,16 @@ Az adatok megtiszítása előtt el kell döntenünk, hogy mely változókkal is 
 ```{r}
 dat %>% 
   apply(2, function(x) sum(is.na(x))) %>% 
-  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))}
+  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))} %>% 
+  set_names('var', 'Hiánytalan adatok száma', 'Hiánytalanok aránya') %>% 
+  gt(
+    rowname_col = "var"
+  ) %>% 
+  fmt_percent(
+    columns = vars('Hiánytalanok aránya'),
+    dec_mark = ','
+  ) %>% 
+  tab_header(title = 'Adattáblában lévő hiánytalan megfigyelések aránya')
 ```
-
 
 
