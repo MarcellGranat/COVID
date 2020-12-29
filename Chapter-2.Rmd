@@ -6,6 +6,10 @@ p {
 }
 ```
 
+## Adatok bemutatása
+
+Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már az első hírek köüz
+
 ```{r}
 cars %>% 
   ggplot(aes(speed, dist)) +

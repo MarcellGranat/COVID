@@ -9,7 +9,7 @@ favicon: "logo.ico"
 # Absztrakt {#index}
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = F)
+knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = T)
 library(tidyverse)
 library(gt)
 theme_set(theme_grey() + 

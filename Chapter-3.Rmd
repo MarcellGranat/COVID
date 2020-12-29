@@ -1,11 +1,3 @@
----
-title: "A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése"
-author: "Balint Mazzag"
-date: '2020 12 29'
-output:
-  html_document: default
----
-
 # A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
 
 ```{css, echo=FALSE}
@@ -15,21 +7,20 @@ p {
 ```
 
 
-```{r setup, include=FALSE}
+```{r include=FALSE}
 Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
 library(textdata)
-library(todor)
 #Szózsák-modell
 library(tm)
 library(SnowballC)
 library(wordcloud)
 #Adatok transzformációja és vizualizációja
-library(dplyr)
-library(ggplot2)
+
+
 library(plotly)
-library(hrbrthemes)
+
   #Webes adatgyűjtés
 library(tools)
 library(rvest)
@@ -37,9 +28,10 @@ library(rvest)
 
 Guardian headlineok
 
-```{r get_headlines, cache=TRUE}
+```{r get_headlines}
+# TODO debug
 
- #521-ig lehetett visszamenni a keresésben
+#521-ig lehetett visszamenni a keresésben
 for (i in 1:100) {
  URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
  page <- read_html(URL)
@@ -57,7 +49,7 @@ for (i in 1:100) {
   data_raw <- rbind(data_raw, data.frame(time, title))  
  }
 }
- 
+
 #Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 #dataframebe, minden másodikat ki kellett törölni
  
