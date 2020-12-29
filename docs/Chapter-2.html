@@ -31,7 +31,7 @@
   
   <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
 <link rel="prev" href="Chapter-1.html"/>
-
+<link rel="next" href="Chapter-3.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -134,8 +134,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Absztrakt</a></li>
 <li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
-<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-elemzéshez-való-előkészítése"><i class="fa fa-check"></i>Adatok elemzéshez való előkészítése</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése</a></li>
 </ul>
 
       </nav>
@@ -160,23 +164,46 @@ p {
   text-align: justify;
 }
 </style>
+<p>Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már a megjelenésekor nagyon hamar ismertté vált a tény: <strong>elsősorban az idősekre és krónikus betegre jelent kockázatot</strong>. Ennek a ténynek empirikus teszteléséhez olyan adattáblára van szükségünk, melyben rögzítésre kerülnek a megfertőzöttek demográfiai adatai és az eset végső kimenete (ezt a fajta adattípust nevezik “line list”-nek).</p>
 <div id="adatok-bemutatása" class="section level2">
 <h2>Adatok bemutatása</h2>
-<p>Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már az első hírek köüz</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="Chapter-2.html#cb1-1"></a>cars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb1-2"><a href="Chapter-2.html#cb1-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(speed, dist)) <span class="op">+</span></span>
-<span id="cb1-3"><a href="Chapter-2.html#cb1-3"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb1-4"><a href="Chapter-2.html#cb1-4"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Mintaábra&#39;</span>)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="Chapter-2.html#cb2-1"></a>cars <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-2"><a href="Chapter-2.html#cb2-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-3"><a href="Chapter-2.html#cb2-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-4"><a href="Chapter-2.html#cb2-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Minta táblázat&#39;</span>)</span></code></pre></div>
+<div id="forrás" class="section level3">
+<h3>Forrás</h3>
+<p>A fentebb leírt célra lett létrehozva egy nyílt projekt<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, amely során ezeket az adatokat több országra gyűjtik ki és teszi online elérhetővé.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="Chapter-2.html#cb1-1"></a>dat &lt;-<span class="st"> </span>vroom<span class="op">::</span><span class="kw">vroom</span>(<span class="st">&#39;latestdata.csv&#39;</span>)</span></code></pre></div>
+<p>Az adattábla összesen 2676311 megfigyelést tartalmaz 33 változóval. Azonban a változók jelentős része használhatatlan elemzésre és jelentős mértékben van szükség az adatok tisztítására is. Egyetlen példa említéseként a kimenetben nem egyszerűen <em>died</em> vagy <em>elhunyt</em> szerepelt, hanem annak számos szinonímája is, amelett, hogy sok esetben nincs elérhető adat.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="Chapter-2.html#cb2-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="Chapter-2.html#cb2-2"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-3"><a href="Chapter-2.html#cb2-3"></a><span class="st">  </span><span class="kw">count</span>(outcome) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-4"><a href="Chapter-2.html#cb2-4"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb2-5"><a href="Chapter-2.html#cb2-5"></a><span class="st">  </span>{<span class="kw">mutate</span>(., <span class="dt">s =</span> <span class="kw">runif</span>(<span class="dt">n =</span> <span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span></span>
+<span id="cb2-6"><a href="Chapter-2.html#cb2-6"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">label =</span> outcome, <span class="dt">size =</span> s)) <span class="op">+</span></span>
+<span id="cb2-7"><a href="Chapter-2.html#cb2-7"></a><span class="st">  </span><span class="kw">geom_text_wordcloud</span>(<span class="dt">color =</span>  <span class="st">&#39;aquamarine4&#39;</span>) <span class="op">+</span></span>
+<span id="cb2-8"><a href="Chapter-2.html#cb2-8"></a><span class="st">  </span><span class="kw">scale_size_area</span>(<span class="dt">max_size =</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb2-9"><a href="Chapter-2.html#cb2-9"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Az nyers adattáblában a kimenet változó által felvett értékek&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-10"><a href="Chapter-2.html#cb2-10"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="adatok-elemzéshez-való-előkészítése" class="section level3">
+<h3>Adatok elemzéshez való előkészítése</h3>
+<p>Az adatok megtiszítása előtt el kell döntenünk, hogy mely változókkal is érdemes foglalkozni, mivel sajnos számos változó esetében hiányzik rengeteg sor a táblában.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="Chapter-2.html#cb3-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-2"><a href="Chapter-2.html#cb3-2"></a><span class="st">  </span><span class="kw">apply</span>(<span class="dv">2</span>, <span class="cf">function</span>(x) <span class="kw">sum</span>(<span class="kw">is.na</span>(x))) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-3"><a href="Chapter-2.html#cb3-3"></a><span class="st">  </span>{<span class="kw">data.frame</span>(<span class="dt">var =</span> <span class="kw">names</span>(.), <span class="dt">nobs =</span> <span class="kw">nrow</span>(dat)<span class="op">-</span>., <span class="dt">robs =</span> (<span class="kw">nrow</span>(dat)<span class="op">-</span>.)<span class="op">/</span><span class="kw">nrow</span>(dat))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-4"><a href="Chapter-2.html#cb3-4"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="st">&#39;var&#39;</span>, <span class="st">&#39;Hiánytalan adatok száma&#39;</span>, <span class="st">&#39;Hiánytalanok aránya&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-5"><a href="Chapter-2.html#cb3-5"></a><span class="st">  </span><span class="kw">gt</span>(</span>
+<span id="cb3-6"><a href="Chapter-2.html#cb3-6"></a>    <span class="dt">rowname_col =</span> <span class="st">&quot;var&quot;</span></span>
+<span id="cb3-7"><a href="Chapter-2.html#cb3-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-8"><a href="Chapter-2.html#cb3-8"></a><span class="st">  </span><span class="kw">fmt_percent</span>(</span>
+<span id="cb3-9"><a href="Chapter-2.html#cb3-9"></a>    <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;Hiánytalanok aránya&#39;</span>),</span>
+<span id="cb3-10"><a href="Chapter-2.html#cb3-10"></a>    <span class="dt">dec_mark =</span> <span class="st">&#39;,&#39;</span></span>
+<span id="cb3-11"><a href="Chapter-2.html#cb3-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-12"><a href="Chapter-2.html#cb3-12"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Adattáblában lévő hiánytalan megfigyelések aránya&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#xigzvbmubs .gt_table {
+#pamufqigws .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -201,7 +228,7 @@ p {
   border-left-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_heading {
+#pamufqigws .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -213,7 +240,7 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_title {
+#pamufqigws .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -223,7 +250,7 @@ p {
   border-bottom-width: 0;
 }
 
-#xigzvbmubs .gt_subtitle {
+#pamufqigws .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -233,13 +260,13 @@ p {
   border-top-width: 0;
 }
 
-#xigzvbmubs .gt_bottom_border {
+#pamufqigws .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_col_headings {
+#pamufqigws .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -254,7 +281,7 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_col_heading {
+#pamufqigws .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -274,7 +301,7 @@ p {
   overflow-x: hidden;
 }
 
-#xigzvbmubs .gt_column_spanner_outer {
+#pamufqigws .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -286,15 +313,15 @@ p {
   padding-right: 4px;
 }
 
-#xigzvbmubs .gt_column_spanner_outer:first-child {
+#pamufqigws .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xigzvbmubs .gt_column_spanner_outer:last-child {
+#pamufqigws .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xigzvbmubs .gt_column_spanner {
+#pamufqigws .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -306,7 +333,7 @@ p {
   width: 100%;
 }
 
-#xigzvbmubs .gt_group_heading {
+#pamufqigws .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -328,7 +355,7 @@ p {
   vertical-align: middle;
 }
 
-#xigzvbmubs .gt_empty_group_heading {
+#pamufqigws .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -343,15 +370,15 @@ p {
   vertical-align: middle;
 }
 
-#xigzvbmubs .gt_from_md > :first-child {
+#pamufqigws .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xigzvbmubs .gt_from_md > :last-child {
+#pamufqigws .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xigzvbmubs .gt_row {
+#pamufqigws .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -370,7 +397,7 @@ p {
   overflow-x: hidden;
 }
 
-#xigzvbmubs .gt_stub {
+#pamufqigws .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -382,7 +409,7 @@ p {
   padding-left: 12px;
 }
 
-#xigzvbmubs .gt_summary_row {
+#pamufqigws .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -392,7 +419,7 @@ p {
   padding-right: 5px;
 }
 
-#xigzvbmubs .gt_first_summary_row {
+#pamufqigws .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -402,7 +429,7 @@ p {
   border-top-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_grand_summary_row {
+#pamufqigws .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -412,7 +439,7 @@ p {
   padding-right: 5px;
 }
 
-#xigzvbmubs .gt_first_grand_summary_row {
+#pamufqigws .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -422,11 +449,11 @@ p {
   border-top-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_striped {
+#pamufqigws .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xigzvbmubs .gt_table_body {
+#pamufqigws .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -435,7 +462,7 @@ p {
   border-bottom-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_footnotes {
+#pamufqigws .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -449,13 +476,13 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_footnote {
+#pamufqigws .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#xigzvbmubs .gt_sourcenotes {
+#pamufqigws .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -469,84 +496,226 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#xigzvbmubs .gt_sourcenote {
+#pamufqigws .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#xigzvbmubs .gt_left {
+#pamufqigws .gt_left {
   text-align: left;
 }
 
-#xigzvbmubs .gt_center {
+#pamufqigws .gt_center {
   text-align: center;
 }
 
-#xigzvbmubs .gt_right {
+#pamufqigws .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xigzvbmubs .gt_font_normal {
+#pamufqigws .gt_font_normal {
   font-weight: normal;
 }
 
-#xigzvbmubs .gt_font_bold {
+#pamufqigws .gt_font_bold {
   font-weight: bold;
 }
 
-#xigzvbmubs .gt_font_italic {
+#pamufqigws .gt_font_italic {
   font-style: italic;
 }
 
-#xigzvbmubs .gt_super {
+#pamufqigws .gt_super {
   font-size: 65%;
 }
 
-#xigzvbmubs .gt_footnote_marks {
+#pamufqigws .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="xigzvbmubs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="pamufqigws" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="2" class="gt_heading gt_title gt_font_normal" style>Minta táblázat</th>
+      <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Adattáblában lévő hiánytalan megfigyelések aránya</th>
     </tr>
     <tr>
-      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+      <th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
     </tr>
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">speed</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">dist</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Hiánytalan adatok száma</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Hiánytalanok aránya</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
     <tr>
-      <td class="gt_row gt_right">4</td>
-      <td class="gt_row gt_right">2</td>
+      <td class="gt_row gt_left gt_stub">ID</td>
+      <td class="gt_row gt_center">2676311</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">4</td>
-      <td class="gt_row gt_right">10</td>
+      <td class="gt_row gt_left gt_stub">age</td>
+      <td class="gt_row gt_center">578018</td>
+      <td class="gt_row gt_right">21,60&percnt;</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">7</td>
-      <td class="gt_row gt_right">4</td>
+      <td class="gt_row gt_left gt_stub">sex</td>
+      <td class="gt_row gt_center">580157</td>
+      <td class="gt_row gt_right">21,68&percnt;</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">7</td>
-      <td class="gt_row gt_right">22</td>
+      <td class="gt_row gt_left gt_stub">city</td>
+      <td class="gt_row gt_center">1698630</td>
+      <td class="gt_row gt_right">63,47&percnt;</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">8</td>
-      <td class="gt_row gt_right">16</td>
+      <td class="gt_row gt_left gt_stub">province</td>
+      <td class="gt_row gt_center">2223647</td>
+      <td class="gt_row gt_right">83,09&percnt;</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">9</td>
-      <td class="gt_row gt_right">10</td>
+      <td class="gt_row gt_left gt_stub">country</td>
+      <td class="gt_row gt_center">2676196</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">latitude</td>
+      <td class="gt_row gt_center">2676250</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">longitude</td>
+      <td class="gt_row gt_center">2676250</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">geo_resolution</td>
+      <td class="gt_row gt_center">2676250</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">date_onset_symptoms</td>
+      <td class="gt_row gt_center">261599</td>
+      <td class="gt_row gt_right">9,77&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">date_admission_hospital</td>
+      <td class="gt_row gt_center">116211</td>
+      <td class="gt_row gt_right">4,34&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">date_confirmation</td>
+      <td class="gt_row gt_center">2567822</td>
+      <td class="gt_row gt_right">95,95&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">symptoms</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">lives_in_Wuhan</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">travel_history_dates</td>
+      <td class="gt_row gt_center">2611</td>
+      <td class="gt_row gt_right">0,10&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">travel_history_location</td>
+      <td class="gt_row gt_center">9222</td>
+      <td class="gt_row gt_right">0,34&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">reported_market_exposure</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">additional_information</td>
+      <td class="gt_row gt_center">45855</td>
+      <td class="gt_row gt_right">1,71&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">chronic_disease_binary</td>
+      <td class="gt_row gt_center">2676311</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">chronic_disease</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">source</td>
+      <td class="gt_row gt_center">2109347</td>
+      <td class="gt_row gt_right">78,82&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">sequence_available</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">outcome</td>
+      <td class="gt_row gt_center">307382</td>
+      <td class="gt_row gt_right">11,49&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">date_death_or_discharge</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">notes_for_discussion</td>
+      <td class="gt_row gt_center">0</td>
+      <td class="gt_row gt_right">0,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">location</td>
+      <td class="gt_row gt_center">13376</td>
+      <td class="gt_row gt_right">0,50&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">admin3</td>
+      <td class="gt_row gt_center">80434</td>
+      <td class="gt_row gt_right">3,01&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">admin2</td>
+      <td class="gt_row gt_center">826054</td>
+      <td class="gt_row gt_right">30,87&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">admin1</td>
+      <td class="gt_row gt_center">1257558</td>
+      <td class="gt_row gt_right">46,99&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">country_new</td>
+      <td class="gt_row gt_center">2645758</td>
+      <td class="gt_row gt_right">98,86&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">admin_id</td>
+      <td class="gt_row gt_center">2676250</td>
+      <td class="gt_row gt_right">100,00&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">data_moderator_initials</td>
+      <td class="gt_row gt_center">1742983</td>
+      <td class="gt_row gt_right">65,13&percnt;</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_stub">travel_history_binary</td>
+      <td class="gt_row gt_center">2610732</td>
+      <td class="gt_row gt_right">97,55&percnt;</td>
     </tr>
   </tbody>
   
@@ -555,13 +724,20 @@ p {
 
 </div>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Open COVID-19 Data Working Group, <em>Detailed Epidemiological Data from the COVID-19 Outbreak</em>, <a href="http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337" class="uri">http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337</a>, letöltve: 2020.12.28.<a href="Chapter-2.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="Chapter-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="Chapter-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Chapter-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
