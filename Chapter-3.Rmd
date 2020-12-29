@@ -11,6 +11,8 @@ p {
 Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
+library(DT)
+library(colorspace)
 library(textdata)
 #Szózsák-modell
 library(tm)
@@ -23,7 +25,7 @@ library(ggwordcloud)
 library(plotly)
 library(gifski)
 #library(hrbrthemes)
-  #Webes adatgyűjtés
+#Webes adatgyűjtés
 library(tools)
 library(rvest)
 ```
@@ -31,53 +33,59 @@ library(rvest)
 Guardian headlineok
 
 ```{r get_headlines}
-
- #521-ig lehetett visszamenni a keresésben
-for (i in 1:100) {
- URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
- page <- read_html(URL)
- title <- html_text(html_nodes(page, ".js-headline-text"))
- time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
- #Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma
- if (i==1){
-  data_raw <- data.frame(time, title) 
- }
- else{
-  data_raw <- rbind(data_raw, data.frame(time, title))  
- }
+#521-ig lehetett visszamenni a keresésben
+for (i in 1:528) {
+  URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
+  page <- read_html(URL)
+  title <- html_text(html_nodes(page, ".js-headline-text"))
+  #Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma
+  time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
+  if (i==1){
+    data_raw <- data.frame(time, title) 
+  }
+  else{
+    data_raw <- rbind(data_raw, data.frame(time, title))  
+  }
 }
- 
-#Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
-#dataframebe, minden másodikat ki kellett törölni
- 
+```
+
+
+Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
+dataframebe, minden másodikat ki kellett törölni
+```{r get_headlines}
 data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
   mutate(
     date = as.Date(time, format = "%d %B %Y"),
     month = format(date, "%Y-%m")
-  )
+  ) %>% na.omit()
 ```
 
-Bag of words a címekből
+Bag of words módszerhez a lescrape-elt címekből korpuszt készítettünk
 ```{r create_bagofwords}
 corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
 
 #Korpusz tisztítása
-corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(stripWhitespace) %>%  tm_map(removeNumbers) %>% tm_map(removePunctuation, ucp=TRUE) %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
+corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% 
+  tm_map(stripWhitespace) %>%  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation, ucp=TRUE) %>%
+  tm_map(removeWords, c(stopwords("english"), "also", "one"))
 ```
 
-Strukturált mátrix és a fogalmak eloszlása
+Strukturált mátrix és a fogalmak eloszlása a teljes korpuszban
 ```{r basic_matrices}
- termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
- documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
- words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),   Freq=rowSums(as.matrix(termdocument), na.rm = TRUE))
- 
- findFreqTerms(documentterm, lowfreq = 100)
- ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
+termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
+documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
+words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
+                                  Freq=rowSums(as.matrix(termdocument), na.rm = TRUE))
+
+freqterms <- findFreqTerms(documentterm, lowfreq = 100)
+ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
 ```
 
 Havonta elemzés
 ```{r monthly_analysis_and_wordclouds, animation.hook="gifski"}
-data_cleansed_monthly <- data_cleansed %>% group_by(month) %>% summarise(monthly_text = paste(title, collapse = " "))
+data_cleansed_monthly <- data_cleansed %>% group_by(month) %>%
+  summarise(monthly_text = paste(title, collapse = " "))
 
 #Táblázat létrehozása
 words_monthly <- data.frame(matrix(ncol=nrow(data_cleansed_monthly), nrow=15))
@@ -85,15 +93,22 @@ colnames(words_monthly) <- data_cleansed_monthly$month
 
 for (i in 1:nrow(data_cleansed_monthly)){
   #Corpus létrehozása
-  corpus_monthly_raw <- Corpus(VectorSource(as.character(data_cleansed_monthly$monthly_text[i])))
+  corpus_monthly_raw <- 
+    Corpus(VectorSource(as.character(data_cleansed_monthly$monthly_text[i])))
   #Korpusz tisztítása
-  corpus_monthly_filtered <- corpus_monthly_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removePunctuation, ucp=TRUE) %>% tm_map(removeNumbers)  %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
-#%>% tm_map(stemDocument)
+  corpus_monthly_filtered <- corpus_monthly_raw %>% 
+    tm_map(content_transformer(tolower)) %>% 
+    tm_map(removePunctuation, ucp=TRUE) %>% 
+    tm_map(removeNumbers)  %>% 
+    tm_map(removeWords, c(stopwords("english"), "also", "one"))
+  #%>% tm_map(stemDocument)
   
   #Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt
   matrix_monthly <- removeSparseTerms(TermDocumentMatrix(corpus_monthly_filtered), 0.999)
-  words_frequency <- data.frame(Words = matrix_monthly$dimnames$Terms, Freq = matrix_monthly$v)
-  words_monthly[,data_cleansed_monthly$month[i]]<-    head(words_frequency[order(-words_frequency$Freq),]$Words,15)
+  words_frequency <- 
+    data.frame(Words = matrix_monthly$dimnames$Terms, Freq = matrix_monthly$v)
+  words_monthly[,data_cleansed_monthly$month[i]]<- 
+    head(words_frequency[order(-words_frequency$Freq),]$Words,15)
   
   #Szófelhők készítése, a corpus nagyságától függően
   plot(ggwordcloud(words_frequency$Words, words_frequency$Freq, max.words = 100)+
@@ -101,7 +116,11 @@ for (i in 1:nrow(data_cleansed_monthly)){
   #wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
 }
 
-words_monthly
+#A globálisan leggyakoribb szavakat kiszíneztük havonta is
+color_freq_terms <- data.frame(words = head(words_frequency_all[order(-words_frequency_all$Freq),]$Words,15), 
+                               colors=sequential_hcl(15, palette = "OrYel"))
+
+datatable(words_monthly) %>% formatStyle(names(words_monthly), font="bold", background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
 ```
 
 
@@ -112,32 +131,38 @@ Sentiment elemzés
 #AFINN lexikon betöltése
 AFINN <- get_sentiments("afinn")
 
+data_cleansed <- data_cleansed %>% 
+  mutate(
+    title = as.character(title)
+  )
+
 #Szavakra bontás, pontszámok összeaggregálása
-words <- left_join(unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
-nr_sentiment_words <- words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
+words <- left_join(
+  tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
+nr_sentiment_words <- 
+  words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
 score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 
 #Eredeti adatok mellé rakás
 data_cleansed <- left_join(data_cleansed, score_by_id, by="id")
 
 #Napi (és heti) aggregálás
-score_by_day <- data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
+score_by_day <- 
+  data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
 
 ```
 Ábrázolás
 ```{r plotting_sentiments}
-  ggplot(nr_sentiment_words, aes(x=date)) +
+ggplot(nr_sentiment_words, aes(x=date)) +
   geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
   xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
   ylim(0, 100)+
-  geom_hline(yintercept=0, color="black", size=.75) +
-  theme_ipsum()
+  geom_hline(yintercept=0, color="black", size=.75)
 
-  ggplot(score_by_day, aes(x=date)) +
-  geom_line( aes(y=score_avg), size=.5, color="#0fad04") + 
+ggplot(score_by_day, aes(x=date)) +
+  geom_line( aes(y=score_avg), color="#0fad04") + 
   xlab("Dátum") + ylab("Átlagos napi érzelmi pontszám") +
   ylim(-5, 5)+
-  geom_hline(yintercept=0, color="black", size=.75) +
-  theme_ipsum()
+  geom_hline(yintercept=0, color="black", size=.75)
 ```
 
