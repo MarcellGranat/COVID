@@ -17,7 +17,12 @@ library(tm)
 library(SnowballC)
 library(wordcloud)
 #Adatok transzformációja és vizualizációja
-
+#library(dplyr)
+#library(ggplot2)
+library(ggwordcloud)
+library(plotly)
+library(gifski)
+#library(hrbrthemes)
   #Webes adatgyűjtés
 library(tools)
 library(rvest)
@@ -27,12 +32,8 @@ Guardian headlineok
 
 ```{r get_headlines}
 
-=======
-# TODO debug
-
-#521-ig lehetett visszamenni a keresésben
+ #521-ig lehetett visszamenni a keresésben
 for (i in 1:100) {
-
  URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
  page <- read_html(URL)
  title <- html_text(html_nodes(page, ".js-headline-text"))
@@ -45,29 +46,7 @@ for (i in 1:100) {
   data_raw <- rbind(data_raw, data.frame(time, title))  
  }
 }
-```
-
-
-```{r}
-
-str_c("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", 1:2) %>% 
-  lapply(function(URL) {
-  page <- read_html(URL)
-  title <- html_text(html_nodes(page, ".js-headline-text"))
-  time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
-  data.frame(time, title)
-  }) %>% 
-  reduce(rbind) %>% 
-  filter(!duplicated(title)) %>% 
-  {mutate(., id = seq(nrow(.)))} %>% 
-  mutate(
-    date = as.Date(time, format = "%d %m %Y"),
-    month = format(time, "%Y-%m")
-  )
-```
-
-
-```{r get_headlines}
+ 
 #Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 #dataframebe, minden másodikat ki kellett törölni
  
@@ -117,9 +96,12 @@ for (i in 1:nrow(data_cleansed_monthly)){
   words_monthly[,data_cleansed_monthly$month[i]]<-    head(words_frequency[order(-words_frequency$Freq),]$Words,15)
   
   #Szófelhők készítése, a corpus nagyságától függően
-  ggwordcloud(words_frequency$Words, words_frequency$Freq, max.words = 100)
+  plot(ggwordcloud(words_frequency$Words, words_frequency$Freq, max.words = 100)+
+         ggtitle(data_cleansed_monthly$month[i]))
   #wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
 }
+
+words_monthly
 ```
 
 
