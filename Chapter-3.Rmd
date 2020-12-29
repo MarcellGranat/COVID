@@ -8,14 +8,14 @@ output:
 
 # A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
 
-```{css, echo=FALSE}
+```{css setup_css, echo=FALSE}
 p {
   text-align: justify;
 }
 ```
 
 
-```{r setup, include=FALSE}
+```{r setup_packages, include=FALSE}
 Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
