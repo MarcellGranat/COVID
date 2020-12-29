@@ -136,14 +136,12 @@ score_by_day <- data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(sco
   geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
   xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
   ylim(0, 100)+
-  geom_hline(yintercept=0, color="black", size=.75) +
-  theme_ipsum()
+  geom_hline(yintercept=0, color="black", size=.75)
 
   ggplot(score_by_day, aes(x=date)) +
-  geom_line( aes(y=score_avg), size=.5, color="#0fad04") + 
+  geom_line( aes(y=score_avg), color="#0fad04") + 
   xlab("Dátum") + ylab("Átlagos napi érzelmi pontszám") +
   ylim(-5, 5)+
-  geom_hline(yintercept=0, color="black", size=.75) +
-  theme_ipsum()
+  geom_hline(yintercept=0, color="black", size=.75)
 ```
 
