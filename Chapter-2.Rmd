@@ -8,13 +8,6 @@ p {
 
 Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már a megjelenésekor nagyon hamar ismertté vált a tény: **elsősorban az idősekre és krónikus betegre jelent kockázatot**. Ennek a ténynek empirikus teszteléséhez olyan adattáblára van szükségünk, melyben rögzítésre kerülnek a megfertőzöttek demográfiai adatai és az eset végső kimenete (ezt a fajta adattípust nevezik "line list"-nek). 
 
-  author =       {Open COVID-19 Data Working Group},
-  title =        {{Detailed Epidemiological Data from the COVID-19 Outbreak}},
-  howpublished = {Accessed on yyyy-mm-dd from
-                  \url{http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337}},
-  year =         2020
-}
-
 ## Adatok bemutatása
 
 ### Forrás
@@ -27,7 +20,7 @@ dat <- vroom::vroom('latestdata.csv')
 
 Az adattábla összesen `r nrow(dat)` megfigyelést tartalmaz 33 változóval. Azonban a változók jelentős része használhatatlan elemzésre és jelentős mértékben van szükség az adatok tisztítására is. Egyetlen példa említéseként a kimenetben nem egyszerűen *died* vagy *elhunyt* szerepelt, hanem annak számos szinonímája is, amelett, hogy sok esetben nincs elérhető adat.
 
-```{r}
+```{r fig.height=5}
 set.seed(1)
 dat %>% 
   count(outcome) %>% 
@@ -35,7 +28,6 @@ dat %>%
   {mutate(., s = runif(n = nrow(.)))} %>%
   ggplot(aes(label = outcome, size = s)) +
   geom_text_wordcloud(color =  'aquamarine4') +
-  scale_size_area(max_size = 10) +
   labs(title = "Az nyers adattáblában a kimenet változó által felvett értékek") +
   theme_minimal()
 ```
@@ -47,8 +39,143 @@ Az adatok megtiszítása előtt el kell döntenünk, hogy mely változókkal is 
 ```{r}
 dat %>% 
   apply(2, function(x) sum(is.na(x))) %>% 
-  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))}
+  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))} %>% 
+  set_names('var', 'Hiánytalan adatok száma', 'Hiánytalanok aránya') %>% 
+  gt(
+    rowname_col = "var"
+  ) %>% 
+  fmt_percent(
+    columns = vars('Hiánytalanok aránya'),
+    dec_mark = ','
+  ) %>% 
+  tab_header(title = 'Adattáblában lévő hiánytalan megfigyelések aránya')
 ```
 
+Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: \
+ - **életkor**\
+ - **nem**\
+ - **ország**\
+ - **van-e krónikus betegsége**\
+ - **fertőződöttség kimutatásának ideje**\
+ - **földrajzi szélesség**\
+ - **földrajzi hosszúság**\
+ - **megbetegedés kimenete**\
+ 
+A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
+
+```{r}
+dat %>% 
+  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation) %>% 
+  mutate(
+    continent = countrycode::countrycode(country, origin = 'country.name', destination = 'continent'),
+    date = lubridate::dmy(date_confirmation),
+    age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
+  ) %>% 
+    mutate( # cleaning the depedent var
+    outcome = case_when(
+      outcome == 'death' ~ 'died',
+      outcome == 'died' ~ 'died', 
+      outcome == 'Death' ~ 'died',
+      outcome == 'dead' ~ 'died',
+      outcome == 'Dead' ~ 'died',
+      outcome == 'Died' ~ 'died',
+      outcome == 'Deceased' ~ 'died',
+      outcome == 'discharge' ~ 'survived',
+      outcome == 'discharged' ~ 'survived',
+      outcome == 'Discharged' ~ 'survived',
+      outcome == 'Discharged from hospital' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'released from quarantine' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      T ~ 'NA'
+    )
+  ) %>% 
+  filter(outcome != 'NA') %>% 
+  mutate(
+    died = outcome == 'died'
+  ) %>% select(-outcome, -date_confirmation) %>% 
+  {dat <<- .}
+```
+
+Az így kapott új adattáblában már csupán `r nrow(dat)` megfigyelés és `r ncol(dat)` változó szerepel.
+
+```{r}
+dat %>% 
+  head %>%
+  gt %>% 
+  tab_header(title = 'Adattábla modellezésre előkészítve')
+```
+
+
+
+```{r}
+dat %>% 
+  select(age, sex, died) %>% 
+  GGally::ggpairs(mapping = aes(color = died), 
+    title = 'Életkor, nem és az elhalálozás kapcsolata')
+```
+
+```{r}
+dat %>% 
+  select(continent, date, died) %>% 
+  GGally::ggpairs(aes(color = died),
+        title = 'A kontinens a rögzítés dátuma és az elhalálozás kapcsolata')
+```
+
+Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.
+
+```{r}
+  dat %>% 
+  group_by(continent, country) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  na.omit() %>% 
+  mutate(
+    r = n/nrow(dat)
+  ) %>% 
+  arrange(continent) %>% 
+  set_names('continent', 'country', 'n', 'n/sum(n)') %>% 
+  gt(
+    rowname_col = 'country',
+    groupname_col = 'continent'
+  ) %>% 
+  fmt_percent(
+    columns = 'n/sum(n)',
+    ) %>% 
+  summary_rows(groups = T, columns = vars(n), fns = list(TOTAL = 'sum')) %>% 
+  summary_rows(groups = T, columns = vars('n/sum(n)'), fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
+  tab_options(
+    summary_row.background.color = "#ACEACE",
+    row_group.background.color = "#FFEFDB"
+  ) %>% 
+  tab_header(title = 'Megfigyelések száma országonként', subtitle = 'Elsődleges adattisztítás után')
+```
+
+A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).
+
+```{r}
+dat %>% 
+  mutate(
+    india = country == 'India'
+  ) %>% 
+  select(-country, -continent, -latitude, -longitude) %>% 
+  {dat <<- .}
+```
+
+```{r}
+dat %>% 
+  gt %>% 
+  tab_header(title = 'Végső adattábla modellezéshez')
+```
+
+```{r fig.height=2}
+dat %>% 
+  rpart::rpart(formula = died ~ ., cp = .01) %>% 
+  rattle::fancyRpartPlot(palettes = 'OrRd',
+                         sub = 'cp = .01', main = '1. döntési fa')
+```
 
 

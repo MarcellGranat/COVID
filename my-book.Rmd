@@ -1,17 +1,18 @@
 ---
 title: "COVID"
-author: "Granát Marcell"
+author: "Granát Marcell & Mazzag Bálint"
 output: bookdown::gitbook
 site: bookdown::bookdown_site
 favicon: "logo.ico"
 ---
 
-# Absztrakt {#index}
+# Mi ez a projekt? {#index}
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = T)
+knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = T, error = T)
 library(tidyverse)
 library(gt)
+library(ggwordcloud)
 theme_set(theme_grey() + 
             theme(legend.position = "bottom", 
                   text = element_text(size = 12), 
@@ -19,14 +20,16 @@ theme_set(theme_grey() +
                   legend.key = element_blank()))
 ```
 
-***
+```{r echo = F}
+knitr::include_graphics('logo.png')
+```
 
-Kézirat lezárásának dátuma: 2021. jnauár 3.\
-A tanulmány a 2020-as az Új jövőkép MNB Tanulmányi Verseny *Új Demográfiai Program* szekciójába készült, melyben Kiváló pályamű díjat nyert.
 
-A kézirat tartalmához fűzödő tudományos diszkusszió támogatása érdekében egy párbeszéd ablak került megnyitásra az anyagokat tartalmazó GitHub repository oldalán: https://github.com/MarcellGranat/ujdemografiaiprogram/discussions
+A tanulmány a Budapesti Corvinus Egyetem Többváltozós adatelemzés tárgy keretében készült.\
+Kézirat lezárásának dátuma: 2021. január 3.\
+A kézirat tartalmához fűzödő tudományos diszkusszió támogatása érdekében egy párbeszéd ablak került megnyitásra az anyagokat tartalmazó GitHub repository oldalán: https://github.com/MarcellGranat/COVID/discussions
 
-***
+
 
 ```{css, echo=FALSE}
 p {
@@ -40,8 +43,6 @@ text-align: justify;
   text-align: center;
 }
 ```
-
-Tanulmányomban az egy főre eső GDP és munkanélküliség teljes termékenységi arányszámra gyakorolt hatását elemzem. A választott eszközök között szerepel az Engel-Granger kointegrációs teszt, amellyel megerősítettem a hipotézist, hogy szomszédos országok termékenységi rátájának alakulása általában nagyobb egyezőséget mutat, melynek magyarázata lehet a közös gazdasági környezet és kultúra. Második választott eszköz a vektor autoregresszív modellek készítése, melyekből levonható konklúzió, hogy a GDP/fő pozitívan, míg a munkanélküliségi ráta negatívan befolyásolja a termékenységi arányszámot, de kettő közül előbbi alakulása fontosabb. Harmadik eszközként panel modellt választottam a Magyarországi megyékre, mely tanulmányom fő hozzáadott értékét képviseli. Statisztikailag szignifikáns magyarázóváltozónak bizonyult GDP/fő, hatása egy évvel később érvényesül, továbbá határhatása csökkenő, és 7 340 000 Ft-ig növekvő. Ez alapján elmondható, hogy a termékenységi ráta növelése szempontjából a szegényebb régiók egy főre eső bruttó kibocsátásának növelése javasolt.
 
 <!--chapter:end:index.Rmd-->
 
@@ -66,23 +67,177 @@ p {
 }
 ```
 
+Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már a megjelenésekor nagyon hamar ismertté vált a tény: **elsősorban az idősekre és krónikus betegre jelent kockázatot**. Ennek a ténynek empirikus teszteléséhez olyan adattáblára van szükségünk, melyben rögzítésre kerülnek a megfertőzöttek demográfiai adatai és az eset végső kimenete (ezt a fajta adattípust nevezik "line list"-nek). 
+
 ## Adatok bemutatása
 
-Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már az első hírek köüz
+### Forrás
+
+A fentebb leírt célra lett létrehozva egy nyílt projekt^[Open COVID-19 Data Working Group, *Detailed Epidemiological Data from the COVID-19 Outbreak*, http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337,  letöltve: 2020.12.28.], amely során ezeket az adatokat több országra gyűjtik ki és teszi online elérhetővé.
 
 ```{r}
-cars %>% 
-  ggplot(aes(speed, dist)) +
-  geom_point() +
-  labs(title = 'Mintaábra')
+dat <- vroom::vroom('latestdata.csv')
 ```
 
+Az adattábla összesen `r nrow(dat)` megfigyelést tartalmaz 33 változóval. Azonban a változók jelentős része használhatatlan elemzésre és jelentős mértékben van szükség az adatok tisztítására is. Egyetlen példa említéseként a kimenetben nem egyszerűen *died* vagy *elhunyt* szerepelt, hanem annak számos szinonímája is, amelett, hogy sok esetben nincs elérhető adat.
+
+```{r fig.height=5}
+set.seed(1)
+dat %>% 
+  count(outcome) %>% 
+  na.omit() %>% 
+  {mutate(., s = runif(n = nrow(.)))} %>%
+  ggplot(aes(label = outcome, size = s)) +
+  geom_text_wordcloud(color =  'aquamarine4') +
+  labs(title = "Az nyers adattáblában a kimenet változó által felvett értékek") +
+  theme_minimal()
+```
+
+### Adatok elemzéshez való előkészítése
+
+Az adatok megtiszítása előtt el kell döntenünk, hogy mely változókkal is érdemes foglalkozni, mivel sajnos számos változó esetében hiányzik rengeteg sor a táblában.
+
 ```{r}
-cars %>% 
-  head %>% 
+dat %>% 
+  apply(2, function(x) sum(is.na(x))) %>% 
+  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))} %>% 
+  set_names('var', 'Hiánytalan adatok száma', 'Hiánytalanok aránya') %>% 
+  gt(
+    rowname_col = "var"
+  ) %>% 
+  fmt_percent(
+    columns = vars('Hiánytalanok aránya'),
+    dec_mark = ','
+  ) %>% 
+  tab_header(title = 'Adattáblában lévő hiánytalan megfigyelések aránya')
+```
+
+Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: \
+ - **életkor**\
+ - **nem**\
+ - **ország**\
+ - **van-e krónikus betegsége**\
+ - **fertőződöttség kimutatásának ideje**\
+ - **földrajzi szélesség**\
+ - **földrajzi hosszúság**\
+ - **megbetegedés kimenete**\
+ 
+A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
+
+```{r}
+dat %>% 
+  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation) %>% 
+  mutate(
+    continent = countrycode::countrycode(country, origin = 'country.name', destination = 'continent'),
+    date = lubridate::dmy(date_confirmation),
+    age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
+  ) %>% 
+    mutate( # cleaning the depedent var
+    outcome = case_when(
+      outcome == 'death' ~ 'died',
+      outcome == 'died' ~ 'died', 
+      outcome == 'Death' ~ 'died',
+      outcome == 'dead' ~ 'died',
+      outcome == 'Dead' ~ 'died',
+      outcome == 'Died' ~ 'died',
+      outcome == 'Deceased' ~ 'died',
+      outcome == 'discharge' ~ 'survived',
+      outcome == 'discharged' ~ 'survived',
+      outcome == 'Discharged' ~ 'survived',
+      outcome == 'Discharged from hospital' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'released from quarantine' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      T ~ 'NA'
+    )
+  ) %>% 
+  filter(outcome != 'NA') %>% 
+  mutate(
+    died = outcome == 'died'
+  ) %>% select(-outcome, -date_confirmation) %>% 
+  {dat <<- .}
+```
+
+Az így kapott új adattáblában már csupán `r nrow(dat)` megfigyelés és `r ncol(dat)` változó szerepel.
+
+```{r}
+dat %>% 
+  head %>%
   gt %>% 
-  tab_header(title = 'Minta táblázat')
+  tab_header(title = 'Adattábla modellezésre előkészítve')
 ```
+
+
+
+```{r}
+dat %>% 
+  select(age, sex, died) %>% 
+  GGally::ggpairs(mapping = aes(color = died), 
+    title = 'Életkor, nem és az elhalálozás kapcsolata')
+```
+
+```{r}
+dat %>% 
+  select(continent, date, died) %>% 
+  GGally::ggpairs(aes(color = died),
+        title = 'A kontinens a rögzítés dátuma és az elhalálozás kapcsolata')
+```
+
+Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.
+
+```{r}
+  dat %>% 
+  group_by(continent, country) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  na.omit() %>% 
+  mutate(
+    r = n/nrow(dat)
+  ) %>% 
+  arrange(continent) %>% 
+  set_names('continent', 'country', 'n', 'n/sum(n)') %>% 
+  gt(
+    rowname_col = 'country',
+    groupname_col = 'continent'
+  ) %>% 
+  fmt_percent(
+    columns = 'n/sum(n)',
+    ) %>% 
+  summary_rows(groups = T, columns = vars(n), fns = list(TOTAL = 'sum')) %>% 
+  summary_rows(groups = T, columns = vars('n/sum(n)'), fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
+  tab_options(
+    summary_row.background.color = "#ACEACE",
+    row_group.background.color = "#FFEFDB"
+  ) %>% 
+  tab_header(title = 'Megfigyelések száma országonként', subtitle = 'Elsődleges adattisztítás után')
+```
+
+A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).
+
+```{r}
+dat %>% 
+  mutate(
+    india = country == 'India'
+  ) %>% 
+  select(-country, -continent, -latitude, -longitude) %>% 
+  {dat <<- .}
+```
+
+```{r}
+dat %>% 
+  gt %>% 
+  tab_header(title = 'Végső adattábla modellezéshez')
+```
+
+```{r fig.height=2}
+dat %>% 
+  rpart::rpart(formula = died ~ ., cp = .01) %>% 
+  rattle::fancyRpartPlot(palettes = 'OrRd', sub = 'cp = .01', main = '1. döntési fa')
+```
+
 
 
 <!--chapter:end:Chapter-2.Rmd-->
@@ -101,16 +256,17 @@ Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
 library(textdata)
-library(todor)
 #Szózsák-modell
 library(tm)
 library(SnowballC)
 library(wordcloud)
 #Adatok transzformációja és vizualizációja
-library(dplyr)
-library(ggplot2)
+#library(dplyr)
+#library(ggplot2)
+library(ggwordcloud)
 library(plotly)
-library(hrbrthemes)
+library(gifski)
+#library(hrbrthemes)
   #Webes adatgyűjtés
 library(tools)
 library(rvest)
@@ -118,19 +274,15 @@ library(rvest)
 
 Guardian headlineok
 
-```{r get_headlines, cache=TRUE}
+```{r get_headlines}
 
  #521-ig lehetett visszamenni a keresésben
 for (i in 1:100) {
  URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
  page <- read_html(URL)
- title <- html_nodes(page, ".js-headline-text")
- time <- html_nodes(page, ".fc-date-headline")
- title <- html_text(title)
- time <- html_text(time)
+ title <- html_text(html_nodes(page, ".js-headline-text"))
+ time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
  #Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma
- time <- time[1]
- # TODO ifelse
  if (i==1){
   data_raw <- data.frame(time, title) 
  }
@@ -142,11 +294,11 @@ for (i in 1:100) {
 #Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 #dataframebe, minden másodikat ki kellett törölni
  
-toDelete <- seq(0, nrow(data_raw), 2)
-data_cleansed <- data_raw[-toDelete,]
-data_cleansed <- cbind(id=seq(1,nrow(data_cleansed),1), data_cleansed)
-data_cleansed$date <- as.Date(data_cleansed$time, format = "%d %B %Y")
-data_cleansed$month <- format(data_cleansed$time, "%Y-%m")
+data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
+  mutate(
+    date = as.Date(time, format = "%d %B %Y"),
+    month = format(date, "%Y-%m")
+  )
 ```
 
 Bag of words a címekből
@@ -154,24 +306,21 @@ Bag of words a címekből
 corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
 
 #Korpusz tisztítása
-corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removeNumbers) %>% tm_map(removePunctuation) #%>% tm_map(removeWords, c(stopwords("english"), "also", "one")) 
-#%>% tm_map(stemDocument)
-
-corpus_filtered[[3]]$content
+corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(stripWhitespace) %>%  tm_map(removeNumbers) %>% tm_map(removePunctuation, ucp=TRUE) %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
 ```
 
 Strukturált mátrix és a fogalmak eloszlása
 ```{r basic_matrices}
- matrix <- DocumentTermMatrix(corpus_filtered)
- matrix <- removeSparseTerms(matrix, 0.999)
- inspect(matrix)
+ termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
+ documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
+ words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),   Freq=rowSums(as.matrix(termdocument), na.rm = TRUE))
  
- findFreqTerms(matrix, 450)
- wordcloud(corpus_filtered, max.words=100)
+ findFreqTerms(documentterm, lowfreq = 100)
+ ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
 ```
 
 Havonta elemzés
-```{r monthly_analysis_and_wordclouds}
+```{r monthly_analysis_and_wordclouds, animation.hook="gifski"}
 data_cleansed_monthly <- data_cleansed %>% group_by(month) %>% summarise(monthly_text = paste(title, collapse = " "))
 
 #Táblázat létrehozása
@@ -182,19 +331,21 @@ for (i in 1:nrow(data_cleansed_monthly)){
   #Corpus létrehozása
   corpus_monthly_raw <- Corpus(VectorSource(as.character(data_cleansed_monthly$monthly_text[i])))
   #Korpusz tisztítása
-  corpus_monthly_filtered <- corpus_monthly_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removePunctuation) %>% tm_map(removeNumbers)  %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
+  corpus_monthly_filtered <- corpus_monthly_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removePunctuation, ucp=TRUE) %>% tm_map(removeNumbers)  %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
 #%>% tm_map(stemDocument)
   
   #Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt
-  matrix_monthly <- TermDocumentMatrix(corpus_monthly_filtered)
-  matrix_monthly <- removeSparseTerms(matrix_monthly, 0.999)
-  words_frequency <- as.matrix(matrix_monthly)
-  freq_words_monthly <- sort(rowSums(words_frequency), decreasing=TRUE)
-  words_monthly[,data_cleansed_monthly$month[i]] <- names(head(freq_words_monthly, 15))
+  matrix_monthly <- removeSparseTerms(TermDocumentMatrix(corpus_monthly_filtered), 0.999)
+  words_frequency <- data.frame(Words = matrix_monthly$dimnames$Terms, Freq = matrix_monthly$v)
+  words_monthly[,data_cleansed_monthly$month[i]]<-    head(words_frequency[order(-words_frequency$Freq),]$Words,15)
   
   #Szófelhők készítése, a corpus nagyságától függően
-  wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
+  plot(ggwordcloud(words_frequency$Words, words_frequency$Freq, max.words = 100)+
+         ggtitle(data_cleansed_monthly$month[i]))
+  #wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
 }
+
+words_monthly
 ```
 
 
@@ -205,34 +356,37 @@ Sentiment elemzés
 #AFINN lexikon betöltése
 AFINN <- get_sentiments("afinn")
 
+data_cleansed <- data_cleansed %>% 
+  mutate(
+    title = as.character(title)
+  )
+
 #Szavakra bontás, pontszámok összeaggregálása
-words <- unnest_tokens(adatok, words, data)
-words <- left_join(words, AFINN, by=c("words"="word"))
-erzelmiszavakszama <- words %>% group_by(timeasdate) %>% summarise(non_na_count = sum(!is.na(value)))
-final <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
+words <- left_join(
+  tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
+nr_sentiment_words <- words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
+score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 
 #Eredeti adatok mellé rakás
-adatok <- left_join(adatok, final, by="id")
+data_cleansed <- left_join(data_cleansed, score_by_id, by="id")
 
 #Napi (és heti) aggregálás
-napi_adatok <- adatok %>% group_by(timeasdate) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
+score_by_day <- data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
 
 ```
 Ábrázolás
 ```{r plotting_sentiments}
-coeff = 10
+  ggplot(nr_sentiment_words, aes(x=date)) +
+  geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
+  xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
+  ylim(0, 100)+
+  geom_hline(yintercept=0, color="black", size=.75)
 
-  ggplot(erzelmiszavakszama, aes(x=timeasdate)) +
-  geom_line( aes(y=non_na_count), size=.5, color="#0fad04")
-
-  ggplot(napi_adatok, aes(x=timeasdate)) +
-  #geom_line( aes(y=score_avg), size=.5, color="#0fad04") + 
-  #geom_smooth( aes(y=score_avg), color="#0fad04", method="loess")+
-  geom_line( aes(y=score_sum / coeff), size=.5, color="#0011a7") +
-  geom_smooth( aes(y=score_sum), color="#0011a7", method="lm", formula = y ~ splines::bs(x, 4), se=FALSE, level=0.95)+
-  ylim(-10, 10)+
-  geom_hline(yintercept=0, color="black", size=.75) +
-  theme_ipsum()
+  ggplot(score_by_day, aes(x=date)) +
+  geom_line( aes(y=score_avg), color="#0fad04") + 
+  xlab("Dátum") + ylab("Átlagos napi érzelmi pontszám") +
+  ylim(-5, 5)+
+  geom_hline(yintercept=0, color="black", size=.75)
 ```
 
 
