@@ -1,4 +1,4 @@
-# A magyar születésszám az elmúlt 60 évben {#Chapter-2}
+# Döntési fa {#Chapter-2}
 
 ```{css, echo=FALSE}
 p {
