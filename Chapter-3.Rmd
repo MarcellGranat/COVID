@@ -1,0 +1,156 @@
+---
+title: "A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése"
+author: "Balint Mazzag"
+date: '2020 12 29'
+output:
+  html_document: default
+---
+
+# A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
+
+```{css, echo=FALSE}
+p {
+  text-align: justify;
+}
+```
+
+
+```{r setup, include=FALSE}
+Sys.setlocale("LC_TIME", "C")
+#AFINN szótárhoz
+library(tidytext)
+library(textdata)
+library(todor)
+#Szózsák-modell
+library(tm)
+library(SnowballC)
+library(wordcloud)
+#Adatok transzformációja és vizualizációja
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(hrbrthemes)
+  #Webes adatgyűjtés
+library(tools)
+library(rvest)
+```
+
+Guardian headlineok
+
+```{r get_headlines, cache=TRUE}
+
+ #521-ig lehetett visszamenni a keresésben
+for (i in 1:100) {
+ URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
+ page <- read_html(URL)
+ title <- html_nodes(page, ".js-headline-text")
+ time <- html_nodes(page, ".fc-date-headline")
+ title <- html_text(title)
+ time <- html_text(time)
+ #Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma
+ time <- time[1]
+ # TODO ifelse
+ if (i==1){
+  data_raw <- data.frame(time, title) 
+ }
+ else{
+  data_raw <- rbind(data_raw, data.frame(time, title))  
+ }
+}
+ 
+#Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
+#dataframebe, minden másodikat ki kellett törölni
+ 
+toDelete <- seq(0, nrow(data_raw), 2)
+data_cleansed <- data_raw[-toDelete,]
+data_cleansed <- cbind(id=seq(1,nrow(data_cleansed),1), data_cleansed)
+data_cleansed$date <- as.Date(data_cleansed$time, format = "%d %B %Y")
+data_cleansed$month <- format(data_cleansed$time, "%Y-%m")
+```
+
+Bag of words a címekből
+```{r create_bagofwords}
+corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
+
+#Korpusz tisztítása
+corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removeNumbers) %>% tm_map(removePunctuation) #%>% tm_map(removeWords, c(stopwords("english"), "also", "one")) 
+#%>% tm_map(stemDocument)
+
+corpus_filtered[[3]]$content
+```
+
+Strukturált mátrix és a fogalmak eloszlása
+```{r basic_matrices}
+ matrix <- DocumentTermMatrix(corpus_filtered)
+ matrix <- removeSparseTerms(matrix, 0.999)
+ inspect(matrix)
+ 
+ findFreqTerms(matrix, 450)
+ wordcloud(corpus_filtered, max.words=100)
+```
+
+Havonta elemzés
+```{r monthly_analysis_and_wordclouds}
+data_cleansed_monthly <- data_cleansed %>% group_by(month) %>% summarise(monthly_text = paste(title, collapse = " "))
+
+#Táblázat létrehozása
+words_monthly <- data.frame(matrix(ncol=nrow(data_cleansed_monthly), nrow=15))
+colnames(words_monthly) <- data_cleansed_monthly$month
+
+for (i in 1:nrow(data_cleansed_monthly)){
+  #Corpus létrehozása
+  corpus_monthly_raw <- Corpus(VectorSource(as.character(data_cleansed_monthly$monthly_text[i])))
+  #Korpusz tisztítása
+  corpus_monthly_filtered <- corpus_monthly_raw %>% tm_map(content_transformer(tolower)) %>% tm_map(removePunctuation) %>% tm_map(removeNumbers)  %>% tm_map(removeWords, c(stopwords("english"), "also", "one"))
+#%>% tm_map(stemDocument)
+  
+  #Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt
+  matrix_monthly <- TermDocumentMatrix(corpus_monthly_filtered)
+  matrix_monthly <- removeSparseTerms(matrix_monthly, 0.999)
+  words_frequency <- as.matrix(matrix_monthly)
+  freq_words_monthly <- sort(rowSums(words_frequency), decreasing=TRUE)
+  words_monthly[,data_cleansed_monthly$month[i]] <- names(head(freq_words_monthly, 15))
+  
+  #Szófelhők készítése, a corpus nagyságától függően
+  wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
+}
+```
+
+
+Sentiment elemzés
+```{r sentiment_analysis}
+
+
+#AFINN lexikon betöltése
+AFINN <- get_sentiments("afinn")
+
+#Szavakra bontás, pontszámok összeaggregálása
+words <- unnest_tokens(adatok, words, data)
+words <- left_join(words, AFINN, by=c("words"="word"))
+erzelmiszavakszama <- words %>% group_by(timeasdate) %>% summarise(non_na_count = sum(!is.na(value)))
+final <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
+
+#Eredeti adatok mellé rakás
+adatok <- left_join(adatok, final, by="id")
+
+#Napi (és heti) aggregálás
+napi_adatok <- adatok %>% group_by(timeasdate) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
+
+```
+Ábrázolás
+```{r plotting_sentiments}
+coeff = 10
+
+  ggplot(erzelmiszavakszama, aes(x=timeasdate)) +
+  geom_line( aes(y=non_na_count), size=.5, color="#0fad04")
+
+  ggplot(napi_adatok, aes(x=timeasdate)) +
+  #geom_line( aes(y=score_avg), size=.5, color="#0fad04") + 
+  #geom_smooth( aes(y=score_avg), color="#0fad04", method="loess")+
+  geom_line( aes(y=score_sum / coeff), size=.5, color="#0011a7") +
+  geom_smooth( aes(y=score_sum), color="#0011a7", method="lm", formula = y ~ splines::bs(x, 4), se=FALSE, level=0.95)+
+  ylim(-10, 10)+
+  geom_hline(yintercept=0, color="black", size=.75) +
+  theme_ipsum()
+```
+
