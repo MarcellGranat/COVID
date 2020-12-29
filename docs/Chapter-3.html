@@ -165,122 +165,123 @@ p {
 }
 </style>
 <p>Guardian headlineok</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter-3.html#cb4-1"></a> <span class="co">#521-ig lehetett visszamenni a keresésben</span></span>
-<span id="cb4-2"><a href="Chapter-3.html#cb4-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</span>
-<span id="cb4-3"><a href="Chapter-3.html#cb4-3"></a> URL &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=&quot;</span>, i, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb4-4"><a href="Chapter-3.html#cb4-4"></a> page &lt;-<span class="st"> </span><span class="kw">read_html</span>(URL)</span>
-<span id="cb4-5"><a href="Chapter-3.html#cb4-5"></a> title &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.js-headline-text&quot;</span>))</span>
-<span id="cb4-6"><a href="Chapter-3.html#cb4-6"></a> time &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.fc-date-headline&quot;</span>))[<span class="dv">1</span>]</span>
-<span id="cb4-7"><a href="Chapter-3.html#cb4-7"></a> <span class="co">#Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma</span></span>
-<span id="cb4-8"><a href="Chapter-3.html#cb4-8"></a> <span class="cf">if</span> (i<span class="op">==</span><span class="dv">1</span>){</span>
-<span id="cb4-9"><a href="Chapter-3.html#cb4-9"></a>  data_raw &lt;-<span class="st"> </span><span class="kw">data.frame</span>(time, title) </span>
-<span id="cb4-10"><a href="Chapter-3.html#cb4-10"></a> }</span>
-<span id="cb4-11"><a href="Chapter-3.html#cb4-11"></a> <span class="cf">else</span>{</span>
-<span id="cb4-12"><a href="Chapter-3.html#cb4-12"></a>  data_raw &lt;-<span class="st"> </span><span class="kw">rbind</span>(data_raw, <span class="kw">data.frame</span>(time, title))  </span>
-<span id="cb4-13"><a href="Chapter-3.html#cb4-13"></a> }</span>
-<span id="cb4-14"><a href="Chapter-3.html#cb4-14"></a>}</span>
-<span id="cb4-15"><a href="Chapter-3.html#cb4-15"></a> </span>
-<span id="cb4-16"><a href="Chapter-3.html#cb4-16"></a><span class="co">#Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a</span></span>
-<span id="cb4-17"><a href="Chapter-3.html#cb4-17"></a><span class="co">#dataframebe, minden másodikat ki kellett törölni</span></span>
-<span id="cb4-18"><a href="Chapter-3.html#cb4-18"></a> </span>
-<span id="cb4-19"><a href="Chapter-3.html#cb4-19"></a>data_cleansed &lt;-<span class="st"> </span>data_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">duplicated</span>(title)) <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">mutate</span>(., <span class="dt">id =</span> <span class="kw">seq</span>(<span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-20"><a href="Chapter-3.html#cb4-20"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb4-21"><a href="Chapter-3.html#cb4-21"></a>    <span class="dt">date =</span> <span class="kw">as.Date</span>(time, <span class="dt">format =</span> <span class="st">&quot;%d %B %Y&quot;</span>),</span>
-<span id="cb4-22"><a href="Chapter-3.html#cb4-22"></a>    <span class="dt">month =</span> <span class="kw">format</span>(date, <span class="st">&quot;%Y-%m&quot;</span>)</span>
-<span id="cb4-23"><a href="Chapter-3.html#cb4-23"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="Chapter-3.html#cb9-1"></a> <span class="co">#521-ig lehetett visszamenni a keresésben</span></span>
+<span id="cb9-2"><a href="Chapter-3.html#cb9-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</span>
+<span id="cb9-3"><a href="Chapter-3.html#cb9-3"></a> URL &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=&quot;</span>, i, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb9-4"><a href="Chapter-3.html#cb9-4"></a> page &lt;-<span class="st"> </span><span class="kw">read_html</span>(URL)</span>
+<span id="cb9-5"><a href="Chapter-3.html#cb9-5"></a> title &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.js-headline-text&quot;</span>))</span>
+<span id="cb9-6"><a href="Chapter-3.html#cb9-6"></a> time &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.fc-date-headline&quot;</span>))[<span class="dv">1</span>]</span>
+<span id="cb9-7"><a href="Chapter-3.html#cb9-7"></a> <span class="co">#Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma</span></span>
+<span id="cb9-8"><a href="Chapter-3.html#cb9-8"></a> <span class="cf">if</span> (i<span class="op">==</span><span class="dv">1</span>){</span>
+<span id="cb9-9"><a href="Chapter-3.html#cb9-9"></a>  data_raw &lt;-<span class="st"> </span><span class="kw">data.frame</span>(time, title) </span>
+<span id="cb9-10"><a href="Chapter-3.html#cb9-10"></a> }</span>
+<span id="cb9-11"><a href="Chapter-3.html#cb9-11"></a> <span class="cf">else</span>{</span>
+<span id="cb9-12"><a href="Chapter-3.html#cb9-12"></a>  data_raw &lt;-<span class="st"> </span><span class="kw">rbind</span>(data_raw, <span class="kw">data.frame</span>(time, title))  </span>
+<span id="cb9-13"><a href="Chapter-3.html#cb9-13"></a> }</span>
+<span id="cb9-14"><a href="Chapter-3.html#cb9-14"></a>}</span>
+<span id="cb9-15"><a href="Chapter-3.html#cb9-15"></a> </span>
+<span id="cb9-16"><a href="Chapter-3.html#cb9-16"></a><span class="co">#Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a</span></span>
+<span id="cb9-17"><a href="Chapter-3.html#cb9-17"></a><span class="co">#dataframebe, minden másodikat ki kellett törölni</span></span>
+<span id="cb9-18"><a href="Chapter-3.html#cb9-18"></a> </span>
+<span id="cb9-19"><a href="Chapter-3.html#cb9-19"></a>data_cleansed &lt;-<span class="st"> </span>data_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">duplicated</span>(title)) <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">mutate</span>(., <span class="dt">id =</span> <span class="kw">seq</span>(<span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-20"><a href="Chapter-3.html#cb9-20"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb9-21"><a href="Chapter-3.html#cb9-21"></a>    <span class="dt">date =</span> <span class="kw">as.Date</span>(time, <span class="dt">format =</span> <span class="st">&quot;%d %B %Y&quot;</span>),</span>
+<span id="cb9-22"><a href="Chapter-3.html#cb9-22"></a>    <span class="dt">month =</span> <span class="kw">format</span>(date, <span class="st">&quot;%Y-%m&quot;</span>)</span>
+<span id="cb9-23"><a href="Chapter-3.html#cb9-23"></a>  )</span></code></pre></div>
 <p>Bag of words a címekből</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-3.html#cb5-1"></a>corpus_raw &lt;-<span class="st"> </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed<span class="op">$</span>title)))</span>
-<span id="cb5-2"><a href="Chapter-3.html#cb5-2"></a></span>
-<span id="cb5-3"><a href="Chapter-3.html#cb5-3"></a><span class="co">#Korpusz tisztítása</span></span>
-<span id="cb5-4"><a href="Chapter-3.html#cb5-4"></a>corpus_filtered &lt;-<span class="st"> </span>corpus_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(stripWhitespace) <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">tm_map</span>(removeNumbers) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter-3.html#cb10-1"></a>corpus_raw &lt;-<span class="st"> </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed<span class="op">$</span>title)))</span>
+<span id="cb10-2"><a href="Chapter-3.html#cb10-2"></a></span>
+<span id="cb10-3"><a href="Chapter-3.html#cb10-3"></a><span class="co">#Korpusz tisztítása</span></span>
+<span id="cb10-4"><a href="Chapter-3.html#cb10-4"></a>corpus_filtered &lt;-<span class="st"> </span>corpus_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(stripWhitespace) <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">tm_map</span>(removeNumbers) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>))</span></code></pre></div>
 <p>Strukturált mátrix és a fogalmak eloszlása</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter-3.html#cb6-1"></a> termdocument &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
-<span id="cb6-2"><a href="Chapter-3.html#cb6-2"></a> documentterm &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">DocumentTermMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
-<span id="cb6-3"><a href="Chapter-3.html#cb6-3"></a> words_frequency_all &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Words=</span><span class="kw">row.names</span>(<span class="kw">as.matrix</span>(termdocument)),   <span class="dt">Freq=</span><span class="kw">rowSums</span>(<span class="kw">as.matrix</span>(termdocument), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb6-4"><a href="Chapter-3.html#cb6-4"></a> </span>
-<span id="cb6-5"><a href="Chapter-3.html#cb6-5"></a> <span class="kw">findFreqTerms</span>(documentterm, <span class="dt">lowfreq =</span> <span class="dv">100</span>)</span></code></pre></div>
-<pre><code> [1] &quot;covid&quot;       &quot;video&quot;       &quot;england&quot;     &quot;new&quot;         &quot;says&quot;       
- [6] &quot;tier&quot;        &quot;vaccine&quot;     &quot;johnson&quot;     &quot;christmas&quot;   &quot;coronavirus&quot;
-[11] &quot;happened&quot;    &quot;lockdown&quot;   </code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-3.html#cb8-1"></a> <span class="kw">ggwordcloud</span>(words_frequency_all<span class="op">$</span>Words, words_frequency_all<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-3.html#cb11-1"></a> termdocument &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb11-2"><a href="Chapter-3.html#cb11-2"></a> documentterm &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">DocumentTermMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb11-3"><a href="Chapter-3.html#cb11-3"></a> words_frequency_all &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Words=</span><span class="kw">row.names</span>(<span class="kw">as.matrix</span>(termdocument)),   <span class="dt">Freq=</span><span class="kw">rowSums</span>(<span class="kw">as.matrix</span>(termdocument), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb11-4"><a href="Chapter-3.html#cb11-4"></a> </span>
+<span id="cb11-5"><a href="Chapter-3.html#cb11-5"></a> <span class="kw">findFreqTerms</span>(documentterm, <span class="dt">lowfreq =</span> <span class="dv">100</span>)</span></code></pre></div>
+<pre><code> [1] &quot;covid&quot;       &quot;england&quot;     &quot;lockdown&quot;    &quot;new&quot;         &quot;coronavirus&quot;
+ [6] &quot;vaccine&quot;     &quot;video&quot;       &quot;says&quot;        &quot;tier&quot;        &quot;johnson&quot;    
+[11] &quot;christmas&quot;  </code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-3.html#cb13-1"></a> <span class="kw">ggwordcloud</span>(words_frequency_all<span class="op">$</span>Words, words_frequency_all<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/basic_matrices-1.png" width="672" /></p>
 <p>Havonta elemzés</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="Chapter-3.html#cb9-1"></a>data_cleansed_monthly &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">monthly_text =</span> <span class="kw">paste</span>(title, <span class="dt">collapse =</span> <span class="st">&quot; &quot;</span>))</span>
-<span id="cb9-2"><a href="Chapter-3.html#cb9-2"></a></span>
-<span id="cb9-3"><a href="Chapter-3.html#cb9-3"></a><span class="co">#Táblázat létrehozása</span></span>
-<span id="cb9-4"><a href="Chapter-3.html#cb9-4"></a>words_monthly &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="kw">nrow</span>(data_cleansed_monthly), <span class="dt">nrow=</span><span class="dv">15</span>))</span>
-<span id="cb9-5"><a href="Chapter-3.html#cb9-5"></a><span class="kw">colnames</span>(words_monthly) &lt;-<span class="st"> </span>data_cleansed_monthly<span class="op">$</span>month</span>
-<span id="cb9-6"><a href="Chapter-3.html#cb9-6"></a></span>
-<span id="cb9-7"><a href="Chapter-3.html#cb9-7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_cleansed_monthly)){</span>
-<span id="cb9-8"><a href="Chapter-3.html#cb9-8"></a>  <span class="co">#Corpus létrehozása</span></span>
-<span id="cb9-9"><a href="Chapter-3.html#cb9-9"></a>  corpus_monthly_raw &lt;-<span class="st"> </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed_monthly<span class="op">$</span>monthly_text[i])))</span>
-<span id="cb9-10"><a href="Chapter-3.html#cb9-10"></a>  <span class="co">#Korpusz tisztítása</span></span>
-<span id="cb9-11"><a href="Chapter-3.html#cb9-11"></a>  corpus_monthly_filtered &lt;-<span class="st"> </span>corpus_monthly_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeNumbers)  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>))</span>
-<span id="cb9-12"><a href="Chapter-3.html#cb9-12"></a><span class="co">#%&gt;% tm_map(stemDocument)</span></span>
-<span id="cb9-13"><a href="Chapter-3.html#cb9-13"></a>  </span>
-<span id="cb9-14"><a href="Chapter-3.html#cb9-14"></a>  <span class="co">#Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt</span></span>
-<span id="cb9-15"><a href="Chapter-3.html#cb9-15"></a>  matrix_monthly &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_monthly_filtered), <span class="fl">0.999</span>)</span>
-<span id="cb9-16"><a href="Chapter-3.html#cb9-16"></a>  words_frequency &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Words =</span> matrix_monthly<span class="op">$</span>dimnames<span class="op">$</span>Terms, <span class="dt">Freq =</span> matrix_monthly<span class="op">$</span>v)</span>
-<span id="cb9-17"><a href="Chapter-3.html#cb9-17"></a>  words_monthly[,data_cleansed_monthly<span class="op">$</span>month[i]]&lt;-<span class="st">    </span><span class="kw">head</span>(words_frequency[<span class="kw">order</span>(<span class="op">-</span>words_frequency<span class="op">$</span>Freq),]<span class="op">$</span>Words,<span class="dv">15</span>)</span>
-<span id="cb9-18"><a href="Chapter-3.html#cb9-18"></a>  </span>
-<span id="cb9-19"><a href="Chapter-3.html#cb9-19"></a>  <span class="co">#Szófelhők készítése, a corpus nagyságától függően</span></span>
-<span id="cb9-20"><a href="Chapter-3.html#cb9-20"></a>  <span class="kw">plot</span>(<span class="kw">ggwordcloud</span>(words_frequency<span class="op">$</span>Words, words_frequency<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)<span class="op">+</span></span>
-<span id="cb9-21"><a href="Chapter-3.html#cb9-21"></a><span class="st">         </span><span class="kw">ggtitle</span>(data_cleansed_monthly<span class="op">$</span>month[i]))</span>
-<span id="cb9-22"><a href="Chapter-3.html#cb9-22"></a>  <span class="co">#wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)</span></span>
-<span id="cb9-23"><a href="Chapter-3.html#cb9-23"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-3.html#cb14-1"></a>data_cleansed_monthly &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">monthly_text =</span> <span class="kw">paste</span>(title, <span class="dt">collapse =</span> <span class="st">&quot; &quot;</span>))</span>
+<span id="cb14-2"><a href="Chapter-3.html#cb14-2"></a></span>
+<span id="cb14-3"><a href="Chapter-3.html#cb14-3"></a><span class="co">#Táblázat létrehozása</span></span>
+<span id="cb14-4"><a href="Chapter-3.html#cb14-4"></a>words_monthly &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="kw">nrow</span>(data_cleansed_monthly), <span class="dt">nrow=</span><span class="dv">15</span>))</span>
+<span id="cb14-5"><a href="Chapter-3.html#cb14-5"></a><span class="kw">colnames</span>(words_monthly) &lt;-<span class="st"> </span>data_cleansed_monthly<span class="op">$</span>month</span>
+<span id="cb14-6"><a href="Chapter-3.html#cb14-6"></a></span>
+<span id="cb14-7"><a href="Chapter-3.html#cb14-7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_cleansed_monthly)){</span>
+<span id="cb14-8"><a href="Chapter-3.html#cb14-8"></a>  <span class="co">#Corpus létrehozása</span></span>
+<span id="cb14-9"><a href="Chapter-3.html#cb14-9"></a>  corpus_monthly_raw &lt;-<span class="st"> </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed_monthly<span class="op">$</span>monthly_text[i])))</span>
+<span id="cb14-10"><a href="Chapter-3.html#cb14-10"></a>  <span class="co">#Korpusz tisztítása</span></span>
+<span id="cb14-11"><a href="Chapter-3.html#cb14-11"></a>  corpus_monthly_filtered &lt;-<span class="st"> </span>corpus_monthly_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeNumbers)  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>))</span>
+<span id="cb14-12"><a href="Chapter-3.html#cb14-12"></a><span class="co">#%&gt;% tm_map(stemDocument)</span></span>
+<span id="cb14-13"><a href="Chapter-3.html#cb14-13"></a>  </span>
+<span id="cb14-14"><a href="Chapter-3.html#cb14-14"></a>  <span class="co">#Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt</span></span>
+<span id="cb14-15"><a href="Chapter-3.html#cb14-15"></a>  matrix_monthly &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_monthly_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb14-16"><a href="Chapter-3.html#cb14-16"></a>  words_frequency &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Words =</span> matrix_monthly<span class="op">$</span>dimnames<span class="op">$</span>Terms, <span class="dt">Freq =</span> matrix_monthly<span class="op">$</span>v)</span>
+<span id="cb14-17"><a href="Chapter-3.html#cb14-17"></a>  words_monthly[,data_cleansed_monthly<span class="op">$</span>month[i]]&lt;-<span class="st">    </span><span class="kw">head</span>(words_frequency[<span class="kw">order</span>(<span class="op">-</span>words_frequency<span class="op">$</span>Freq),]<span class="op">$</span>Words,<span class="dv">15</span>)</span>
+<span id="cb14-18"><a href="Chapter-3.html#cb14-18"></a>  </span>
+<span id="cb14-19"><a href="Chapter-3.html#cb14-19"></a>  <span class="co">#Szófelhők készítése, a corpus nagyságától függően</span></span>
+<span id="cb14-20"><a href="Chapter-3.html#cb14-20"></a>  <span class="kw">plot</span>(<span class="kw">ggwordcloud</span>(words_frequency<span class="op">$</span>Words, words_frequency<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)<span class="op">+</span></span>
+<span id="cb14-21"><a href="Chapter-3.html#cb14-21"></a><span class="st">         </span><span class="kw">ggtitle</span>(data_cleansed_monthly<span class="op">$</span>month[i]))</span>
+<span id="cb14-22"><a href="Chapter-3.html#cb14-22"></a>  <span class="co">#wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)</span></span>
+<span id="cb14-23"><a href="Chapter-3.html#cb14-23"></a>}</span></code></pre></div>
 <p><img src="my-book_files/figure-html/monthly_analysis_and_wordclouds-.gif" width="672" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter-3.html#cb10-1"></a>words_monthly</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-3.html#cb15-1"></a>words_monthly</span></code></pre></div>
 <pre><code>       2020-10     2020-11     2020-12
 1        covid       covid       covid
 2     lockdown    lockdown   christmas
 3         tier     england     vaccine
 4         says     vaccine     england
-5      england        says         new
-6  coronavirus   christmas        says
-7     happened     johnson        tier
-8   manchester         new       boris
-9        boris coronavirus       video
-10  government    happened     johnson
+5  coronavirus        says         new
+6      england   christmas        says
+7   manchester     johnson        tier
+8     happened         new       boris
+9        boris coronavirus     johnson
+10  government    happened       video
 11     johnson        will       rules
-12      people       boris    happened
-13        will       video coronavirus
+12      people       boris coronavirus
+13        will       video    happened
 14    englands      people    lockdown
 15     greater         nhs        will</code></pre>
 <p>Sentiment elemzés</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-3.html#cb12-1"></a><span class="co">#AFINN lexikon betöltése</span></span>
-<span id="cb12-2"><a href="Chapter-3.html#cb12-2"></a>AFINN &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>)</span>
-<span id="cb12-3"><a href="Chapter-3.html#cb12-3"></a></span>
-<span id="cb12-4"><a href="Chapter-3.html#cb12-4"></a>data_cleansed &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb12-5"><a href="Chapter-3.html#cb12-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb12-6"><a href="Chapter-3.html#cb12-6"></a>    <span class="dt">title =</span> <span class="kw">as.character</span>(title)</span>
-<span id="cb12-7"><a href="Chapter-3.html#cb12-7"></a>  )</span>
-<span id="cb12-8"><a href="Chapter-3.html#cb12-8"></a></span>
-<span id="cb12-9"><a href="Chapter-3.html#cb12-9"></a><span class="co">#Szavakra bontás, pontszámok összeaggregálása</span></span>
-<span id="cb12-10"><a href="Chapter-3.html#cb12-10"></a>words &lt;-<span class="st"> </span><span class="kw">left_join</span>(</span>
-<span id="cb12-11"><a href="Chapter-3.html#cb12-11"></a>  tidytext<span class="op">::</span><span class="kw">unnest_tokens</span>(data_cleansed, words, title), AFINN, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;words&quot;</span>=<span class="st">&quot;word&quot;</span>))</span>
-<span id="cb12-12"><a href="Chapter-3.html#cb12-12"></a>nr_sentiment_words &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">non_na_count =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(value)))</span>
-<span id="cb12-13"><a href="Chapter-3.html#cb12-13"></a>score_by_id &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score=</span><span class="kw">sum</span>(value, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span>
-<span id="cb12-14"><a href="Chapter-3.html#cb12-14"></a></span>
-<span id="cb12-15"><a href="Chapter-3.html#cb12-15"></a><span class="co">#Eredeti adatok mellé rakás</span></span>
-<span id="cb12-16"><a href="Chapter-3.html#cb12-16"></a>data_cleansed &lt;-<span class="st"> </span><span class="kw">left_join</span>(data_cleansed, score_by_id, <span class="dt">by=</span><span class="st">&quot;id&quot;</span>)</span>
-<span id="cb12-17"><a href="Chapter-3.html#cb12-17"></a></span>
-<span id="cb12-18"><a href="Chapter-3.html#cb12-18"></a><span class="co">#Napi (és heti) aggregálás</span></span>
-<span id="cb12-19"><a href="Chapter-3.html#cb12-19"></a>score_by_day &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score_sum=</span><span class="kw">sum</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dt">score_avg=</span><span class="kw">mean</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="Chapter-3.html#cb17-1"></a><span class="co">#AFINN lexikon betöltése</span></span>
+<span id="cb17-2"><a href="Chapter-3.html#cb17-2"></a>AFINN &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>)</span>
+<span id="cb17-3"><a href="Chapter-3.html#cb17-3"></a></span>
+<span id="cb17-4"><a href="Chapter-3.html#cb17-4"></a>data_cleansed &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-5"><a href="Chapter-3.html#cb17-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb17-6"><a href="Chapter-3.html#cb17-6"></a>    <span class="dt">title =</span> <span class="kw">as.character</span>(title)</span>
+<span id="cb17-7"><a href="Chapter-3.html#cb17-7"></a>  )</span>
+<span id="cb17-8"><a href="Chapter-3.html#cb17-8"></a></span>
+<span id="cb17-9"><a href="Chapter-3.html#cb17-9"></a><span class="co">#Szavakra bontás, pontszámok összeaggregálása</span></span>
+<span id="cb17-10"><a href="Chapter-3.html#cb17-10"></a>words &lt;-<span class="st"> </span><span class="kw">left_join</span>(</span>
+<span id="cb17-11"><a href="Chapter-3.html#cb17-11"></a>  tidytext<span class="op">::</span><span class="kw">unnest_tokens</span>(data_cleansed, words, title), AFINN, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;words&quot;</span>=<span class="st">&quot;word&quot;</span>))</span>
+<span id="cb17-12"><a href="Chapter-3.html#cb17-12"></a>nr_sentiment_words &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">non_na_count =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(value)))</span>
+<span id="cb17-13"><a href="Chapter-3.html#cb17-13"></a>score_by_id &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score=</span><span class="kw">sum</span>(value, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span>
+<span id="cb17-14"><a href="Chapter-3.html#cb17-14"></a></span>
+<span id="cb17-15"><a href="Chapter-3.html#cb17-15"></a><span class="co">#Eredeti adatok mellé rakás</span></span>
+<span id="cb17-16"><a href="Chapter-3.html#cb17-16"></a>data_cleansed &lt;-<span class="st"> </span><span class="kw">left_join</span>(data_cleansed, score_by_id, <span class="dt">by=</span><span class="st">&quot;id&quot;</span>)</span>
+<span id="cb17-17"><a href="Chapter-3.html#cb17-17"></a></span>
+<span id="cb17-18"><a href="Chapter-3.html#cb17-18"></a><span class="co">#Napi (és heti) aggregálás</span></span>
+<span id="cb17-19"><a href="Chapter-3.html#cb17-19"></a>score_by_day &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score_sum=</span><span class="kw">sum</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dt">score_avg=</span><span class="kw">mean</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
 <p>Ábrázolás</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-3.html#cb13-1"></a>  <span class="kw">ggplot</span>(nr_sentiment_words, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
-<span id="cb13-2"><a href="Chapter-3.html#cb13-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>)<span class="op">+</span></span>
-<span id="cb13-3"><a href="Chapter-3.html#cb13-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;AFINN-ban szereplő szavak száma&quot;</span>) <span class="op">+</span></span>
-<span id="cb13-4"><a href="Chapter-3.html#cb13-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="dv">100</span>)<span class="op">+</span></span>
-<span id="cb13-5"><a href="Chapter-3.html#cb13-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-3.html#cb18-1"></a>  <span class="kw">ggplot</span>(nr_sentiment_words, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb18-2"><a href="Chapter-3.html#cb18-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>)<span class="op">+</span></span>
+<span id="cb18-3"><a href="Chapter-3.html#cb18-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;AFINN-ban szereplő szavak száma&quot;</span>) <span class="op">+</span></span>
+<span id="cb18-4"><a href="Chapter-3.html#cb18-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="dv">100</span>)<span class="op">+</span></span>
+<span id="cb18-5"><a href="Chapter-3.html#cb18-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/plotting_sentiments-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-3.html#cb14-1"></a>  <span class="kw">ggplot</span>(score_by_day, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
-<span id="cb14-2"><a href="Chapter-3.html#cb14-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb14-3"><a href="Chapter-3.html#cb14-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Átlagos napi érzelmi pontszám&quot;</span>) <span class="op">+</span></span>
-<span id="cb14-4"><a href="Chapter-3.html#cb14-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">+</span></span>
-<span id="cb14-5"><a href="Chapter-3.html#cb14-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter-3.html#cb19-1"></a>  <span class="kw">ggplot</span>(score_by_day, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb19-2"><a href="Chapter-3.html#cb19-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-3"><a href="Chapter-3.html#cb19-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Átlagos napi érzelmi pontszám&quot;</span>) <span class="op">+</span></span>
+<span id="cb19-4"><a href="Chapter-3.html#cb19-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">+</span></span>
+<span id="cb19-5"><a href="Chapter-3.html#cb19-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/plotting_sentiments-2.png" width="672" /></p>
 
 </div>
+
 
 
 

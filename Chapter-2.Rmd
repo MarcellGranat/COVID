@@ -52,15 +52,15 @@ dat %>%
   tab_header(title = 'Adattáblában lévő hiánytalan megfigyelések aránya')
 ```
 
-Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: 
- - életkor
- - nem
- - ország
- - van-e krónikus betegsége
- - fertőződöttség kimutatásának ideje
- - földrajzi szélesség
- - földrajzi hosszúság
- - megbetegedés kimenete
+Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: \
+ - életkor\
+ - nem\
+ - ország\
+ - van-e krónikus betegsége\
+ - fertőződöttség kimutatásának ideje\
+ - földrajzi szélesség\
+ - földrajzi hosszúság\
+ - megbetegedés kimenete\
  
 A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
 
@@ -105,10 +105,58 @@ Az így kapott új adattáblában már csupán `r nrow(dat)` megfigyelés és `r
 
 ```{r}
 dat %>% 
-  head %>% 
+  head %>%
   gt %>% 
   tab_header(title = 'Adattábla modellezésre előkészítve')
 ```
+
+
+
+```{r}
+dat %>% 
+  select(age, sex, died) %>% 
+  GGally::ggpairs(mapping = aes(color = died), 
+    title = 'Életkor, nem és az elhalálozás kapcsolata')
+```
+
+```{r}
+dat %>% 
+  select(continent, date, died) %>% 
+  GGally::ggpairs(aes(color = died),
+        title = 'A kontinens a rögzítés dátuma és az elhalálozás kapcsolata')
+```
+
+Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.
+
+```{r}
+  dat %>% 
+  group_by(continent, country) %>% 
+  summarise(n = n()) %>% 
+  ungroup() %>% 
+  na.omit() %>% 
+  mutate(
+    r = n/nrow(dat)
+  ) %>% 
+  arrange(continent) %>% 
+  set_names('continent', 'country', 'n', 'n/sum(n)') %>% 
+  gt(
+    rowname_col = 'country',
+    groupname_col = 'continent'
+  ) %>% 
+  fmt_percent(
+    columns = 'n/sum(n)',
+    ) %>% 
+  summary_rows(groups = T, columns = vars(n), fns = list(TOTAL = 'sum')) %>% 
+  summary_rows(groups = T, columns = vars('n/sum(n)'), fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
+  tab_options(
+    summary_row.background.color = "#ACEACE",
+    row_group.background.color = "#FFEFDB"
+  ) %>% 
+  tab_header(title = 'Megfigyelések száma országonként', subtitle = 'Elsődleges adattisztítás után')
+```
+
+
+
 
 
 
