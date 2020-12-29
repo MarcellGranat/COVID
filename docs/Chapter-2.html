@@ -179,9 +179,8 @@ p {
 <span id="cb2-5"><a href="Chapter-2.html#cb2-5"></a><span class="st">  </span>{<span class="kw">mutate</span>(., <span class="dt">s =</span> <span class="kw">runif</span>(<span class="dt">n =</span> <span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span></span>
 <span id="cb2-6"><a href="Chapter-2.html#cb2-6"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">label =</span> outcome, <span class="dt">size =</span> s)) <span class="op">+</span></span>
 <span id="cb2-7"><a href="Chapter-2.html#cb2-7"></a><span class="st">  </span><span class="kw">geom_text_wordcloud</span>(<span class="dt">color =</span>  <span class="st">&#39;aquamarine4&#39;</span>) <span class="op">+</span></span>
-<span id="cb2-8"><a href="Chapter-2.html#cb2-8"></a><span class="st">  </span><span class="kw">scale_size_area</span>(<span class="dt">max_size =</span> <span class="dv">10</span>) <span class="op">+</span></span>
-<span id="cb2-9"><a href="Chapter-2.html#cb2-9"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Az nyers adattáblában a kimenet változó által felvett értékek&quot;</span>) <span class="op">+</span></span>
-<span id="cb2-10"><a href="Chapter-2.html#cb2-10"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<span id="cb2-8"><a href="Chapter-2.html#cb2-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Az nyers adattáblában a kimenet változó által felvett értékek&quot;</span>) <span class="op">+</span></span>
+<span id="cb2-9"><a href="Chapter-2.html#cb2-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="adatok-elemzéshez-való-előkészítése" class="section level3">
@@ -722,14 +721,14 @@ p {
   
 </table></div>
 <p>Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe:<br />
-- életkor<br />
-- nem<br />
-- ország<br />
-- van-e krónikus betegsége<br />
-- fertőződöttség kimutatásának ideje<br />
-- földrajzi szélesség<br />
-- földrajzi hosszúság<br />
-- megbetegedés kimenete<br />
+- <strong>életkor</strong><br />
+- <strong>nem</strong><br />
+- <strong>ország</strong><br />
+- <strong>van-e krónikus betegsége</strong><br />
+- <strong>fertőződöttség kimutatásának ideje</strong><br />
+- <strong>földrajzi szélesség</strong><br />
+- <strong>földrajzi hosszúság</strong><br />
+- <strong>megbetegedés kimenete</strong><br />
 </p>
 <p>A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter-2.html#cb4-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -766,7 +765,7 @@ p {
 <span id="cb4-32"><a href="Chapter-2.html#cb4-32"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
 <span id="cb4-33"><a href="Chapter-2.html#cb4-33"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-34"><a href="Chapter-2.html#cb4-34"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
-<p>Az így kapott új adattáblában már csupán 103616 megfigyelés és 9 változó szerepel.</p>
+<p>Az így kapott új adattáblában már csupán 2676311 megfigyelés és 33 változó szerepel.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span></span>
 <span id="cb5-3"><a href="Chapter-2.html#cb5-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1842,6 +1841,7 @@ p {
   
   
 </table></div>
+<p>A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).</p>
 
 </div>
 </div>

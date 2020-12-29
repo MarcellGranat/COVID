@@ -20,7 +20,7 @@ dat <- vroom::vroom('latestdata.csv')
 
 Az adattábla összesen `r nrow(dat)` megfigyelést tartalmaz 33 változóval. Azonban a változók jelentős része használhatatlan elemzésre és jelentős mértékben van szükség az adatok tisztítására is. Egyetlen példa említéseként a kimenetben nem egyszerűen *died* vagy *elhunyt* szerepelt, hanem annak számos szinonímája is, amelett, hogy sok esetben nincs elérhető adat.
 
-```{r}
+```{r fig.height=5}
 set.seed(1)
 dat %>% 
   count(outcome) %>% 
@@ -28,7 +28,6 @@ dat %>%
   {mutate(., s = runif(n = nrow(.)))} %>%
   ggplot(aes(label = outcome, size = s)) +
   geom_text_wordcloud(color =  'aquamarine4') +
-  scale_size_area(max_size = 10) +
   labs(title = "Az nyers adattáblában a kimenet változó által felvett értékek") +
   theme_minimal()
 ```
@@ -53,14 +52,14 @@ dat %>%
 ```
 
 Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: \
- - életkor\
- - nem\
- - ország\
- - van-e krónikus betegsége\
- - fertőződöttség kimutatásának ideje\
- - földrajzi szélesség\
- - földrajzi hosszúság\
- - megbetegedés kimenete\
+ - **életkor**\
+ - **nem**\
+ - **ország**\
+ - **van-e krónikus betegsége**\
+ - **fertőződöttség kimutatásának ideje**\
+ - **földrajzi szélesség**\
+ - **földrajzi hosszúság**\
+ - **megbetegedés kimenete**\
  
 A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
 
@@ -155,9 +154,28 @@ Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrés
   tab_header(title = 'Megfigyelések száma országonként', subtitle = 'Elsődleges adattisztítás után')
 ```
 
+A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).
 
+```{r}
+dat %>% 
+  mutate(
+    india = country == 'India'
+  ) %>% 
+  select(-country, -continent, -latitude, -longitude) %>% 
+  {dat <<- .}
+```
 
+```{r}
+dat %>% 
+  gt %>% 
+  tab_header(title = 'Végső adattábla modellezéshez')
+```
 
-
+```{r fig.height=2}
+dat %>% 
+  rpart::rpart(formula = died ~ ., cp = .01) %>% 
+  rattle::fancyRpartPlot(palettes = 'OrRd',
+                         sub = 'cp = .01', main = '1. döntési fa')
+```
 
 
