@@ -1,5 +1,5 @@
 ---
-title: "A termékenységi ráta kapcsolata az egy főre eső bruttó kibocsátással és a munkanélküliséggel"
+title: "COVID"
 author: "Granát Marcell"
 output: bookdown::gitbook
 site: bookdown::bookdown_site
@@ -11,23 +11,17 @@ favicon: "logo.ico"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = F)
 library(tidyverse)
-library(ggpubr)
-library(tseries)
-library(forecast)
-library(plm)
-library(sf)
-library(ggfortify)
+library(gt)
 theme_set(theme_grey() + 
             theme(legend.position = "bottom", 
                   text = element_text(size = 12), 
                   legend.box = "vertical", 
                   legend.key = element_blank()))
-repmis::source_data("https://raw.githubusercontent.com/MarcellGranat/ujdemografiaiprogram/main/ujdemografiaiprogram.RData")
 ```
 
 ***
 
-Kézirat lezárásának dátuma: 2020. november 1.\
+Kézirat lezárásának dátuma: 2021. jnauár 3.\
 A tanulmány a 2020-as az Új jövőkép MNB Tanulmányi Verseny *Új Demográfiai Program* szekciójába készült, melyben Kiváló pályamű díjat nyert.
 
 A kézirat tartalmához fűzödő tudományos diszkusszió támogatása érdekében egy párbeszéd ablak került megnyitásra az anyagokat tartalmazó GitHub repository oldalán: https://github.com/MarcellGranat/ujdemografiaiprogram/discussions
@@ -41,7 +35,6 @@ text-align: justify;
 .author {
   font-size: 20px;
   text-align: center;
-  color: #4a4a4a
 } 
 .title {
   text-align: center;
