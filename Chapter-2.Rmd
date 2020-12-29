@@ -6,21 +6,49 @@ p {
 }
 ```
 
+Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már a megjelenésekor nagyon hamar ismertté vált a tény: **elsősorban az idősekre és krónikus betegre jelent kockázatot**. Ennek a ténynek empirikus teszteléséhez olyan adattáblára van szükségünk, melyben rögzítésre kerülnek a megfertőzöttek demográfiai adatai és az eset végső kimenete (ezt a fajta adattípust nevezik "line list"-nek). 
+
+  author =       {Open COVID-19 Data Working Group},
+  title =        {{Detailed Epidemiological Data from the COVID-19 Outbreak}},
+  howpublished = {Accessed on yyyy-mm-dd from
+                  \url{http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337}},
+  year =         2020
+}
+
 ## Adatok bemutatása
 
-Az egyik talán legfontosabb kérdés a járványügyben, hogy mennyire halálos a vírus. Már az első hírek köüz
+### Forrás
+
+A fentebb leírt célra lett létrehozva egy nyílt projekt^[Open COVID-19 Data Working Group, *Detailed Epidemiological Data from the COVID-19 Outbreak*, http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337,  letöltve: 2020.12.28.], amely során ezeket az adatokat több országra gyűjtik ki és teszi online elérhetővé.
 
 ```{r}
-cars %>% 
-  ggplot(aes(speed, dist)) +
-  geom_point() +
-  labs(title = 'Mintaábra')
+dat <- vroom::vroom('latestdata.csv')
 ```
 
+Az adattábla összesen `r nrow(dat)` megfigyelést tartalmaz 33 változóval. Azonban a változók jelentős része használhatatlan elemzésre és jelentős mértékben van szükség az adatok tisztítására is. Egyetlen példa említéseként a kimenetben nem egyszerűen *died* vagy *elhunyt* szerepelt, hanem annak számos szinonímája is, amelett, hogy sok esetben nincs elérhető adat.
+
 ```{r}
-cars %>% 
-  head %>% 
-  gt %>% 
-  tab_header(title = 'Minta táblázat')
+set.seed(1)
+dat %>% 
+  count(outcome) %>% 
+  na.omit() %>% 
+  {mutate(., s = runif(n = nrow(.)))} %>%
+  ggplot(aes(label = outcome, size = s)) +
+  geom_text_wordcloud(color =  'aquamarine4') +
+  scale_size_area(max_size = 10) +
+  labs(title = "Az nyers adattáblában a kimenet változó által felvett értékek") +
+  theme_minimal()
 ```
+
+### Adatok elemzéshez való előkészítése
+
+Az adatok megtiszítása előtt el kell döntenünk, hogy mely változókkal is érdemes foglalkozni, mivel sajnos számos változó esetében hiányzik rengeteg sor a táblában.
+
+```{r}
+dat %>% 
+  apply(2, function(x) sum(is.na(x))) %>% 
+  {data.frame(var = names(.), nobs = nrow(dat)-., robs = (nrow(dat)-.)/nrow(dat))}
+```
+
+
 
