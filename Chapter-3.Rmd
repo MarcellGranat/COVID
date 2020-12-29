@@ -49,7 +49,29 @@ for (i in 1:100) {
   data_raw <- rbind(data_raw, data.frame(time, title))  
  }
 }
+```
 
+
+```{r}
+
+str_c("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", 1:2) %>% 
+  lapply(function(URL) {
+  page <- read_html(URL)
+  title <- html_text(html_nodes(page, ".js-headline-text"))
+  time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
+  data.frame(time, title)
+  }) %>% 
+  reduce(rbind) %>% 
+  filter(!duplicated(title)) %>% 
+  {mutate(., id = seq(nrow(.)))} %>% 
+  mutate(
+    date = as.Date(time, format = "%d %m %Y"),
+    month = format(time, "%Y-%m")
+  )
+```
+
+
+```{r get_headlines}
 #Nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 #dataframebe, minden másodikat ki kellett törölni
  
