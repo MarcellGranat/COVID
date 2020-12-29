@@ -52,4 +52,64 @@ dat %>%
   tab_header(title = 'Adattáblában lévő hiánytalan megfigyelések aránya')
 ```
 
+Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: 
+ - életkor
+ - nem
+ - ország
+ - van-e krónikus betegsége
+ - fertőződöttség kimutatásának ideje
+ - földrajzi szélesség
+ - földrajzi hosszúság
+ - megbetegedés kimenete
+ 
+A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
+
+```{r}
+dat %>% 
+  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation) %>% 
+  mutate(
+    continent = countrycode::countrycode(country, origin = 'country.name', destination = 'continent'),
+    date = lubridate::dmy(date_confirmation),
+    age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
+  ) %>% 
+    mutate( # cleaning the depedent var
+    outcome = case_when(
+      outcome == 'death' ~ 'died',
+      outcome == 'died' ~ 'died', 
+      outcome == 'Death' ~ 'died',
+      outcome == 'dead' ~ 'died',
+      outcome == 'Dead' ~ 'died',
+      outcome == 'Died' ~ 'died',
+      outcome == 'Deceased' ~ 'died',
+      outcome == 'discharge' ~ 'survived',
+      outcome == 'discharged' ~ 'survived',
+      outcome == 'Discharged' ~ 'survived',
+      outcome == 'Discharged from hospital' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'released from quarantine' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      T ~ 'NA'
+    )
+  ) %>% 
+  filter(outcome != 'NA') %>% 
+  mutate(
+    died = outcome == 'died'
+  ) %>% select(-outcome, -date_confirmation) %>% 
+  {dat <<- .}
+```
+
+Az így kapott új adattáblában már csupán `r nrow(dat)` megfigyelés és `r ncol(dat)` változó szerepel.
+
+```{r}
+dat %>% 
+  head %>% 
+  gt %>% 
+  tab_header(title = 'Adattábla modellezésre előkészítve')
+```
+
+
+
 
