@@ -1,12 +1,12 @@
 ---
 title: "COVID"
-author: "Granát Marcell"
+author: "Granát Marcell & Mazzag Bálint"
 output: bookdown::gitbook
 site: bookdown::bookdown_site
 favicon: "logo.ico"
 ---
 
-# Absztrakt {#index}
+# Mi ez a projekt? {#index}
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = T, error = T)
@@ -20,14 +20,16 @@ theme_set(theme_grey() +
                   legend.key = element_blank()))
 ```
 
-***
+```{r echo = F}
+knitr::include_graphics('logo.png')
+```
 
-Kézirat lezárásának dátuma: 2021. jnauár 3.\
-A tanulmány a 2020-as az Új jövőkép MNB Tanulmányi Verseny *Új Demográfiai Program* szekciójába készült, melyben Kiváló pályamű díjat nyert.
 
-A kézirat tartalmához fűzödő tudományos diszkusszió támogatása érdekében egy párbeszéd ablak került megnyitásra az anyagokat tartalmazó GitHub repository oldalán: https://github.com/MarcellGranat/ujdemografiaiprogram/discussions
+A tanulmány a Budapesti Corvinus Egyetem Többváltozós adatelemzés tárgy keretében készült.\
+Kézirat lezárásának dátuma: 2021. január 3.\
+A kézirat tartalmához fűzödő tudományos diszkusszió támogatása érdekében egy párbeszéd ablak került megnyitásra az anyagokat tartalmazó GitHub repository oldalán: https://github.com/MarcellGranat/COVID/discussions
 
-***
+
 
 ```{css, echo=FALSE}
 p {
@@ -41,5 +43,3 @@ text-align: justify;
   text-align: center;
 }
 ```
-
-Tanulmányomban az egy főre eső GDP és munkanélküliség teljes termékenységi arányszámra gyakorolt hatását elemzem. A választott eszközök között szerepel az Engel-Granger kointegrációs teszt, amellyel megerősítettem a hipotézist, hogy szomszédos országok termékenységi rátájának alakulása általában nagyobb egyezőséget mutat, melynek magyarázata lehet a közös gazdasági környezet és kultúra. Második választott eszköz a vektor autoregresszív modellek készítése, melyekből levonható konklúzió, hogy a GDP/fő pozitívan, míg a munkanélküliségi ráta negatívan befolyásolja a termékenységi arányszámot, de kettő közül előbbi alakulása fontosabb. Harmadik eszközként panel modellt választottam a Magyarországi megyékre, mely tanulmányom fő hozzáadott értékét képviseli. Statisztikailag szignifikáns magyarázóváltozónak bizonyult GDP/fő, hatása egy évvel később érvényesül, továbbá határhatása csökkenő, és 7 340 000 Ft-ig növekvő. Ez alapján elmondható, hogy a termékenységi ráta növelése szempontjából a szegényebb régiók egy főre eső bruttó kibocsátásának növelése javasolt.

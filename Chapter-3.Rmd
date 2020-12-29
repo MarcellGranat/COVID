@@ -112,8 +112,14 @@ Sentiment elemzés
 #AFINN lexikon betöltése
 AFINN <- get_sentiments("afinn")
 
+data_cleansed <- data_cleansed %>% 
+  mutate(
+    title = as.character(title)
+  )
+
 #Szavakra bontás, pontszámok összeaggregálása
-words <- left_join(unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
+words <- left_join(
+  tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
 nr_sentiment_words <- words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
 score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 

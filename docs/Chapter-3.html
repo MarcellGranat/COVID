@@ -21,7 +21,7 @@
   
   
 
-<meta name="author" content="Granát Marcell" />
+<meta name="author" content="Granát Marcell &amp; Mazzag Bálint" />
 
 
 
@@ -131,7 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="logo.png" width="300" height="300">
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Absztrakt</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
 <li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
@@ -250,37 +250,36 @@ p {
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-3.html#cb12-1"></a><span class="co">#AFINN lexikon betöltése</span></span>
 <span id="cb12-2"><a href="Chapter-3.html#cb12-2"></a>AFINN &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>)</span>
 <span id="cb12-3"><a href="Chapter-3.html#cb12-3"></a></span>
-<span id="cb12-4"><a href="Chapter-3.html#cb12-4"></a><span class="co">#Szavakra bontás, pontszámok összeaggregálása</span></span>
-<span id="cb12-5"><a href="Chapter-3.html#cb12-5"></a>words &lt;-<span class="st"> </span><span class="kw">left_join</span>(<span class="kw">unnest_tokens</span>(data_cleansed, words, title), AFINN, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;words&quot;</span>=<span class="st">&quot;word&quot;</span>))</span></code></pre></div>
-<pre><code>Error in check_input(x): Input must be a character vector of any length or a list of character
-  vectors, each of which has a length of 1.</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-3.html#cb14-1"></a>nr_sentiment_words &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">non_na_count =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(value)))</span></code></pre></div>
-<pre><code>Error in UseMethod(&quot;group_by_&quot;): no applicable method for &#39;group_by_&#39; applied to an object of class &quot;function&quot;</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="Chapter-3.html#cb16-1"></a>score_by_id &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score=</span><span class="kw">sum</span>(value, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
-<pre><code>Error in UseMethod(&quot;group_by_&quot;): no applicable method for &#39;group_by_&#39; applied to an object of class &quot;function&quot;</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-3.html#cb18-1"></a><span class="co">#Eredeti adatok mellé rakás</span></span>
-<span id="cb18-2"><a href="Chapter-3.html#cb18-2"></a>data_cleansed &lt;-<span class="st"> </span><span class="kw">left_join</span>(data_cleansed, score_by_id, <span class="dt">by=</span><span class="st">&quot;id&quot;</span>)</span></code></pre></div>
-<pre><code>Error in is.data.frame(y): object &#39;score_by_id&#39; not found</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="Chapter-3.html#cb20-1"></a><span class="co">#Napi (és heti) aggregálás</span></span>
-<span id="cb20-2"><a href="Chapter-3.html#cb20-2"></a>score_by_day &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score_sum=</span><span class="kw">sum</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dt">score_avg=</span><span class="kw">mean</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
-<pre><code>Error: Problem with `summarise()` input `score_sum`.
-x object &#39;score&#39; not found
-i Input `score_sum` is `sum(score, na.rm = TRUE)`.
-i The error occured in group 1: date = 2020-10-14.</code></pre>
+<span id="cb12-4"><a href="Chapter-3.html#cb12-4"></a>data_cleansed &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-5"><a href="Chapter-3.html#cb12-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb12-6"><a href="Chapter-3.html#cb12-6"></a>    <span class="dt">title =</span> <span class="kw">as.character</span>(title)</span>
+<span id="cb12-7"><a href="Chapter-3.html#cb12-7"></a>  )</span>
+<span id="cb12-8"><a href="Chapter-3.html#cb12-8"></a></span>
+<span id="cb12-9"><a href="Chapter-3.html#cb12-9"></a><span class="co">#Szavakra bontás, pontszámok összeaggregálása</span></span>
+<span id="cb12-10"><a href="Chapter-3.html#cb12-10"></a>words &lt;-<span class="st"> </span><span class="kw">left_join</span>(</span>
+<span id="cb12-11"><a href="Chapter-3.html#cb12-11"></a>  tidytext<span class="op">::</span><span class="kw">unnest_tokens</span>(data_cleansed, words, title), AFINN, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;words&quot;</span>=<span class="st">&quot;word&quot;</span>))</span>
+<span id="cb12-12"><a href="Chapter-3.html#cb12-12"></a>nr_sentiment_words &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">non_na_count =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(value)))</span>
+<span id="cb12-13"><a href="Chapter-3.html#cb12-13"></a>score_by_id &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score=</span><span class="kw">sum</span>(value, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span>
+<span id="cb12-14"><a href="Chapter-3.html#cb12-14"></a></span>
+<span id="cb12-15"><a href="Chapter-3.html#cb12-15"></a><span class="co">#Eredeti adatok mellé rakás</span></span>
+<span id="cb12-16"><a href="Chapter-3.html#cb12-16"></a>data_cleansed &lt;-<span class="st"> </span><span class="kw">left_join</span>(data_cleansed, score_by_id, <span class="dt">by=</span><span class="st">&quot;id&quot;</span>)</span>
+<span id="cb12-17"><a href="Chapter-3.html#cb12-17"></a></span>
+<span id="cb12-18"><a href="Chapter-3.html#cb12-18"></a><span class="co">#Napi (és heti) aggregálás</span></span>
+<span id="cb12-19"><a href="Chapter-3.html#cb12-19"></a>score_by_day &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score_sum=</span><span class="kw">sum</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dt">score_avg=</span><span class="kw">mean</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
 <p>Ábrázolás</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter-3.html#cb22-1"></a>  <span class="kw">ggplot</span>(nr_sentiment_words, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
-<span id="cb22-2"><a href="Chapter-3.html#cb22-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>)<span class="op">+</span></span>
-<span id="cb22-3"><a href="Chapter-3.html#cb22-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;AFINN-ban szereplő szavak száma&quot;</span>) <span class="op">+</span></span>
-<span id="cb22-4"><a href="Chapter-3.html#cb22-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="dv">100</span>)<span class="op">+</span></span>
-<span id="cb22-5"><a href="Chapter-3.html#cb22-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
-<span id="cb22-6"><a href="Chapter-3.html#cb22-6"></a><span class="st">  </span><span class="kw">theme_ipsum</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-3.html#cb13-1"></a>  <span class="kw">ggplot</span>(nr_sentiment_words, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb13-2"><a href="Chapter-3.html#cb13-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>)<span class="op">+</span></span>
+<span id="cb13-3"><a href="Chapter-3.html#cb13-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;AFINN-ban szereplő szavak száma&quot;</span>) <span class="op">+</span></span>
+<span id="cb13-4"><a href="Chapter-3.html#cb13-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="dv">0</span>, <span class="dv">100</span>)<span class="op">+</span></span>
+<span id="cb13-5"><a href="Chapter-3.html#cb13-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
+<span id="cb13-6"><a href="Chapter-3.html#cb13-6"></a><span class="st">  </span><span class="kw">theme_ipsum</span>()</span></code></pre></div>
 <pre><code>Error in ggplot(nr_sentiment_words, aes(x = date)): object &#39;nr_sentiment_words&#39; not found</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter-3.html#cb24-1"></a>  <span class="kw">ggplot</span>(score_by_day, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
-<span id="cb24-2"><a href="Chapter-3.html#cb24-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb24-3"><a href="Chapter-3.html#cb24-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Átlagos napi érzelmi pontszám&quot;</span>) <span class="op">+</span></span>
-<span id="cb24-4"><a href="Chapter-3.html#cb24-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">+</span></span>
-<span id="cb24-5"><a href="Chapter-3.html#cb24-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
-<span id="cb24-6"><a href="Chapter-3.html#cb24-6"></a><span class="st">  </span><span class="kw">theme_ipsum</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-3.html#cb15-1"></a>  <span class="kw">ggplot</span>(score_by_day, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb15-2"><a href="Chapter-3.html#cb15-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="Chapter-3.html#cb15-3"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Átlagos napi érzelmi pontszám&quot;</span>) <span class="op">+</span></span>
+<span id="cb15-4"><a href="Chapter-3.html#cb15-4"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)<span class="op">+</span></span>
+<span id="cb15-5"><a href="Chapter-3.html#cb15-5"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
+<span id="cb15-6"><a href="Chapter-3.html#cb15-6"></a><span class="st">  </span><span class="kw">theme_ipsum</span>()</span></code></pre></div>
 <pre><code>Error in ggplot(score_by_day, aes(x = date)): object &#39;score_by_day&#39; not found</code></pre>
 
 </div>
