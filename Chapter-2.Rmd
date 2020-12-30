@@ -63,11 +63,13 @@ Az adatok hiányosságának és felhasználhatóságának figyelembevételével 
  
 A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
 
-```{r}
+```{r data-prep}
 dat %>% 
-  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation) %>% 
+  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude,
+         date_confirmation) %>% 
   mutate(
-    continent = countrycode::countrycode(country, origin = 'country.name', destination = 'continent'),
+    continent = countrycode::countrycode(country, origin = 'country.name',
+                                         destination = 'continent'),
     date = lubridate::dmy(date_confirmation),
     age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
   ) %>% 
@@ -156,7 +158,7 @@ Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrés
 
 A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).
 
-```{r}
+```{r add india}
 dat %>% 
   mutate(
     india = country == 'India'
@@ -167,11 +169,12 @@ dat %>%
 
 ```{r}
 dat %>% 
+  head() %>% 
   gt %>% 
   tab_header(title = 'Végső adattábla modellezéshez')
 ```
 
-```{r fig.height=2}
+```{r rpart1, fig.height=2}
 dat %>% 
   rpart::rpart(formula = died ~ ., cp = .01) %>% 
   rattle::fancyRpartPlot(palettes = 'OrRd',

@@ -52,7 +52,8 @@ for (i in 1:528) {
 
 Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 dataframebe, minden másodikat ki kellett törölni
-```{r get_headlines}
+
+```{r}
 data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
   mutate(
     date = as.Date(time, format = "%d %B %Y"),
