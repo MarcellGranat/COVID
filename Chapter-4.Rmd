@@ -1,4 +1,4 @@
-# A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
+# Szövegelemzés {#Chapter-4}
 
 ```{css, echo=FALSE}
 p {
@@ -8,11 +8,8 @@ p {
 
 
 ```{r include=FALSE}
-Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
-library(DT)
-library(colorspace)
 library(textdata)
 #Szózsák-modell
 library(tm)
@@ -21,6 +18,9 @@ library(wordcloud)
 #Adatok transzformációja és vizualizációja
 #library(dplyr)
 #library(ggplot2)
+library(readr)
+library(DT)
+library(colorspace)
 library(ggwordcloud)
 library(plotly)
 library(gifski)
@@ -28,13 +28,26 @@ library(gifski)
 #Webes adatgyűjtés
 library(tools)
 library(rvest)
+
+Sys.setlocale("LC_TIME", "C")
 ```
 
-Guardian headlineok
+## Elemzés
+A koronavírus eseményei és a vele kapcsolatos hírek megmutatják, hogy az emberek
+és a különböző médiumok hogyan viszonyulnak a pandémiához az idő elteltével.
+Ezen elemzéshez a **Guardian napilap COVID-19-el kapcsolatos címeit gyűjtöttük össze**.
+A körülbelül egy év szalagcímeit felölelő korpuszon bag of Words módszerrel a 
+havonta és az egy év során leggyakoribb szavakat kerestük meg, sentiment analízissel
+pedig az AFINN szótár érzelmi skálája segítségével elemeztük a napi hírek korpuszait.
 
-```{r get_headlines}
+
+
+```{r get_headlines, warning=FALSE}
+
+nr_of_pages=528
+
 #521-ig lehetett visszamenni a keresésben
-for (i in 1:528) {
+for (i in 1:nr_of_pages) {
   URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
   page <- read_html(URL)
   title <- html_text(html_nodes(page, ".js-headline-text"))
@@ -49,6 +62,18 @@ for (i in 1:528) {
 }
 ```
 
+A Guardian honlapján a COVID keresőszóra nagyjából január 29-től kezdődően nagyjából 
+`r nr_of_pages*20` cikk címet találtunk
+
+```{r cleanse_headlines, warning=FALSE, message = FALSE}
+
+data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
+  mutate(
+    date = as.Date(time, format = "%d %B %Y"),
+    month = format(date, "%Y-%m")
+  ) %>% na.omit()
+```
+
 
 Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 dataframebe, minden másodikat ki kellett törölni
@@ -61,19 +86,21 @@ data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq
   ) %>% na.omit()
 ```
 
-Bag of words módszerhez a lescrape-elt címekből korpuszt készítettünk
-```{r create_bagofwords}
+### Bag of Words
+
+```{r create_bagofwords, warning=FALSE}
 corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
 
 #Korpusz tisztítása
 corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% 
   tm_map(stripWhitespace) %>%  tm_map(removeNumbers) %>%
   tm_map(removePunctuation, ucp=TRUE) %>%
-  tm_map(removeWords, c(stopwords("english"), "also", "one"))
+  tm_map(removeWords, c(stopwords("english"), "also", "one", "will"))
 ```
 
-Strukturált mátrix és a fogalmak eloszlása a teljes korpuszban
-```{r basic_matrices}
+A korpusz szokásos tisztítása közben voltak olyan stopwordok, amelyeket mi adtunk hozzá,
+majd a strukturált mátrix és a fogalmak eloszlását vizsgáltuk a teljes korpuszban
+```{r basic_matrices, warning=FALSE}
 termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
 documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
 words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
@@ -82,9 +109,10 @@ words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
 freqterms <- findFreqTerms(documentterm, lowfreq = 100)
 ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
 ```
+A havonta leggyakoribb szavakat vizsgáltuk egy ciklusban, amely a havi korpuszokat
+megtisztítja és elemzi
 
-Havonta elemzés
-```{r monthly_analysis_and_wordclouds, animation.hook="gifski"}
+```{r monthly_analysis_and_wordclouds, animation.hook="gifski", warning=FALSE}
 data_cleansed_monthly <- data_cleansed %>% group_by(month) %>%
   summarise(monthly_text = paste(title, collapse = " "))
 
@@ -101,7 +129,7 @@ for (i in 1:nrow(data_cleansed_monthly)){
     tm_map(content_transformer(tolower)) %>% 
     tm_map(removePunctuation, ucp=TRUE) %>% 
     tm_map(removeNumbers)  %>% 
-    tm_map(removeWords, c(stopwords("english"), "also", "one"))
+    tm_map(removeWords, c(stopwords("english"), "also", "one", "will"))
   #%>% tm_map(stemDocument)
   
   #Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt
@@ -116,19 +144,32 @@ for (i in 1:nrow(data_cleansed_monthly)){
          ggtitle(data_cleansed_monthly$month[i]))
   #wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
 }
+```
 
+**A havonta 15 leggyakoribb szó a Guardian címeiben.**\
+Színekkel a teljes korpusz leggyakoribb szavait jelöltük
+
+```{r monthly_analysis_tables, echo=FALSE, warning=FALSE, fig.height=9}
 #A globálisan leggyakoribb szavakat kiszíneztük havonta is
 color_freq_terms <- data.frame(words = head(words_frequency_all[order(-words_frequency_all$Freq),]$Words,15), 
                                colors=sequential_hcl(15, palette = "OrYel"))
 
-datatable(words_monthly) %>% formatStyle(names(words_monthly), font="bold", background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
+datatable(words_monthly, filter = "none", options = list(pageLength=15, scrollX='400px', dom = 't'), fillContainer = TRUE) %>% formatStyle(names(words_monthly), font="bold", fontSize = '9.5pt', background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
 ```
 
+A táblázatból az alábbi információk olvashatóak le:\
+-**a január-februári időszakban az Egyesült Királysággal még kevésbé foglalkoztak a cikkek**\
+-**a következő időszakban Nagy-Britannia miniszterelnöke és az ott bevezetett tier alapú módszer külcsszavai is előkerültek**\
+-**a karácsonyi lezárások már novemberben is közbeszéd alapja voltak**
+-**a kezdeti 'coronavirus' kifejezésről fokozatosan állt át a Guardian az egyszerűbb, COVID betűszóra**\
 
-Sentiment elemzés
-```{r sentiment_analysis}
 
 
+### Sentiment elemzés
+
+A sentiment elemzésben a napi címekből, az AFINN szótár érzelmi skálájának felhasználásával készült\
+A grafikonokon pedig az érzelmet tartalmazó szavak számát és a napi átlagokat ábrázoltuk
+```{r sentiment_analysis, warning=FALSE, message = FALSE}
 #AFINN lexikon betöltése
 AFINN <- get_sentiments("afinn")
 
@@ -137,13 +178,12 @@ data_cleansed <- data_cleansed %>%
     title = as.character(title)
   )
 
+
 #Szavakra bontás, pontszámok összeaggregálása
 words <- left_join(
   tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
-  
 nr_sentiment_words <- 
   words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
-
 score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 
 #Eredeti adatok mellé rakás
@@ -154,19 +194,45 @@ score_by_day <-
   data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
 
 ```
-Ábrázolás
-```{r plotting_sentiments}
-ggplot(nr_sentiment_words, aes(x=date)) +
-  geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
-  xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
-  ylim(0, 100)+
-  geom_hline(yintercept=0, color="black", size=.75)
 
+
+**Grafikonok**
+```{r plotting_sentiments, warning=FALSE}
+deaths_in_uk <- read_csv("data_2020-Dec-29.csv", 
+    col_types = cols_only(date = col_guess(), 
+        newDeaths28DaysByDeathDate = col_guess()))
+
+nr_sentiment_words <- merge(nr_sentiment_words, deaths_in_uk, by="date")
+
+coeff=10
+
+ggplot(nr_sentiment_words, aes(x=date)) +
+  geom_line(aes(y=non_na_count), size=.5, color="#0fad04")+
+  geom_bar(aes(y = newDeaths28DaysByDeathDate/coeff), stat="identity", size=.1, fill="steelblue", alpha=.4) +
+  geom_smooth(aes(y=non_na_count), method="loess", colour="#0fad04", alpha=0.2) +
+  geom_hline(yintercept=0, color="black", size=.75) +
+  xlab("Dátum") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%Y %m") +
+  scale_y_continuous(
+    name = "Érzelmi szavak száma naponta",
+    sec.axis = sec_axis(~.*coeff, name="Napi halálozások száma")
+  )
 
 ggplot(score_by_day, aes(x=date)) +
-  geom_line( aes(y=score_avg), color="#0fad04") + 
-  xlab("Dátum") + ylab("Átlagos napi érzelmi pontszám") +
-  ylim(-5, 5)+
-  geom_hline(yintercept=0, color="black", size=.75)
+  geom_line( aes(y=score_avg), color="#0fad04") +
+  geom_smooth(aes(y=score_avg), method="loess", colour="#0fad04", alpha=0.2) +
+  geom_hline(yintercept=0, color="black", size=.75) +
+  xlab("Dátum")  +
+  ylab("Átlagos napi érzelmi pontszám") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%Y %m") +
+  ylim(-2.5, 2.5)
 ```
+
+
+A grafikonokról el lehet mondani, hogy az érzelemmel töltött szavak száma áprilisban tetőzött.\
+A brit kormány ekkor kezdte el bevezetni a szigorúbb intézkedéseit, Európában az egyik legutolsóként, a halottak száma pedig . Ez a tény pedig
+az erősen liberális Guardian lapnál valószínűleg erős érzelmeket válthatott ki.
+
+Az átlagos érzelmi töltet ugyanakkor viszonylag stabilan növekedik, amely a vakcina megjelenésének
+és az emberek vírushoz való hozzászokásának lehet köszönhető.
 
