@@ -183,4 +183,27 @@ dat %>%
                          sub = 'cp = .01', main = '1. döntési fa') 
 ```
 
+```{r rpart2, fig.height=4}
+dat %>% 
+  rpart::rpart(formula = died ~ ., cp = .003) %>% # TODO tune cp
+  rattle::fancyRpartPlot(palettes = 'OrRd',
+                         sub = 'cp = .003', main = '1. döntési fa') 
+```
+
+```{r}
+dat %>% 
+  group_by(age) %>% 
+  summarise(deathr = mean(died)) %>% 
+  ggplot(aes(age, deathr)) + 
+  geom_point(shape = 21, fill = 'coral', alpha = .7, color = 'black') +
+  geom_smooth() +
+  labs(title = 'Az életkor és a halálozási ráta között összefüggés', x = 'életkor', y = 'halálozási ráta')
+```
+
+```{r}
+dat %>% 
+  mutate(
+    date = as.numeric(difftime(date, lubridate::dmy("01/01/2020"), units = 'days'))
+  )
+```
 

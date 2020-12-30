@@ -1,4 +1,4 @@
-# Logit-modell {#Chapter-4}
+# Logit-modell {#Chapter-3}
 
 ```{css, echo=FALSE}
 p {
