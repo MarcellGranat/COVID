@@ -174,11 +174,13 @@ dat %>%
   tab_header(title = 'Végső adattábla modellezéshez')
 ```
 
-```{r rpart1, fig.height=2}
+## Modellbecslés
+
+```{r rpart1, fig.height=4}
 dat %>% 
-  rpart::rpart(formula = died ~ ., cp = .01) %>% 
+  rpart::rpart(formula = died ~ ., cp = .01) %>% # TODO tune cp
   rattle::fancyRpartPlot(palettes = 'OrRd',
-                         sub = 'cp = .01', main = '1. döntési fa')
+                         sub = 'cp = .01', main = '1. döntési fa') 
 ```
 
 

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Logit-modell | COVID</title>
+  <meta name="description" content="Logit-modell | COVID" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Logit-modell | COVID" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Logit-modell | COVID" />
+  
+  
+  
+
+<meta name="author" content="Granát Marcell &amp; Mazzag Bálint" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
+<link rel="prev" href="Chapter-2.html"/>
+<link rel="next" href="Chapter-3.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<img src="logo.png" width="300" height="300">
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
+<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-elemzéshez-való-előkészítése"><i class="fa fa-check"></i>Adatok elemzéshez való előkészítése</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#modellbecslés"><i class="fa fa-check"></i>Modellbecslés</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#változók-parciális-hatása-a-halálozási-valószínűségre"><i class="fa fa-check"></i>Változók parciális hatása a halálozási valószínűségre</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#logit-modell-kalibrálása-az-összes-tisztított-és-korábban-bemutatott-változóra"><i class="fa fa-check"></i>Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#outlierek-és-vif-mutató-alapján"><i class="fa fa-check"></i>Outlierek és VIF mutató alapján</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">COVID</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Chapter-4" class="section level1">
+<h1>Logit-modell</h1>
+<style type="text/css">
+p {
+  text-align: justify;
+}
+</style>
+<div id="változók-parciális-hatása-a-halálozási-valószínűségre" class="section level2">
+<h2>Változók parciális hatása a halálozási valószínűségre</h2>
+<p>Egyesével regresszálva a változókat az alábbi grafikonokat kapjuk</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-4.html#cb12-1"></a>logit_age &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age, <span class="dt">data=</span>dat, <span class="dt">family =</span> <span class="kw">binomial</span>(logit))</span>
+<span id="cb12-2"><a href="Chapter-4.html#cb12-2"></a><span class="kw">summary</span>(logit_age)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ age, family = binomial(logit), data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.0456  -0.6758  -0.3856  -0.1311   3.1082  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -4.822445   0.138130  -34.91   &lt;2e-16 ***
+age          0.070655   0.002361   29.93   &lt;2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 6004.7  on 5376  degrees of freedom
+Residual deviance: 4757.2  on 5375  degrees of freedom
+AIC: 4761.2
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+<div id="logit-modell-kalibrálása-az-összes-tisztított-és-korábban-bemutatott-változóra" class="section level2">
+<h2>Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra</h2>
+<div id="outlierek-és-vif-mutató-alapján" class="section level3">
+<h3>Outlierek és VIF mutató alapján</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-4.html#cb14-1"></a><span class="co">#Országok szintjén magas VIF mutató látható</span></span>
+<span id="cb14-2"><a href="Chapter-4.html#cb14-2"></a>logit &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>., <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb14-3"><a href="Chapter-4.html#cb14-3"></a><span class="kw">summary</span>(logit)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ ., family = binomial(logit), data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.3169  -0.5631  -0.2986   0.0000   3.3579  
+
+Coefficients: (4 not defined because of singularities)
+                             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -5.597e+02  4.593e+01 -12.185  &lt; 2e-16 ***
+age                         7.284e-02  2.721e-03  26.774  &lt; 2e-16 ***
+sexmale                     4.058e-01  8.495e-02   4.777 1.78e-06 ***
+countryAustralia            3.608e+00  3.265e+00   1.105   0.2691    
+countryBahamas              1.372e+01  3.956e+03   0.003   0.9972    
+countryBrazil              -1.936e+01  1.836e+03  -0.011   0.9916    
+countryBurkina Faso         1.666e+01  3.956e+03   0.004   0.9966    
+countryCabo Verde           1.536e+01  3.956e+03   0.004   0.9969    
+countryCameroon             1.732e+01  3.956e+03   0.004   0.9965    
+countryCanada              -6.502e+00  2.725e+00  -2.386   0.0170 *  
+countryChina                4.793e+00  2.566e+00   1.868   0.0618 .  
+countryCuba                 1.421e+01  3.956e+03   0.004   0.9971    
+countryEswatini            -1.500e+01  3.956e+03  -0.004   0.9970    
+countryEthiopia             1.782e+01  3.956e+03   0.005   0.9964    
+countryFrance               5.098e-01  2.017e+00   0.253   0.8004    
+countryGabon                1.757e+01  3.956e+03   0.004   0.9965    
+countryGambia              -4.257e+00  2.112e+00  -2.015   0.0439 *  
+countryGermany             -1.785e+01  3.956e+03  -0.005   0.9964    
+countryGuyana               1.207e+01  2.797e+03   0.004   0.9966    
+countryIndia                2.990e+00  1.835e+00   1.630   0.1031    
+countryItaly                1.846e+00  1.822e+00   1.013   0.3111    
+countryJapan                6.014e+00  3.449e+00   1.743   0.0813 .  
+countryMalaysia            -1.207e+01  1.300e+03  -0.009   0.9926    
+countryNepal               -1.151e+01  2.797e+03  -0.004   0.9967    
+countryNiger                1.615e+01  3.956e+03   0.004   0.9967    
+countryPhilippines          2.101e+00  2.712e+00   0.775   0.4383    
+countryRomania             -1.505e+01  1.287e+03  -0.012   0.9907    
+countrySan Marino           1.560e+01  3.956e+03   0.004   0.9969    
+countrySingapore           -1.237e+01  3.310e+02  -0.037   0.9702    
+countrySouth Korea         -1.061e+01  7.347e+02  -0.014   0.9885    
+countrySudan                1.866e+01  3.956e+03   0.005   0.9962    
+countrySwitzerland         -1.633e+01  2.673e+03  -0.006   0.9951    
+countryTanzania            -1.574e+01  3.956e+03  -0.004   0.9968    
+countryTogo                -1.656e+01  3.956e+03  -0.004   0.9967    
+countryUnited States       -3.085e+00  2.805e+00  -1.100   0.2714    
+countryVietnam             -1.432e+01  5.579e+02  -0.026   0.9795    
+countryZimbabwe             1.765e+00  2.132e+00   0.828   0.4079    
+chronic_disease_binaryTRUE  3.231e+00  3.292e-01   9.815  &lt; 2e-16 ***
+latitude                   -2.284e-03  1.658e-02  -0.138   0.8904    
+longitude                  -4.044e-02  2.264e-02  -1.786   0.0741 .  
+continentAmericas                  NA         NA      NA       NA    
+continentAsia                      NA         NA      NA       NA    
+continentEurope                    NA         NA      NA       NA    
+continentOceania                   NA         NA      NA       NA    
+date                        3.032e-02  2.503e-03  12.115  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 6004.7  on 5376  degrees of freedom
+Residual deviance: 3754.8  on 5336  degrees of freedom
+AIC: 3836.8
+
+Number of Fisher Scoring iterations: 16</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="Chapter-4.html#cb16-1"></a><span class="kw">vif</span>(logit)</span></code></pre></div>
+<pre><code>                       age                    sexmale 
+                  1.085588                   1.025914 
+          countryAustralia             countryBahamas 
+                       Inf                        Inf 
+             countryBrazil        countryBurkina Faso 
+                       Inf                   1.167971 
+         countryCabo Verde            countryCameroon 
+                  1.216675                   1.170973 
+             countryCanada               countryChina 
+                       Inf                        Inf 
+               countryCuba            countryEswatini 
+                       Inf                   1.249802 
+           countryEthiopia              countryFrance 
+                  1.198986                        Inf 
+              countryGabon              countryGambia 
+                  1.183163                   2.004172 
+            countryGermany              countryGuyana 
+                       Inf                        Inf 
+              countryIndia               countryItaly 
+                       Inf                        Inf 
+              countryJapan            countryMalaysia 
+                       Inf                        Inf 
+              countryNepal               countryNiger 
+                       Inf                   1.161126 
+        countryPhilippines             countryRomania 
+                       Inf                        Inf 
+         countrySan Marino           countrySingapore 
+                       Inf                        Inf 
+        countrySouth Korea               countrySudan 
+                       Inf                   1.181147 
+        countrySwitzerland            countryTanzania 
+                       Inf                   1.205269 
+               countryTogo       countryUnited States 
+                  1.176805                        Inf 
+            countryVietnam            countryZimbabwe 
+                       Inf                   1.448560 
+chronic_disease_binaryTRUE                   latitude 
+                  1.133290                   7.748399 
+                 longitude          continentAmericas 
+                238.200123                        Inf 
+             continentAsia            continentEurope 
+                       Inf                        Inf 
+          continentOceania                       date 
+                       Inf                   2.137974 </code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-4.html#cb18-1"></a><span class="co">#Outlierek leszűrése</span></span>
+<span id="cb18-2"><a href="Chapter-4.html#cb18-2"></a>dat &lt;-<span class="st"> </span>dat[<span class="kw">abs</span>(<span class="kw">rstudent</span>(logit))<span class="op">&lt;</span><span class="dv">3</span>, ]</span>
+<span id="cb18-3"><a href="Chapter-4.html#cb18-3"></a></span>
+<span id="cb18-4"><a href="Chapter-4.html#cb18-4"></a><span class="co">#Országok kihagyásával mérséklődik a VIF mutató</span></span>
+<span id="cb18-5"><a href="Chapter-4.html#cb18-5"></a>logit2 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>longitude <span class="op">-</span>latitude, <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb18-6"><a href="Chapter-4.html#cb18-6"></a><span class="kw">summary</span>(logit2)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ . - country - longitude - latitude, family = binomial(logit), 
+    data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.3750  -0.6113  -0.3195  -0.0667   3.3074  
+
+Coefficients:
+                             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -6.836e+02  4.083e+01 -16.743  &lt; 2e-16 ***
+age                         7.786e-02  2.677e-03  29.085  &lt; 2e-16 ***
+sexmale                     4.658e-01  7.954e-02   5.856 4.74e-09 ***
+chronic_disease_binaryTRUE  2.981e+00  3.085e-01   9.661  &lt; 2e-16 ***
+continentAmericas           1.116e+00  8.223e-01   1.357  0.17487    
+continentAsia              -1.931e+00  7.074e-01  -2.729  0.00635 ** 
+continentEurope             4.161e-01  9.988e-01   0.417  0.67696    
+continentOceania           -1.424e+00  1.197e+00  -1.189  0.23427    
+date                        3.702e-02  2.224e-03  16.643  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5936.6  on 5347  degrees of freedom
+Residual deviance: 4158.6  on 5339  degrees of freedom
+  (13 observations deleted due to missingness)
+AIC: 4176.6
+
+Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="Chapter-4.html#cb20-1"></a><span class="kw">vif</span>(logit2)</span></code></pre></div>
+<pre><code>                       age                    sexmale 
+                  1.043362                   1.007774 
+chronic_disease_binaryTRUE          continentAmericas 
+                  1.063105                   4.677268 
+             continentAsia            continentEurope 
+                  7.688847                   2.356878 
+          continentOceania                       date 
+                  2.717010                   1.135966 </code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter-4.html#cb22-1"></a><span class="co">#Amerikát összevonva Ázsiával a VIF mutatók lecsökkennek</span></span>
+<span id="cb22-2"><a href="Chapter-4.html#cb22-2"></a>dat &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dat)</span>
+<span id="cb22-3"><a href="Chapter-4.html#cb22-3"></a>dat[dat<span class="op">$</span>continent<span class="op">==</span><span class="st">&quot;Americas&quot;</span>, <span class="st">&quot;continent&quot;</span>] &lt;-<span class="st"> &quot;Asia&quot;</span></span>
+<span id="cb22-4"><a href="Chapter-4.html#cb22-4"></a></span>
+<span id="cb22-5"><a href="Chapter-4.html#cb22-5"></a>logit3 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>longitude <span class="op">-</span>latitude, <span class="dt">data=</span>dat, </span>
+<span id="cb22-6"><a href="Chapter-4.html#cb22-6"></a>             <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb22-7"><a href="Chapter-4.html#cb22-7"></a><span class="kw">summary</span>(logit3)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ . - country - longitude - latitude, family = binomial(logit), 
+    data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.3229  -0.6220  -0.3234  -0.0779   3.2986  
+
+Coefficients:
+                             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -5.997e+02  3.859e+01 -15.540  &lt; 2e-16 ***
+age                         7.906e-02  2.658e-03  29.740  &lt; 2e-16 ***
+sexmale                     4.649e-01  7.863e-02   5.912 3.37e-09 ***
+chronic_disease_binaryTRUE  2.929e+00  3.093e-01   9.472  &lt; 2e-16 ***
+continentAsia              -1.737e+00  7.107e-01  -2.445   0.0145 *  
+continentEurope             3.201e-01  1.007e+00   0.318   0.7507    
+continentOceania           -1.546e+00  1.194e+00  -1.295   0.1954    
+date                        3.244e-02  2.102e-03  15.432  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5936.6  on 5347  degrees of freedom
+Residual deviance: 4227.6  on 5340  degrees of freedom
+AIC: 4243.6
+
+Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter-4.html#cb24-1"></a><span class="kw">vif</span>(logit3)</span></code></pre></div>
+<pre><code>                       age                    sexmale 
+                  1.028043                   1.007773 
+chronic_disease_binaryTRUE              continentAsia 
+                  1.062988                   4.058929 
+           continentEurope           continentOceania 
+                  2.356839                   2.716772 
+                      date 
+                  1.097746 </code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="Chapter-4.html#cb26-1"></a><span class="co">#Sajnos még nem lineáris a modellünk, a változókat át kell alakítani</span></span>
+<span id="cb26-2"><a href="Chapter-4.html#cb26-2"></a><span class="kw">resettest</span>(logit3)</span></code></pre></div>
+<pre><code>
+    RESET test
+
+data:  logit3
+RESET = 123.11, df1 = 2, df2 = 5338, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="Chapter-4.html#cb28-1"></a><span class="kw">crPlots</span>(logit3)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="nemlinearitás-vizsgálata-a-reset-teszttel" class="section level3">
+<h3>Nemlinearitás vizsgálata a RESET-teszttel</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="Chapter-4.html#cb29-1"></a><span class="co">#Először a dátumot vesszük ki a magyarázóváltozók közül, mivel az értelmezése nehézkes,</span></span>
+<span id="cb29-2"><a href="Chapter-4.html#cb29-2"></a><span class="co">#majd az életkor változóját alakítjuk át a linearitás eléréséhez</span></span>
+<span id="cb29-3"><a href="Chapter-4.html#cb29-3"></a>logit4 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude <span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>(<span class="fl">0.1</span><span class="op">+</span>age)), </span>
+<span id="cb29-4"><a href="Chapter-4.html#cb29-4"></a>              <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb29-5"><a href="Chapter-4.html#cb29-5"></a><span class="kw">summary</span>(logit4)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ . - country - date - latitude - longitude + 
+    I(1/(0.1 + age)), family = binomial(logit), data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1856  -0.6591  -0.3652  -0.1435   3.0292  
+
+Coefficients:
+                            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -4.621513   0.704158  -6.563 5.27e-11 ***
+age                         0.074179   0.002508  29.580  &lt; 2e-16 ***
+sexmale                     0.447841   0.076053   5.889 3.90e-09 ***
+chronic_disease_binaryTRUE  1.778913   0.284114   6.261 3.82e-10 ***
+continentAsia              -0.733078   0.687754  -1.066 0.286468    
+continentEurope            -0.417980   0.991142  -0.422 0.673232    
+continentOceania           -2.311118   1.095266  -2.110 0.034850 *  
+I(1/(0.1 + age))            0.352330   0.091441   3.853 0.000117 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5936.6  on 5347  degrees of freedom
+Residual deviance: 4495.6  on 5340  degrees of freedom
+AIC: 4511.6
+
+Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="Chapter-4.html#cb31-1"></a><span class="kw">vif</span>(logit4)</span></code></pre></div>
+<pre><code>                       age                    sexmale 
+                  1.056523                   1.007713 
+chronic_disease_binaryTRUE              continentAsia 
+                  1.025718                   4.042502 
+           continentEurope           continentOceania 
+                  2.352099                   2.704910 
+          I(1/(0.1 + age)) 
+                  1.028043 </code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="Chapter-4.html#cb33-1"></a><span class="kw">resettest</span>(logit4)</span></code></pre></div>
+<pre><code>
+    RESET test
+
+data:  logit4
+RESET = 75.368, df1 = 2, df2 = 5338, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="Chapter-4.html#cb35-1"></a><span class="kw">crPlots</span>(logit4)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="Chapter-4.html#cb36-1"></a>logit5 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>age <span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>(<span class="fl">0.1</span><span class="op">+</span>age)) <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude, <span class="dt">data=</span>dat, </span>
+<span id="cb36-2"><a href="Chapter-4.html#cb36-2"></a>              <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb36-3"><a href="Chapter-4.html#cb36-3"></a><span class="kw">summary</span>(logit5)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ . - country - age + I(1/(0.1 + age)) - date - 
+    latitude - longitude, family = binomial(logit), data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.9112  -0.7956  -0.6485  -0.5462   3.3660  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -0.37968    0.55595  -0.683   0.4946    
+sexmale                     0.46798    0.06653   7.035    2e-12 ***
+chronic_disease_binaryTRUE  2.63226    0.26352   9.989   &lt;2e-16 ***
+continentAsia              -1.06407    0.55564  -1.915   0.0555 .  
+continentEurope            -0.96595    0.76258  -1.267   0.2053    
+continentOceania           -2.18141    0.92486  -2.359   0.0183 *  
+I(1/(0.1 + age))           -0.42176    0.34692  -1.216   0.2241    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5936.6  on 5347  degrees of freedom
+Residual deviance: 5722.7  on 5341  degrees of freedom
+AIC: 5736.7
+
+Number of Fisher Scoring iterations: 6</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="Chapter-4.html#cb38-1"></a><span class="kw">vif</span>(logit5)</span></code></pre></div>
+<pre><code>                   sexmale chronic_disease_binaryTRUE 
+                  1.003989                   1.003505 
+             continentAsia            continentEurope 
+                  4.040352                   2.349987 
+          continentOceania           I(1/(0.1 + age)) 
+                  2.704254                   1.000201 </code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="Chapter-4.html#cb40-1"></a><span class="kw">resettest</span>(logit5)</span></code></pre></div>
+<pre><code>
+    RESET test
+
+data:  logit5
+RESET = 2.497, df1 = 2, df2 = 5339, p-value = 0.08243</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="Chapter-4.html#cb42-1"></a><span class="co">#Elhagyható a magyarázóváltozók közül szinte az összes</span></span>
+<span id="cb42-2"><a href="Chapter-4.html#cb42-2"></a><span class="kw">linearHypothesis</span>(logit5, <span class="kw">c</span>(<span class="st">&quot;I(1/(0.1 + age))=0&quot;</span>, <span class="st">&quot;continentEurope=0&quot;</span>, <span class="st">&quot;continentAsia=0&quot;</span>, <span class="st">&quot;continentOceania=0&quot;</span>))</span></code></pre></div>
+<pre><code>Linear hypothesis test
+
+Hypothesis:
+I(1/(0.1  + age)) = 0
+continentEurope = 0
+continentAsia = 0
+continentOceania = 0
+
+Model 1: restricted model
+Model 2: died ~ (age + sex + country + chronic_disease_binary + latitude + 
+    longitude + continent + date) - country - age + I(1/(0.1 + 
+    age)) - date - latitude - longitude
+
+  Res.Df Df  Chisq Pr(&gt;Chisq)
+1   5345                     
+2   5341  4 7.4952     0.1119</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="Chapter-4.html#cb44-1"></a>logit6 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>continent <span class="op">-</span>age <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude, <span class="dt">data=</span>dat, </span>
+<span id="cb44-2"><a href="Chapter-4.html#cb44-2"></a>              <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb44-3"><a href="Chapter-4.html#cb44-3"></a><span class="kw">summary</span>(logit6)</span></code></pre></div>
+<pre><code>
+Call:
+glm(formula = died ~ . - country - continent - age - date - latitude - 
+    longitude, family = binomial(logit), data = dat)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.9143  -0.7952  -0.6461  -0.6461   1.8272  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                -1.46064    0.05146 -28.385  &lt; 2e-16 ***
+sexmale                     0.47137    0.06644   7.094  1.3e-12 ***
+chronic_disease_binaryTRUE  2.64704    0.26334  10.052  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5936.6  on 5347  degrees of freedom
+Residual deviance: 5734.4  on 5345  degrees of freedom
+AIC: 5740.4
+
+Number of Fisher Scoring iterations: 4</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="Chapter-4.html#cb46-1"></a><span class="kw">resettest</span>(logit6)</span></code></pre></div>
+<pre><code>
+    RESET test
+
+data:  logit6
+RESET = 0.9037, df1 = 2, df2 = 5343, p-value = 0.4051</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="Chapter-4.html#cb48-1"></a><span class="co">#Az együtthatók jelentése</span></span>
+<span id="cb48-2"><a href="Chapter-4.html#cb48-2"></a><span class="kw">exp</span>(<span class="kw">coef</span>(logit6))</span></code></pre></div>
+<pre><code>               (Intercept)                    sexmale 
+                 0.2320868                  1.6021878 
+chronic_disease_binaryTRUE 
+                14.1121469 </code></pre>
+</div>
+<div id="előrejelzés-a-kiválasztott-modellel" class="section level3">
+<h3>Előrejelzés a kiválasztott modellel</h3>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="Chapter-4.html#cb50-1"></a>deathval &lt;-<span class="st"> </span><span class="kw">predict</span>(logit6, dat, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</span>
+<span id="cb50-2"><a href="Chapter-4.html#cb50-2"></a>dat<span class="op">$</span>deathval &lt;-<span class="st"> </span>deathval</span>
+<span id="cb50-3"><a href="Chapter-4.html#cb50-3"></a>dat<span class="op">$</span>becsult &lt;-<span class="st"> </span><span class="kw">ifelse</span>(deathval<span class="op">&gt;</span><span class="fl">0.5</span>, <span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)</span>
+<span id="cb50-4"><a href="Chapter-4.html#cb50-4"></a><span class="kw">xtabs</span>(<span class="op">~</span>died<span class="op">+</span>becsult, <span class="dt">data=</span>dat)</span></code></pre></div>
+<pre><code>       becsult
+died    FALSE TRUE
+  FALSE  4028   18
+  TRUE   1220   82</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="Chapter-4.html#cb52-1"></a><span class="co">#A modell 77%-ban helyes eredményt ad</span></span>
+<span id="cb52-2"><a href="Chapter-4.html#cb52-2"></a><span class="kw">sum</span>(dat<span class="op">$</span>died<span class="op">==</span>dat<span class="op">$</span>becsult)<span class="op">/</span><span class="kw">nrow</span>(dat)</span></code></pre></div>
+<pre><code>[1] 0.7685116</code></pre>
+<p>Optimális cut-off érték kiválasztása</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="Chapter-4.html#cb54-1"></a>ROCgorbe &lt;-<span class="st"> </span><span class="kw">roc</span>(dat<span class="op">$</span>died<span class="op">~</span>dat<span class="op">$</span>deathval)</span>
+<span id="cb54-2"><a href="Chapter-4.html#cb54-2"></a><span class="kw">plot</span>(ROCgorbe)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="Chapter-4.html#cb55-1"></a><span class="dv">2</span><span class="op">*</span><span class="kw">auc</span>(ROCgorbe)<span class="op">-</span><span class="dv">1</span></span></code></pre></div>
+<pre><code>[1] 0.1684161</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="Chapter-4.html#cb57-1"></a><span class="co">#Mivel csak 4 típusú kimenetel lehet a megmaradt változókból, </span></span>
+<span id="cb57-2"><a href="Chapter-4.html#cb57-2"></a><span class="co">#így a költségfüggvény is 5 értéket vesz fel</span></span>
+<span id="cb57-3"><a href="Chapter-4.html#cb57-3"></a>ytengely &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>sensitivities</span>
+<span id="cb57-4"><a href="Chapter-4.html#cb57-4"></a>xtengely &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>specificities</span>
+<span id="cb57-5"><a href="Chapter-4.html#cb57-5"></a>kuszob &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>thresholds</span>
+<span id="cb57-6"><a href="Chapter-4.html#cb57-6"></a>seged &lt;-<span class="st"> </span><span class="kw">data.frame</span>(kuszob, xtengely, ytengely)</span>
+<span id="cb57-7"><a href="Chapter-4.html#cb57-7"></a><span class="kw">table</span>(dat<span class="op">$</span>died)</span></code></pre></div>
+<pre><code>
+FALSE  TRUE 
+ 4046  1302 </code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="Chapter-4.html#cb59-1"></a>seged<span class="op">$</span>koltseg &lt;-<span class="st"> </span><span class="dv">4046</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>xtengely)<span class="op">+</span><span class="dv">1302</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>ytengely)</span>
+<span id="cb59-2"><a href="Chapter-4.html#cb59-2"></a></span>
+<span id="cb59-3"><a href="Chapter-4.html#cb59-3"></a><span class="kw">ggplot</span>(seged, <span class="kw">aes</span>(<span class="dt">x=</span>kuszob, <span class="dt">y=</span>koltseg))<span class="op">+</span><span class="kw">geom_point</span>()<span class="op">+</span><span class="kw">geom_smooth</span>()<span class="op">+</span><span class="kw">xlim</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-19-2.png" width="672" />
+A függvény alapján a 0.5 lesz az optimális küszöbérték</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Chapter-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/MarcellGranat/COVID/blob/main/Chapter-3.Rmd",
+"text": "Jump to GitHub"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

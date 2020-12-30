@@ -31,7 +31,7 @@
   
   <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
 <link rel="prev" href="Chapter-1.html"/>
-<link rel="next" href="Chapter-3.html"/>
+<link rel="next" href="Chapter-4.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -145,6 +145,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-elemzéshez-való-előkészítése"><i class="fa fa-check"></i>Adatok elemzéshez való előkészítése</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#modellbecslés"><i class="fa fa-check"></i>Modellbecslés</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#változók-parciális-hatása-a-halálozási-valószínűségre"><i class="fa fa-check"></i>Változók parciális hatása a halálozási valószínűségre</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#logit-modell-kalibrálása-az-összes-tisztított-és-korábban-bemutatott-változóra"><i class="fa fa-check"></i>Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#outlierek-és-vif-mutató-alapján"><i class="fa fa-check"></i>Outlierek és VIF mutató alapján</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése</a></li>
@@ -2270,13 +2279,16 @@ p {
   
   
 </table></div>
+</div>
+</div>
+<div id="modellbecslés" class="section level2">
+<h2>Modellbecslés</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">TODO</span><span class="co"> tune cp</span></span>
 <span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a><span class="st">  </span>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(<span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
-<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>)</span></code></pre></div>
+<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
 <p><img src="my-book_files/figure-html/rpart1-1.png" width="672" /></p>
 
-</div>
 </div>
 </div>
 <div class="footnotes">
@@ -2292,7 +2304,7 @@ p {
         </div>
       </div>
 <a href="Chapter-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="Chapter-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Chapter-4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
