@@ -6,9 +6,9 @@ p {
 }
 ```
 
-
 ```{r package, include=FALSE, warning=FALSE}
 library(tidyverse)
+library(plotmo)
 library(pROC)
 library(ggplot2)
 library(gt)
@@ -22,7 +22,9 @@ library(sandwich)
 
 ```{r data, include=FALSE, warning=FALSE, message = F}
 #Adatok megtisztítása
-raw <- vroom::vroom('latestdata.csv') 
+raw <- read.csv('latestdata.csv', stringsAsFactors = TRUE) 
+
+raw$age <- as.numeric(as.character(raw$age))
 
 raw %>% 
   dplyr::select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation) %>% 
@@ -59,107 +61,194 @@ raw %>%
     died = outcome == 'died'
   ) %>% dplyr::select(-outcome, -date_confirmation) %>% 
   {dat <<- .; .}
-dat <- na.omit(dat)
+
+dat <- dat[!(dat$age=="" | dat$sex=="" | dat$country==""),]
+data_Asia <- dat[dat$continent == "Asia",]
+data_Asia$sex_text <- data_Asia$sex
+data_Asia$sex <- as.logical(data_Asia$sex_text == "male")
+data_Asia$chronic_disease_binary <- as.logical(data_Asia$chronic_disease_binary == "True")
 ```
 
-## Változók parciális hatása a halálozási valószínűségre
-Egyesével regresszálva a változókat az alábbi grafikonokat kapjuk
-```{r, warning=FALSE}
-logit_age <- glm(died~age, data=dat, family = binomial(logit))
-summary(logit_age)
+A logit-modell építése során az a legfontosabb feladatunk, hogy a **megfertőződött**
+**egyének paraméterei alapján megbecsüljük a halálozásuk valószínűségét**. Mint tapasztalhattuk,
+leginkább az idősebb korosztályt érintette súlyosabban a vírus, de az életkoron kívül
+felhasználjuk még az országokat, és a nemet is.
+
+A bemutatott adattábla torzítottsága miatt a modellünkben csak ázsiai országok adatait
+használjuk, így a kontinens változóját nem, csak az országokét használtuk.
+
+
+## Logit modell kalibrálása
+
+### Outlierek és VIF mutató szerinti elemzés
+```{r, warning=FALSE, echo=FALSE}
+data_Asia$date <- NULL
+data_Asia <- na.omit(data_Asia)
+
+table(data_Asia$country)[head(order(-table(data_Asia$country)),9)]
+
+
 ```
 
+Láthatjuk, hogy a legtöbb megfigyelést Fülöp-szigetek és India adja
 
-## Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra
+A változók tisztításának lépései:\
+-**először az alapmodellünk során kirajzolódott outliereket szűrjük ki **\
+-**az országok közül India és a Fülöp-szigetek rendelkezik nagy VIF-mutatóval,**
+**így ezeket összevonjuk**, ezzel eltüntetve a magas VIF-értékeket\
 
-### Outlierek és VIF mutató alapján
+
 ```{r, warning=FALSE}
-#Országok szintjén magas VIF mutató látható
-logit <- glm(died~., data=dat, family=binomial(logit))
+#Országok közül India és Fülöp-szigetek rendelkezik magas VIF-el
+logit <- glm(died~age+sex+country+chronic_disease_binary, data=data_Asia, family=binomial(logit))
 summary(logit)
 vif(logit)
 
 #Outlierek leszűrése
-dat <- dat[abs(rstudent(logit))<3, ]
+data_Asia <- data_Asia[abs(rstudent(logit))<3, ]
 
-#Országok kihagyásával mérséklődik a VIF mutató
-logit2 <- glm(died~.-country -longitude -latitude, data=dat, family=binomial(logit))
+#Indiát és Fülöp-szigeteket összevonva csökken a VIF-mutató
+data_Asia$country_alt <- data_Asia$country
+data_Asia[data_Asia$country_alt=="India", "country_alt"] <- "Philippines"
+
+logit2 <- glm(died~age+sex+chronic_disease_binary+country_alt, data=data_Asia, family=binomial(logit))
 summary(logit2)
 vif(logit2)
-
-#Amerikát összevonva Ázsiával a VIF mutatók lecsökkennek
-dat <- na.omit(dat)
-dat[dat$continent=="Americas", "continent"] <- "Asia"
-
-logit3 <- glm(died~.-country -longitude -latitude, data=dat, 
-             family=binomial(logit))
-summary(logit3)
-vif(logit3)
-
-#Sajnos még nem lineáris a modellünk, a változókat át kell alakítani
-resettest(logit3)
-crPlots(logit3)
 
 ```
 
 ### Nemlinearitás vizsgálata a RESET-teszttel
+
+A linearitás teszteléséhez felhasználtuk a **Ramsey-féle RESET-tesztet és a CR-plotokat**.
+Ezek alapján pedig a jelenlegi modellünk nemlineáris, amely miatt az életkor változót alakítjuk át.
+
+Először az életkor átalakításával próbálkoztunk:
+1. 35-nél megtörő CR-plot miatt annak bevétele a modellbe\
+2. ötvenfelett dummy létrehozása\
+
+Mivel az első módszer sikerre vezetett, a másodikat nem próbáltuk meg.
+
 ```{r, warning=FALSE}
-#Először a dátumot vesszük ki a magyarázóváltozók közül, mivel az értelmezése nehézkes,
-#majd az életkor változóját alakítjuk át a linearitás eléréséhez
-logit4 <- glm(died~.-country -date -latitude -longitude +I(1/(0.1+age)), 
-              data=dat, family=binomial(logit))
-summary(logit4)
-vif(logit4)
-resettest(logit4)
-crPlots(logit4)
+#Linearitás tesztelése megmutatja, hogy még nem lineáris a modell
+resettest(logit2, type="regressor")
+crPlots(logit2)
+crPlots(logit2, ~age)
+
+#Az életkor változó nagyjából 35 évnél törik meg, ezt kell belevennünk a modellbe
+
+logit3 <- glm(died~age+sex+chronic_disease_binary+country_alt+pmax(age-35,0), data=data_Asia, family=binomial(logit))
+summary(logit3)
+resettest(logit3, type="regressor")
+crPlots(logit3)
+
 ```
+
+
+
+
+```{r, warning=FALSE}
+
+linearHypothesis(logit3, c("country_altJapan=0", "country_altMalaysia=0", "country_altNepal=0", "country_altVietnam=0", "country_altSingapore=0", "country_altSouth Korea=0", "country_altThailand=0"))
+data_Asia$fulopindia <- as.logical(data_Asia$country_alt=="Philippines")
+```
+
+Ezután a nem szignifikáns változók közül az országokat látjuk csak, így ezek 
+összevont elhagyását teszteljük, a Fülöp-szk. és Indiát kivéve.
+
+Mivel a tesztnél p>0,05, így ezeket a változót kidobhatjuk, 
+az új dummyval pedig elkészült a modellünk.
+
+
+Az új modellben viszont az életkor változó átalakított formájában magas VIF-et okoz, 
+így **az eredeti életkort - amely a kevésbé szignifikáns változó - kihagyjuk a modellből.**
+
+```{r, warning=FALSE}
+logit4 <- glm(died~age+sex+chronic_disease_binary+fulopindia+I(pmax(age-35,0)), 
+              data=data_Asia, family=binomial(logit))
+summary(logit4)
+resettest(logit4, type="regressor")
+
+vif(logit4)
+linearHypothesis(logit4, "age")
+
+```
+
+
 
 ```{r}
-logit5 <- glm(died~.-country -age +I(1/(0.1+age)) -date -latitude -longitude, data=dat, 
-              family=binomial(logit))
-summary(logit5)
-vif(logit5)
-resettest(logit5)
+logit_final <- glm(died~sex+chronic_disease_binary+fulopindia+I(pmax(age-35,0)), 
+                   data=data_Asia, family=binomial(logit))
+summary(logit_final)
+vif(logit_final)
 
-#Elhagyható a magyarázóváltozók közül szinte az összes
-linearHypothesis(logit5, c("I(1/(0.1 + age))=0", "continentEurope=0", "continentAsia=0", "continentOceania=0"))
-
-logit6 <- glm(died~.-country -continent -age -date -latitude -longitude, data=dat, 
-              family=binomial(logit))
-summary(logit6)
-resettest(logit6)
-
-#Az együtthatók jelentése
-exp(coef(logit6))
+resettest(logit_final, type="regressor")
 ```
 
+
+```{r}
+#Az együtthatók jelentése
+exp(coef(logit_final))
+plotmo(logit_final)
+
+```
+
+Az átalakított modellünk megfelel minden feltevésnek és tesztnek, így ennek 
+együtthatóit értelmezhetjük:\
+-**cet. par. a férfi lét 1,61-szeresére növeli a halálozás oddsának értékét**\
+-**cet. par. a krónikus betegség megléte 8,15-szeresére növeli a halálozás oddsának értékét**\
+-**cet. par. a Fülöp-szk-n vagy Indiában való állampolgárság 1,95-szeresére növeli a halálozás oddsának értékét**\
+-**cet. par. a 35 évnél idősebb embereknek 1,08-szor nagyobb a halálozás oddsának értéke**\
 ### Előrejelzés a kiválasztott modellel
 ```{r, warning=FALSE}
-deathval <- predict(logit6, dat, type="response")
-dat$deathval <- deathval
-dat$becsult <- ifelse(deathval>0.5, "TRUE", "FALSE")
-xtabs(~died+becsult, data=dat)
+deathval <- predict(logit_final, data_Asia, type="response")
+data_Asia$deathval <- deathval
+data_Asia$becsult <- ifelse(deathval>0.5, "TRUE", "FALSE")
+xtabs(~died+becsult, data=data_Asia)
 
-#A modell 77%-ban helyes eredményt ad
-sum(dat$died==dat$becsult)/nrow(dat)
+fin_perc <- sum(data_Asia$died==data_Asia$becsult)/nrow(data_Asia)*100
 ```
+A próba 50%-os cutoff értéknél a modell `r fin_perc`%-ban helyes eredményt ad.
 
-Optimális cut-off érték kiválasztása
-```{r, warning=FALSE}
-ROCgorbe <- roc(dat$died~dat$deathval)
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+ROCgorbe <- roc(data_Asia$died~data_Asia$deathval)
 plot(ROCgorbe)
-2*auc(ROCgorbe)-1
+gini <- 2*auc(ROCgorbe)-1
 
 #Mivel csak 4 típusú kimenetel lehet a megmaradt változókból, 
 #így a költségfüggvény is 5 értéket vesz fel
-ytengely <- ROCgorbe$sensitivities
-xtengely <- ROCgorbe$specificities
-kuszob <- ROCgorbe$thresholds
-seged <- data.frame(kuszob, xtengely, ytengely)
-table(dat$died)
-seged$koltseg <- 4046*(1-xtengely)+1302*(1-ytengely)
+seged <- data.frame(kuszob = ROCgorbe$thresholds, 
+                    xtengely = ROCgorbe$specificities, 
+                    ytengely = ROCgorbe$sensitivities)
 
-ggplot(seged, aes(x=kuszob, y=koltseg))+geom_point()+geom_smooth()+xlim(0,1)
+masod_coeff <- 3
+seged$koltseg <- table(data_Asia$died)[1]*(1-seged$xtengely)+table(data_Asia$died)[2]*(1-seged$ytengely)*masod_coeff
+ggplot(seged, aes(x=kuszob, y=koltseg))+geom_point()+geom_smooth(method = "loess")+
+  xlim(0,1)
+
+#Költségfüggvény szerinti optimális küszöbérték megkeresése
+
+seged$kuszob[1] <- 0
+seged$kuszob[nrow(seged)]  <- 1
+
+p <- data.frame(kuszob = seged$kuszob, prediction = predict(loess(koltseg~kuszob, data = seged)))
+fin_cutoff <- p$kuszob[p$prediction==min(p$prediction)]
+
+
 ```
-A függvény alapján a 0.5 lesz az optimális küszöbérték
 
+Az ROC-görbe GINI-mutatója `r gini`.
+A modellünk kalibrálása során a másodfajú hiba súlya `r masod_coeff`, így a
+simított költségfüggvény alapján a `r fin_cutoff` lesz az optimális küszöbérték.
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+
+data_Asia$becsult_final <- ifelse(deathval>fin_cutoff, "TRUE", "FALSE")
+xtabs(~died+becsult_final, data=data_Asia)
+
+fin_perc_final <- sum(data_Asia$died==data_Asia$becsult_final)/nrow(data_Asia)*100
+
+```
+
+
+Az optimális küszöbértéknél a klasszifikáció pontossága `r fin_perc_final`% lesz.
