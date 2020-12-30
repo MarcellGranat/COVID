@@ -1,4 +1,4 @@
-#  Szövegelemzés {#Chapter-3}
+# A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
 
 ```{css, echo=FALSE}
 p {
@@ -7,10 +7,12 @@ p {
 ```
 
 
-```{r, include=FALSE}
+```{r include=FALSE}
 Sys.setlocale("LC_TIME", "C")
 #AFINN szótárhoz
 library(tidytext)
+library(DT)
+library(colorspace)
 library(textdata)
 #Szózsák-modell
 library(tm)
@@ -19,8 +21,6 @@ library(wordcloud)
 #Adatok transzformációja és vizualizációja
 #library(dplyr)
 #library(ggplot2)
-library(DT)
-library(colorspace)
 library(ggwordcloud)
 library(plotly)
 library(gifski)
@@ -30,13 +30,11 @@ library(tools)
 library(rvest)
 ```
 
-## Elemzés
-A Guardian napilap COVID-19-el kapcsolatos címeit elemeztük webscraping segítségével, amelyben a Bag of Words módszerrel dolgoztunk és sentiment analízist is folytattunk
+Guardian headlineok
 
-
-```{r get_headlines, warning=FALSE}
+```{r get_headlines}
 #521-ig lehetett visszamenni a keresésben
-for (i in 1:22) {
+for (i in 1:528) {
   URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
   page <- read_html(URL)
   title <- html_text(html_nodes(page, ".js-headline-text"))
@@ -54,7 +52,8 @@ for (i in 1:22) {
 
 Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
 dataframebe, minden másodikat ki kellett törölni
-```{r cleanse_headlines, warning=FALSE}
+
+```{r}
 data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
   mutate(
     date = as.Date(time, format = "%d %B %Y"),
@@ -62,9 +61,8 @@ data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq
   ) %>% na.omit()
 ```
 
-### Bag of Words
 Bag of words módszerhez a lescrape-elt címekből korpuszt készítettünk
-```{r create_bagofwords, warning=FALSE}
+```{r create_bagofwords}
 corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
 
 #Korpusz tisztítása
@@ -75,7 +73,7 @@ corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>%
 ```
 
 Strukturált mátrix és a fogalmak eloszlása a teljes korpuszban
-```{r basic_matrices, warning=FALSE}
+```{r basic_matrices}
 termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
 documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
 words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
@@ -85,8 +83,8 @@ freqterms <- findFreqTerms(documentterm, lowfreq = 100)
 ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
 ```
 
-Havonta elemeztük a leggyakoribb szavakat
-```{r monthly_analysis_and_wordclouds, animation.hook="gifski", warning=FALSE}
+Havonta elemzés
+```{r monthly_analysis_and_wordclouds, animation.hook="gifski"}
 data_cleansed_monthly <- data_cleansed %>% group_by(month) %>%
   summarise(monthly_text = paste(title, collapse = " "))
 
@@ -126,9 +124,11 @@ color_freq_terms <- data.frame(words = head(words_frequency_all[order(-words_fre
 datatable(words_monthly) %>% formatStyle(names(words_monthly), font="bold", background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
 ```
 
-###Sentiment elemzés
-Sentiment elemzés a napi címekből, az érzelmet tartalmazó szavak és a napi átlagok ábrázolásával
-```{r sentiment_analysis, warning=FALSE}
+
+Sentiment elemzés
+```{r sentiment_analysis}
+
+
 #AFINN lexikon betöltése
 AFINN <- get_sentiments("afinn")
 
@@ -140,8 +140,10 @@ data_cleansed <- data_cleansed %>%
 #Szavakra bontás, pontszámok összeaggregálása
 words <- left_join(
   tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
+  
 nr_sentiment_words <- 
   words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
+
 score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 
 #Eredeti adatok mellé rakás
@@ -152,14 +154,14 @@ score_by_day <-
   data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
 
 ```
-
-Grafikonok
-```{r plotting_sentiments, warning=FALSE}
+Ábrázolás
+```{r plotting_sentiments}
 ggplot(nr_sentiment_words, aes(x=date)) +
   geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
   xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
   ylim(0, 100)+
   geom_hline(yintercept=0, color="black", size=.75)
+
 
 ggplot(score_by_day, aes(x=date)) +
   geom_line( aes(y=score_avg), color="#0fad04") + 
