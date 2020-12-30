@@ -1,4 +1,4 @@
-# A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése {#Chapter-3}
+# Logit-modell {#Chapter-3}
 
 ```{css, echo=FALSE}
 p {
@@ -7,165 +7,187 @@ p {
 ```
 
 
-```{r include=FALSE}
-Sys.setlocale("LC_TIME", "C")
-#AFINN szótárhoz
-library(tidytext)
-library(DT)
-library(colorspace)
-library(textdata)
-#Szózsák-modell
-library(tm)
-library(SnowballC)
-library(wordcloud)
-#Adatok transzformációja és vizualizációja
-#library(dplyr)
-#library(ggplot2)
-library(ggwordcloud)
-library(plotly)
-library(gifski)
-#library(hrbrthemes)
-#Webes adatgyűjtés
-library(tools)
-library(rvest)
-```
-
-Guardian headlineok
-
-```{r get_headlines}
-#521-ig lehetett visszamenni a keresésben
-for (i in 1:528) {
-  URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
-  page <- read_html(URL)
-  title <- html_text(html_nodes(page, ".js-headline-text"))
-  #Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma
-  time <- html_text(html_nodes(page, ".fc-date-headline"))[1]
-  if (i==1){
-    data_raw <- data.frame(time, title) 
-  }
-  else{
-    data_raw <- rbind(data_raw, data.frame(time, title))  
-  }
-}
+```{r package, include=FALSE, warning=FALSE}
+library(tidyverse)
+library(pROC)
+library(ggplot2)
+library(gt)
+library(car)
+library(dplyr)
+library(HH)
+library(lmtest)
+library(sandwich)
 ```
 
 
-Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
-dataframebe, minden másodikat ki kellett törölni
-```{r get_headlines}
-data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
+```{r data, include=FALSE, warning=FALSE, message = F}
+#Adatok megtisztítása
+raw <- vroom::vroom('latestdata.csv', col_types = cols(
+  ID = col_character(),
+  age = col_character(),
+  sex = col_character(),
+  city = col_character(),
+  province = col_character(),
+  country = col_character(),
+  latitude = col_double(),
+  longitude = col_double(),
+  geo_resolution = col_character(),
+  date_onset_symptoms = col_character(),
+  date_admission_hospital = col_character(),
+  date_confirmation = col_character(),
+  symptoms = col_logical(),
+  lives_in_Wuhan = col_logical(),
+  travel_history_dates = col_character(),
+  travel_history_location = col_character(),
+  reported_market_exposure = col_logical(),
+  additional_information = col_character(),
+  chronic_disease_binary = col_logical(),
+  chronic_disease = col_logical(),
+  source = col_character(),
+  sequence_available = col_logical(),
+  outcome = col_character(),
+  date_death_or_discharge = col_logical(),
+  notes_for_discussion = col_logical(),
+  location = col_character(),
+  admin3 = col_character(),
+  admin2 = col_character(),
+  admin1 = col_character(),
+  country_new = col_character(),
+  admin_id = col_double(),
+  data_moderator_initials = col_character(),
+  travel_history_binary = col_logical()
+)) 
+
+raw %>% 
+  select(outcome, age, sex, country, chronic_disease_binary, latitude, longitude, date_confirmation        ) %>% 
   mutate(
-    date = as.Date(time, format = "%d %B %Y"),
-    month = format(date, "%Y-%m")
-  ) %>% na.omit()
-```
-
-Bag of words módszerhez a lescrape-elt címekből korpuszt készítettünk
-```{r create_bagofwords}
-corpus_raw <- Corpus(VectorSource(as.character(data_cleansed$title)))
-
-#Korpusz tisztítása
-corpus_filtered <- corpus_raw %>% tm_map(content_transformer(tolower)) %>% 
-  tm_map(stripWhitespace) %>%  tm_map(removeNumbers) %>%
-  tm_map(removePunctuation, ucp=TRUE) %>%
-  tm_map(removeWords, c(stopwords("english"), "also", "one"))
-```
-
-Strukturált mátrix és a fogalmak eloszlása a teljes korpuszban
-```{r basic_matrices}
-termdocument <- removeSparseTerms(TermDocumentMatrix(corpus_filtered), 0.999)
-documentterm <- removeSparseTerms(DocumentTermMatrix(corpus_filtered), 0.999)
-words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
-                                  Freq=rowSums(as.matrix(termdocument), na.rm = TRUE))
-
-freqterms <- findFreqTerms(documentterm, lowfreq = 100)
-ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
-```
-
-Havonta elemzés
-```{r monthly_analysis_and_wordclouds, animation.hook="gifski"}
-data_cleansed_monthly <- data_cleansed %>% group_by(month) %>%
-  summarise(monthly_text = paste(title, collapse = " "))
-
-#Táblázat létrehozása
-words_monthly <- data.frame(matrix(ncol=nrow(data_cleansed_monthly), nrow=15))
-colnames(words_monthly) <- data_cleansed_monthly$month
-
-for (i in 1:nrow(data_cleansed_monthly)){
-  #Corpus létrehozása
-  corpus_monthly_raw <- 
-    Corpus(VectorSource(as.character(data_cleansed_monthly$monthly_text[i])))
-  #Korpusz tisztítása
-  corpus_monthly_filtered <- corpus_monthly_raw %>% 
-    tm_map(content_transformer(tolower)) %>% 
-    tm_map(removePunctuation, ucp=TRUE) %>% 
-    tm_map(removeNumbers)  %>% 
-    tm_map(removeWords, c(stopwords("english"), "also", "one"))
-  #%>% tm_map(stemDocument)
-  
-  #Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt
-  matrix_monthly <- removeSparseTerms(TermDocumentMatrix(corpus_monthly_filtered), 0.999)
-  words_frequency <- 
-    data.frame(Words = matrix_monthly$dimnames$Terms, Freq = matrix_monthly$v)
-  words_monthly[,data_cleansed_monthly$month[i]]<- 
-    head(words_frequency[order(-words_frequency$Freq),]$Words,15)
-  
-  #Szófelhők készítése, a corpus nagyságától függően
-  plot(ggwordcloud(words_frequency$Words, words_frequency$Freq, max.words = 100)+
-         ggtitle(data_cleansed_monthly$month[i]))
-  #wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)
-}
-
-#A globálisan leggyakoribb szavakat kiszíneztük havonta is
-color_freq_terms <- data.frame(words = head(words_frequency_all[order(-words_frequency_all$Freq),]$Words,15), 
-                               colors=sequential_hcl(15, palette = "OrYel"))
-
-datatable(words_monthly) %>% formatStyle(names(words_monthly), font="bold", background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
-```
-
-
-Sentiment elemzés
-```{r sentiment_analysis}
-
-
-#AFINN lexikon betöltése
-AFINN <- get_sentiments("afinn")
-
-data_cleansed <- data_cleansed %>% 
+    continent = countrycode::countrycode(country, origin = 'country.name', destination = 'continent'),
+    date = lubridate::dmy(date_confirmation),
+    age = ifelse(str_detect(age, '-'), as.numeric(gsub("([0-9]+).*$", "\\1", age)) + 5, age),
+    age = as.numeric(age)
+  ) %>% 
+  mutate( # cleaning the depedent var
+    outcome = case_when(
+      outcome == 'death' ~ 'died',
+      outcome == 'died' ~ 'died', 
+      outcome == 'Death' ~ 'died',
+      outcome == 'dead' ~ 'died',
+      outcome == 'Dead' ~ 'died',
+      outcome == 'Died' ~ 'died',
+      outcome == 'Deceased' ~ 'died',
+      outcome == 'discharge' ~ 'survived',
+      outcome == 'discharged' ~ 'survived',
+      outcome == 'Discharged' ~ 'survived',
+      outcome == 'Discharged from hospital' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'released from quarantine' ~ 'survived',
+      outcome == 'recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      outcome == 'Recovered' ~ 'survived',
+      T ~ 'NA'
+    )
+  ) %>% 
+  filter(outcome != 'NA') %>% 
   mutate(
-    title = as.character(title)
-  )
+    died = outcome == 'died'
+  ) %>% select(-outcome, -date_confirmation) %>% 
+  {dat <<- .; .}
+dat <- na.omit(dat)
+```
 
-#Szavakra bontás, pontszámok összeaggregálása
-words <- left_join(
-  tidytext::unnest_tokens(data_cleansed, words, title), AFINN, by=c("words"="word"))
-  
-nr_sentiment_words <- 
-  words %>% group_by(date) %>% summarise(non_na_count = sum(!is.na(value)))
+Egyesével regresszálva a változókat az alábbi grafikonokat kapjuk
+```{r}
+logit_age <- glm(died~age, data=dat2, family = binomial(logit))
+summary(logit_age)
+```
 
-score_by_id <- words %>% group_by(id) %>% summarize(score=sum(value, na.rm=TRUE))
 
-#Eredeti adatok mellé rakás
-data_cleansed <- left_join(data_cleansed, score_by_id, by="id")
+Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra
 
-#Napi (és heti) aggregálás
-score_by_day <- 
-  data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
+```{r}
+#Országok szintjén magas VIF mutató látható
+logit <- glm(died~., data=dat, family=binomial(logit))
+summary(logit)
+vif(logit)
+
+#Outlierek leszűrése
+dat <- dat[abs(rstudent(logit))<3, ]
+
+#Országok kihagyásával mérséklődik a VIF mutató
+logit2 <- glm(died~.-country -longitude -latitude, data=dat, family=binomial(logit))
+summary(logit2)
+vif(logit2)
+
+#Amerikát összevonva Ázsiával a VIF mutatók lecsökkennek
+dat <- na.omit(dat)
+dat[dat$continent=="Americas", "continent"] <- "Asia"
+
+logit3 <- glm(died~.-country -longitude -latitude, data=dat, 
+             family=binomial(logit))
+summary(logit3)
+vif(logit3)
+
+#Sajnos még nem lineáris a modellünk, a változókat át kell alakítani
+resettest(logit3)
+crPlots(logit3)
 
 ```
-Ábrázolás
-```{r plotting_sentiments}
-ggplot(nr_sentiment_words, aes(x=date)) +
-  geom_line( aes(y=non_na_count), size=.5, color="#0fad04")+
-  xlab("Dátum") + ylab("AFINN-ban szereplő szavak száma") +
-  ylim(0, 100)+
-  geom_hline(yintercept=0, color="black", size=.75)
 
 
-ggplot(score_by_day, aes(x=date)) +
-  geom_line( aes(y=score_avg), color="#0fad04") + 
-  xlab("Dátum") + ylab("Átlagos napi érzelmi pontszám") +
-  ylim(-5, 5)+
-  geom_hline(yintercept=0, color="black", size=.75)
+```{r}
+#Először a dátumot vesszük ki a magyarázóváltozók közül, mivel az értelmezése nehézkes,
+#majd az életkor változóját alakítjuk át a linearitás eléréséhez
+logit4 <- glm(died~.-country -date -latitude -longitude +I(1/(0.1+age)), 
+              data=dat, family=binomial(logit))
+summary(logit4)
+vif(logit4)
+resettest(logit4)
+crPlots(logit4)
 ```
+
+```{r}
+
+
+logit5 <- glm(died~.-country -age +I(1/(0.1+age)) -date -latitude -longitude, data=dat, 
+              family=binomial(logit))
+summary(logit5)
+vif(logit5)
+resettest(logit5)
+
+#Elhagyható a magyarázóváltozók közül szinte az összes
+linearHypothesis(logit5, c("I(1/(0.1 + age))=0", "continentEurope=0", "continentAsia=0", "continentOceania=0"))
+
+logit6 <- glm(died~.-country -age -date -latitude -longitude, data=dat, 
+              family=binomial(logit))
+summary(logit6)
+resettest(logit6)
+
+exp(coef(logit6))
+```
+
+```{r}
+deathval <- predict(logit6, dat, type="response")
+dat$deathval <- deathval
+dat$becsult <- ifelse(deathval>0.5, "TRUE", "FALSE")
+xtabs(~died+becsult, data=dat)
+sum(dat$died==dat$becsult)/nrow(dat)
+```
+
+
+```{r}
+ROCgorbe <- roc(dat$died~dat$deathval)
+plot(ROCgorbe)
+2*auc(ROCgorbe)-1
+
+ytengely <- ROCgorbe$sensitivities
+xtengely <- ROCgorbe$specificities
+kuszob <- ROCgorbe$thresholds
+seged <- data.frame(kuszob, xtengely, ytengely)
+table(dat$died)
+
+seged$koltseg <- 4046*(1-xtengely)+1302*(1-ytengely)
+ggplot(seged, aes(x=kuszob, y=koltseg))+geom_point()+geom_smooth()+xlim(0,1)
+```
+
 
