@@ -44,9 +44,9 @@ pedig az AFINN szótár érzelmi skálája segítségével elemeztük a napi hí
 
 ```{r get_headlines, warning=FALSE}
 
-nr_of_pages=22
+nr_of_pages=528
 
-#521-ig lehetett visszamenni a keresésben
+#528 lapig lehetett visszamenni a keresésben
 for (i in 1:nr_of_pages) {
   URL <- paste("https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=", i, sep = "")
   page <- read_html(URL)
