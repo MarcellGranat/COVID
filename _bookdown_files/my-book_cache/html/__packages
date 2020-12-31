@@ -10,6 +10,10 @@ stringr
 forcats
 gt
 ggwordcloud
+Formula
+plotrix
+TeachingDemos
+plotmo
 pROC
 carData
 car
@@ -26,14 +30,14 @@ zoo
 lmtest
 sandwich
 tidytext
-DT
-colorspace
 textdata
 NLP
 tm
 SnowballC
 RColorBrewer
 wordcloud
+DT
+colorspace
 plotly
 gifski
 xml2

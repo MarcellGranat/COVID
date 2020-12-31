@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Logit-modell | COVID</title>
-  <meta name="description" content="Logit-modell | COVID" />
+  <title>Szövegelemzés | COVID</title>
+  <meta name="description" content="Szövegelemzés | COVID" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Logit-modell | COVID" />
+  <meta property="og:title" content="Szövegelemzés | COVID" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Logit-modell | COVID" />
+  <meta name="twitter:title" content="Szövegelemzés | COVID" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
-<link rel="prev" href="Chapter-2.html"/>
-<link rel="next" href="Chapter-3.html"/>
+<link rel="prev" href="Chapter-3.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -148,15 +148,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#modellbecslés"><i class="fa fa-check"></i>Modellbecslés</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#változók-parciális-hatása-a-halálozási-valószínűségre"><i class="fa fa-check"></i>Változók parciális hatása a halálozási valószínűségre</a></li>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#logit-modell-kalibrálása-az-összes-tisztított-és-korábban-bemutatott-változóra"><i class="fa fa-check"></i>Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra</a><ul>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#outlierek-és-vif-mutató-alapján"><i class="fa fa-check"></i>Outlierek és VIF mutató alapján</a></li>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
-<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#outlierek-és-vif-mutató-szerinti-elemzés"><i class="fa fa-check"></i>Outlierek és VIF mutató szerinti elemzés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>A Guardian napilap COVID-19-el kapcsolatos címeinek elemzése</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Szövegelemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#elemzés"><i class="fa fa-check"></i>Elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#bag-of-words"><i class="fa fa-check"></i>Bag of Words</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#sentiment-elemzés"><i class="fa fa-check"></i>Sentiment elemzés</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -175,458 +178,193 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="Chapter-4" class="section level1">
-<h1>Logit-modell</h1>
+<h1>Szövegelemzés</h1>
 <style type="text/css">
 p {
   text-align: justify;
 }
 </style>
-<div id="változók-parciális-hatása-a-halálozási-valószínűségre" class="section level2">
-<h2>Változók parciális hatása a halálozási valószínűségre</h2>
-<p>Egyesével regresszálva a változókat az alábbi grafikonokat kapjuk</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-4.html#cb12-1"></a>logit_age &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age, <span class="dt">data=</span>dat, <span class="dt">family =</span> <span class="kw">binomial</span>(logit))</span>
-<span id="cb12-2"><a href="Chapter-4.html#cb12-2"></a><span class="kw">summary</span>(logit_age)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ age, family = binomial(logit), data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.0456  -0.6758  -0.3856  -0.1311   3.1082  
-
-Coefficients:
-             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept) -4.822445   0.138130  -34.91   &lt;2e-16 ***
-age          0.070655   0.002361   29.93   &lt;2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 6004.7  on 5376  degrees of freedom
-Residual deviance: 4757.2  on 5375  degrees of freedom
-AIC: 4761.2
-
-Number of Fisher Scoring iterations: 5</code></pre>
-</div>
-<div id="logit-modell-kalibrálása-az-összes-tisztított-és-korábban-bemutatott-változóra" class="section level2">
-<h2>Logit modell kalibrálása az összes tisztított és korábban bemutatott változóra</h2>
-<div id="outlierek-és-vif-mutató-alapján" class="section level3">
-<h3>Outlierek és VIF mutató alapján</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-4.html#cb14-1"></a><span class="co">#Országok szintjén magas VIF mutató látható</span></span>
-<span id="cb14-2"><a href="Chapter-4.html#cb14-2"></a>logit &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>., <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb14-3"><a href="Chapter-4.html#cb14-3"></a><span class="kw">summary</span>(logit)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ ., family = binomial(logit), data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.3169  -0.5631  -0.2986   0.0000   3.3579  
-
-Coefficients: (4 not defined because of singularities)
-                             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -5.597e+02  4.593e+01 -12.185  &lt; 2e-16 ***
-age                         7.284e-02  2.721e-03  26.774  &lt; 2e-16 ***
-sexmale                     4.058e-01  8.495e-02   4.777 1.78e-06 ***
-countryAustralia            3.608e+00  3.265e+00   1.105   0.2691    
-countryBahamas              1.372e+01  3.956e+03   0.003   0.9972    
-countryBrazil              -1.936e+01  1.836e+03  -0.011   0.9916    
-countryBurkina Faso         1.666e+01  3.956e+03   0.004   0.9966    
-countryCabo Verde           1.536e+01  3.956e+03   0.004   0.9969    
-countryCameroon             1.732e+01  3.956e+03   0.004   0.9965    
-countryCanada              -6.502e+00  2.725e+00  -2.386   0.0170 *  
-countryChina                4.793e+00  2.566e+00   1.868   0.0618 .  
-countryCuba                 1.421e+01  3.956e+03   0.004   0.9971    
-countryEswatini            -1.500e+01  3.956e+03  -0.004   0.9970    
-countryEthiopia             1.782e+01  3.956e+03   0.005   0.9964    
-countryFrance               5.098e-01  2.017e+00   0.253   0.8004    
-countryGabon                1.757e+01  3.956e+03   0.004   0.9965    
-countryGambia              -4.257e+00  2.112e+00  -2.015   0.0439 *  
-countryGermany             -1.785e+01  3.956e+03  -0.005   0.9964    
-countryGuyana               1.207e+01  2.797e+03   0.004   0.9966    
-countryIndia                2.990e+00  1.835e+00   1.630   0.1031    
-countryItaly                1.846e+00  1.822e+00   1.013   0.3111    
-countryJapan                6.014e+00  3.449e+00   1.743   0.0813 .  
-countryMalaysia            -1.207e+01  1.300e+03  -0.009   0.9926    
-countryNepal               -1.151e+01  2.797e+03  -0.004   0.9967    
-countryNiger                1.615e+01  3.956e+03   0.004   0.9967    
-countryPhilippines          2.101e+00  2.712e+00   0.775   0.4383    
-countryRomania             -1.505e+01  1.287e+03  -0.012   0.9907    
-countrySan Marino           1.560e+01  3.956e+03   0.004   0.9969    
-countrySingapore           -1.237e+01  3.310e+02  -0.037   0.9702    
-countrySouth Korea         -1.061e+01  7.347e+02  -0.014   0.9885    
-countrySudan                1.866e+01  3.956e+03   0.005   0.9962    
-countrySwitzerland         -1.633e+01  2.673e+03  -0.006   0.9951    
-countryTanzania            -1.574e+01  3.956e+03  -0.004   0.9968    
-countryTogo                -1.656e+01  3.956e+03  -0.004   0.9967    
-countryUnited States       -3.085e+00  2.805e+00  -1.100   0.2714    
-countryVietnam             -1.432e+01  5.579e+02  -0.026   0.9795    
-countryZimbabwe             1.765e+00  2.132e+00   0.828   0.4079    
-chronic_disease_binaryTRUE  3.231e+00  3.292e-01   9.815  &lt; 2e-16 ***
-latitude                   -2.284e-03  1.658e-02  -0.138   0.8904    
-longitude                  -4.044e-02  2.264e-02  -1.786   0.0741 .  
-continentAmericas                  NA         NA      NA       NA    
-continentAsia                      NA         NA      NA       NA    
-continentEurope                    NA         NA      NA       NA    
-continentOceania                   NA         NA      NA       NA    
-date                        3.032e-02  2.503e-03  12.115  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 6004.7  on 5376  degrees of freedom
-Residual deviance: 3754.8  on 5336  degrees of freedom
-AIC: 3836.8
-
-Number of Fisher Scoring iterations: 16</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="Chapter-4.html#cb16-1"></a><span class="kw">vif</span>(logit)</span></code></pre></div>
-<pre><code>                       age                    sexmale 
-                  1.085588                   1.025914 
-          countryAustralia             countryBahamas 
-                       Inf                        Inf 
-             countryBrazil        countryBurkina Faso 
-                       Inf                   1.167971 
-         countryCabo Verde            countryCameroon 
-                  1.216675                   1.170973 
-             countryCanada               countryChina 
-                       Inf                        Inf 
-               countryCuba            countryEswatini 
-                       Inf                   1.249802 
-           countryEthiopia              countryFrance 
-                  1.198986                        Inf 
-              countryGabon              countryGambia 
-                  1.183163                   2.004172 
-            countryGermany              countryGuyana 
-                       Inf                        Inf 
-              countryIndia               countryItaly 
-                       Inf                        Inf 
-              countryJapan            countryMalaysia 
-                       Inf                        Inf 
-              countryNepal               countryNiger 
-                       Inf                   1.161126 
-        countryPhilippines             countryRomania 
-                       Inf                        Inf 
-         countrySan Marino           countrySingapore 
-                       Inf                        Inf 
-        countrySouth Korea               countrySudan 
-                       Inf                   1.181147 
-        countrySwitzerland            countryTanzania 
-                       Inf                   1.205269 
-               countryTogo       countryUnited States 
-                  1.176805                        Inf 
-            countryVietnam            countryZimbabwe 
-                       Inf                   1.448560 
-chronic_disease_binaryTRUE                   latitude 
-                  1.133290                   7.748399 
-                 longitude          continentAmericas 
-                238.200123                        Inf 
-             continentAsia            continentEurope 
-                       Inf                        Inf 
-          continentOceania                       date 
-                       Inf                   2.137974 </code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-4.html#cb18-1"></a><span class="co">#Outlierek leszűrése</span></span>
-<span id="cb18-2"><a href="Chapter-4.html#cb18-2"></a>dat &lt;-<span class="st"> </span>dat[<span class="kw">abs</span>(<span class="kw">rstudent</span>(logit))<span class="op">&lt;</span><span class="dv">3</span>, ]</span>
-<span id="cb18-3"><a href="Chapter-4.html#cb18-3"></a></span>
-<span id="cb18-4"><a href="Chapter-4.html#cb18-4"></a><span class="co">#Országok kihagyásával mérséklődik a VIF mutató</span></span>
-<span id="cb18-5"><a href="Chapter-4.html#cb18-5"></a>logit2 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>longitude <span class="op">-</span>latitude, <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb18-6"><a href="Chapter-4.html#cb18-6"></a><span class="kw">summary</span>(logit2)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ . - country - longitude - latitude, family = binomial(logit), 
-    data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.3750  -0.6113  -0.3195  -0.0667   3.3074  
-
-Coefficients:
-                             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -6.836e+02  4.083e+01 -16.743  &lt; 2e-16 ***
-age                         7.786e-02  2.677e-03  29.085  &lt; 2e-16 ***
-sexmale                     4.658e-01  7.954e-02   5.856 4.74e-09 ***
-chronic_disease_binaryTRUE  2.981e+00  3.085e-01   9.661  &lt; 2e-16 ***
-continentAmericas           1.116e+00  8.223e-01   1.357  0.17487    
-continentAsia              -1.931e+00  7.074e-01  -2.729  0.00635 ** 
-continentEurope             4.161e-01  9.988e-01   0.417  0.67696    
-continentOceania           -1.424e+00  1.197e+00  -1.189  0.23427    
-date                        3.702e-02  2.224e-03  16.643  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 5936.6  on 5347  degrees of freedom
-Residual deviance: 4158.6  on 5339  degrees of freedom
-  (13 observations deleted due to missingness)
-AIC: 4176.6
-
-Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="Chapter-4.html#cb20-1"></a><span class="kw">vif</span>(logit2)</span></code></pre></div>
-<pre><code>                       age                    sexmale 
-                  1.043362                   1.007774 
-chronic_disease_binaryTRUE          continentAmericas 
-                  1.063105                   4.677268 
-             continentAsia            continentEurope 
-                  7.688847                   2.356878 
-          continentOceania                       date 
-                  2.717010                   1.135966 </code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter-4.html#cb22-1"></a><span class="co">#Amerikát összevonva Ázsiával a VIF mutatók lecsökkennek</span></span>
-<span id="cb22-2"><a href="Chapter-4.html#cb22-2"></a>dat &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dat)</span>
-<span id="cb22-3"><a href="Chapter-4.html#cb22-3"></a>dat[dat<span class="op">$</span>continent<span class="op">==</span><span class="st">&quot;Americas&quot;</span>, <span class="st">&quot;continent&quot;</span>] &lt;-<span class="st"> &quot;Asia&quot;</span></span>
-<span id="cb22-4"><a href="Chapter-4.html#cb22-4"></a></span>
-<span id="cb22-5"><a href="Chapter-4.html#cb22-5"></a>logit3 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>longitude <span class="op">-</span>latitude, <span class="dt">data=</span>dat, </span>
-<span id="cb22-6"><a href="Chapter-4.html#cb22-6"></a>             <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb22-7"><a href="Chapter-4.html#cb22-7"></a><span class="kw">summary</span>(logit3)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ . - country - longitude - latitude, family = binomial(logit), 
-    data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.3229  -0.6220  -0.3234  -0.0779   3.2986  
-
-Coefficients:
-                             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -5.997e+02  3.859e+01 -15.540  &lt; 2e-16 ***
-age                         7.906e-02  2.658e-03  29.740  &lt; 2e-16 ***
-sexmale                     4.649e-01  7.863e-02   5.912 3.37e-09 ***
-chronic_disease_binaryTRUE  2.929e+00  3.093e-01   9.472  &lt; 2e-16 ***
-continentAsia              -1.737e+00  7.107e-01  -2.445   0.0145 *  
-continentEurope             3.201e-01  1.007e+00   0.318   0.7507    
-continentOceania           -1.546e+00  1.194e+00  -1.295   0.1954    
-date                        3.244e-02  2.102e-03  15.432  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 5936.6  on 5347  degrees of freedom
-Residual deviance: 4227.6  on 5340  degrees of freedom
-AIC: 4243.6
-
-Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter-4.html#cb24-1"></a><span class="kw">vif</span>(logit3)</span></code></pre></div>
-<pre><code>                       age                    sexmale 
-                  1.028043                   1.007773 
-chronic_disease_binaryTRUE              continentAsia 
-                  1.062988                   4.058929 
-           continentEurope           continentOceania 
-                  2.356839                   2.716772 
-                      date 
-                  1.097746 </code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="Chapter-4.html#cb26-1"></a><span class="co">#Sajnos még nem lineáris a modellünk, a változókat át kell alakítani</span></span>
-<span id="cb26-2"><a href="Chapter-4.html#cb26-2"></a><span class="kw">resettest</span>(logit3)</span></code></pre></div>
-<pre><code>
-    RESET test
-
-data:  logit3
-RESET = 123.11, df1 = 2, df2 = 5338, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="Chapter-4.html#cb28-1"></a><span class="kw">crPlots</span>(logit3)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-</div>
-<div id="nemlinearitás-vizsgálata-a-reset-teszttel" class="section level3">
-<h3>Nemlinearitás vizsgálata a RESET-teszttel</h3>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="Chapter-4.html#cb29-1"></a><span class="co">#Először a dátumot vesszük ki a magyarázóváltozók közül, mivel az értelmezése nehézkes,</span></span>
-<span id="cb29-2"><a href="Chapter-4.html#cb29-2"></a><span class="co">#majd az életkor változóját alakítjuk át a linearitás eléréséhez</span></span>
-<span id="cb29-3"><a href="Chapter-4.html#cb29-3"></a>logit4 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude <span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>(<span class="fl">0.1</span><span class="op">+</span>age)), </span>
-<span id="cb29-4"><a href="Chapter-4.html#cb29-4"></a>              <span class="dt">data=</span>dat, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb29-5"><a href="Chapter-4.html#cb29-5"></a><span class="kw">summary</span>(logit4)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ . - country - date - latitude - longitude + 
-    I(1/(0.1 + age)), family = binomial(logit), data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.1856  -0.6591  -0.3652  -0.1435   3.0292  
-
-Coefficients:
-                            Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -4.621513   0.704158  -6.563 5.27e-11 ***
-age                         0.074179   0.002508  29.580  &lt; 2e-16 ***
-sexmale                     0.447841   0.076053   5.889 3.90e-09 ***
-chronic_disease_binaryTRUE  1.778913   0.284114   6.261 3.82e-10 ***
-continentAsia              -0.733078   0.687754  -1.066 0.286468    
-continentEurope            -0.417980   0.991142  -0.422 0.673232    
-continentOceania           -2.311118   1.095266  -2.110 0.034850 *  
-I(1/(0.1 + age))            0.352330   0.091441   3.853 0.000117 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 5936.6  on 5347  degrees of freedom
-Residual deviance: 4495.6  on 5340  degrees of freedom
-AIC: 4511.6
-
-Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="Chapter-4.html#cb31-1"></a><span class="kw">vif</span>(logit4)</span></code></pre></div>
-<pre><code>                       age                    sexmale 
-                  1.056523                   1.007713 
-chronic_disease_binaryTRUE              continentAsia 
-                  1.025718                   4.042502 
-           continentEurope           continentOceania 
-                  2.352099                   2.704910 
-          I(1/(0.1 + age)) 
-                  1.028043 </code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="Chapter-4.html#cb33-1"></a><span class="kw">resettest</span>(logit4)</span></code></pre></div>
-<pre><code>
-    RESET test
-
-data:  logit4
-RESET = 75.368, df1 = 2, df2 = 5338, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="Chapter-4.html#cb35-1"></a><span class="kw">crPlots</span>(logit4)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="Chapter-4.html#cb36-1"></a>logit5 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>age <span class="op">+</span><span class="kw">I</span>(<span class="dv">1</span><span class="op">/</span>(<span class="fl">0.1</span><span class="op">+</span>age)) <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude, <span class="dt">data=</span>dat, </span>
-<span id="cb36-2"><a href="Chapter-4.html#cb36-2"></a>              <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb36-3"><a href="Chapter-4.html#cb36-3"></a><span class="kw">summary</span>(logit5)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ . - country - age + I(1/(0.1 + age)) - date - 
-    latitude - longitude, family = binomial(logit), data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--1.9112  -0.7956  -0.6485  -0.5462   3.3660  
-
-Coefficients:
-                           Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -0.37968    0.55595  -0.683   0.4946    
-sexmale                     0.46798    0.06653   7.035    2e-12 ***
-chronic_disease_binaryTRUE  2.63226    0.26352   9.989   &lt;2e-16 ***
-continentAsia              -1.06407    0.55564  -1.915   0.0555 .  
-continentEurope            -0.96595    0.76258  -1.267   0.2053    
-continentOceania           -2.18141    0.92486  -2.359   0.0183 *  
-I(1/(0.1 + age))           -0.42176    0.34692  -1.216   0.2241    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 5936.6  on 5347  degrees of freedom
-Residual deviance: 5722.7  on 5341  degrees of freedom
-AIC: 5736.7
-
-Number of Fisher Scoring iterations: 6</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="Chapter-4.html#cb38-1"></a><span class="kw">vif</span>(logit5)</span></code></pre></div>
-<pre><code>                   sexmale chronic_disease_binaryTRUE 
-                  1.003989                   1.003505 
-             continentAsia            continentEurope 
-                  4.040352                   2.349987 
-          continentOceania           I(1/(0.1 + age)) 
-                  2.704254                   1.000201 </code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="Chapter-4.html#cb40-1"></a><span class="kw">resettest</span>(logit5)</span></code></pre></div>
-<pre><code>
-    RESET test
-
-data:  logit5
-RESET = 2.497, df1 = 2, df2 = 5339, p-value = 0.08243</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="Chapter-4.html#cb42-1"></a><span class="co">#Elhagyható a magyarázóváltozók közül szinte az összes</span></span>
-<span id="cb42-2"><a href="Chapter-4.html#cb42-2"></a><span class="kw">linearHypothesis</span>(logit5, <span class="kw">c</span>(<span class="st">&quot;I(1/(0.1 + age))=0&quot;</span>, <span class="st">&quot;continentEurope=0&quot;</span>, <span class="st">&quot;continentAsia=0&quot;</span>, <span class="st">&quot;continentOceania=0&quot;</span>))</span></code></pre></div>
-<pre><code>Linear hypothesis test
-
-Hypothesis:
-I(1/(0.1  + age)) = 0
-continentEurope = 0
-continentAsia = 0
-continentOceania = 0
-
-Model 1: restricted model
-Model 2: died ~ (age + sex + country + chronic_disease_binary + latitude + 
-    longitude + continent + date) - country - age + I(1/(0.1 + 
-    age)) - date - latitude - longitude
-
-  Res.Df Df  Chisq Pr(&gt;Chisq)
-1   5345                     
-2   5341  4 7.4952     0.1119</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="Chapter-4.html#cb44-1"></a>logit6 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>.<span class="op">-</span>country <span class="op">-</span>continent <span class="op">-</span>age <span class="op">-</span>date <span class="op">-</span>latitude <span class="op">-</span>longitude, <span class="dt">data=</span>dat, </span>
-<span id="cb44-2"><a href="Chapter-4.html#cb44-2"></a>              <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb44-3"><a href="Chapter-4.html#cb44-3"></a><span class="kw">summary</span>(logit6)</span></code></pre></div>
-<pre><code>
-Call:
-glm(formula = died ~ . - country - continent - age - date - latitude - 
-    longitude, family = binomial(logit), data = dat)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--1.9143  -0.7952  -0.6461  -0.6461   1.8272  
-
-Coefficients:
-                           Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)                -1.46064    0.05146 -28.385  &lt; 2e-16 ***
-sexmale                     0.47137    0.06644   7.094  1.3e-12 ***
-chronic_disease_binaryTRUE  2.64704    0.26334  10.052  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 5936.6  on 5347  degrees of freedom
-Residual deviance: 5734.4  on 5345  degrees of freedom
-AIC: 5740.4
-
-Number of Fisher Scoring iterations: 4</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="Chapter-4.html#cb46-1"></a><span class="kw">resettest</span>(logit6)</span></code></pre></div>
-<pre><code>
-    RESET test
-
-data:  logit6
-RESET = 0.9037, df1 = 2, df2 = 5343, p-value = 0.4051</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="Chapter-4.html#cb48-1"></a><span class="co">#Az együtthatók jelentése</span></span>
-<span id="cb48-2"><a href="Chapter-4.html#cb48-2"></a><span class="kw">exp</span>(<span class="kw">coef</span>(logit6))</span></code></pre></div>
-<pre><code>               (Intercept)                    sexmale 
-                 0.2320868                  1.6021878 
-chronic_disease_binaryTRUE 
-                14.1121469 </code></pre>
-</div>
-<div id="előrejelzés-a-kiválasztott-modellel" class="section level3">
-<h3>Előrejelzés a kiválasztott modellel</h3>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="Chapter-4.html#cb50-1"></a>deathval &lt;-<span class="st"> </span><span class="kw">predict</span>(logit6, dat, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</span>
-<span id="cb50-2"><a href="Chapter-4.html#cb50-2"></a>dat<span class="op">$</span>deathval &lt;-<span class="st"> </span>deathval</span>
-<span id="cb50-3"><a href="Chapter-4.html#cb50-3"></a>dat<span class="op">$</span>becsult &lt;-<span class="st"> </span><span class="kw">ifelse</span>(deathval<span class="op">&gt;</span><span class="fl">0.5</span>, <span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)</span>
-<span id="cb50-4"><a href="Chapter-4.html#cb50-4"></a><span class="kw">xtabs</span>(<span class="op">~</span>died<span class="op">+</span>becsult, <span class="dt">data=</span>dat)</span></code></pre></div>
-<pre><code>       becsult
-died    FALSE TRUE
-  FALSE  4028   18
-  TRUE   1220   82</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="Chapter-4.html#cb52-1"></a><span class="co">#A modell 77%-ban helyes eredményt ad</span></span>
-<span id="cb52-2"><a href="Chapter-4.html#cb52-2"></a><span class="kw">sum</span>(dat<span class="op">$</span>died<span class="op">==</span>dat<span class="op">$</span>becsult)<span class="op">/</span><span class="kw">nrow</span>(dat)</span></code></pre></div>
-<pre><code>[1] 0.7685116</code></pre>
-<p>Optimális cut-off érték kiválasztása</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="Chapter-4.html#cb54-1"></a>ROCgorbe &lt;-<span class="st"> </span><span class="kw">roc</span>(dat<span class="op">$</span>died<span class="op">~</span>dat<span class="op">$</span>deathval)</span>
-<span id="cb54-2"><a href="Chapter-4.html#cb54-2"></a><span class="kw">plot</span>(ROCgorbe)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="Chapter-4.html#cb55-1"></a><span class="dv">2</span><span class="op">*</span><span class="kw">auc</span>(ROCgorbe)<span class="op">-</span><span class="dv">1</span></span></code></pre></div>
-<pre><code>[1] 0.1684161</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="Chapter-4.html#cb57-1"></a><span class="co">#Mivel csak 4 típusú kimenetel lehet a megmaradt változókból, </span></span>
-<span id="cb57-2"><a href="Chapter-4.html#cb57-2"></a><span class="co">#így a költségfüggvény is 5 értéket vesz fel</span></span>
-<span id="cb57-3"><a href="Chapter-4.html#cb57-3"></a>ytengely &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>sensitivities</span>
-<span id="cb57-4"><a href="Chapter-4.html#cb57-4"></a>xtengely &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>specificities</span>
-<span id="cb57-5"><a href="Chapter-4.html#cb57-5"></a>kuszob &lt;-<span class="st"> </span>ROCgorbe<span class="op">$</span>thresholds</span>
-<span id="cb57-6"><a href="Chapter-4.html#cb57-6"></a>seged &lt;-<span class="st"> </span><span class="kw">data.frame</span>(kuszob, xtengely, ytengely)</span>
-<span id="cb57-7"><a href="Chapter-4.html#cb57-7"></a><span class="kw">table</span>(dat<span class="op">$</span>died)</span></code></pre></div>
-<pre><code>
-FALSE  TRUE 
- 4046  1302 </code></pre>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="Chapter-4.html#cb59-1"></a>seged<span class="op">$</span>koltseg &lt;-<span class="st"> </span><span class="dv">4046</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>xtengely)<span class="op">+</span><span class="dv">1302</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>ytengely)</span>
+<div id="elemzés" class="section level2">
+<h2>Elemzés</h2>
+<p>A koronavírus eseményei és a vele kapcsolatos hírek megmutatják, hogy az emberek
+és a különböző médiumok hogyan viszonyulnak a pandémiához az idő elteltével.
+Ezen elemzéshez a <strong>Guardian napilap COVID-19-el kapcsolatos címeit gyűjtöttük össze</strong>.
+A körülbelül egy év szalagcímeit felölelő korpuszon bag of Words módszerrel a
+havonta és az egy év során leggyakoribb szavakat kerestük meg, sentiment analízissel
+pedig az AFINN szótár érzelmi skálája segítségével elemeztük a napi hírek korpuszait.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="Chapter-4.html#cb59-1"></a>nr_of_pages=<span class="dv">528</span></span>
 <span id="cb59-2"><a href="Chapter-4.html#cb59-2"></a></span>
-<span id="cb59-3"><a href="Chapter-4.html#cb59-3"></a><span class="kw">ggplot</span>(seged, <span class="kw">aes</span>(<span class="dt">x=</span>kuszob, <span class="dt">y=</span>koltseg))<span class="op">+</span><span class="kw">geom_point</span>()<span class="op">+</span><span class="kw">geom_smooth</span>()<span class="op">+</span><span class="kw">xlim</span>(<span class="dv">0</span>,<span class="dv">1</span>)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-19-2.png" width="672" />
-A függvény alapján a 0.5 lesz az optimális küszöbérték</p>
+<span id="cb59-3"><a href="Chapter-4.html#cb59-3"></a><span class="co">#521-ig lehetett visszamenni a keresésben</span></span>
+<span id="cb59-4"><a href="Chapter-4.html#cb59-4"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nr_of_pages) {</span>
+<span id="cb59-5"><a href="Chapter-4.html#cb59-5"></a>  URL &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;https://www.theguardian.com/world/coronavirus-outbreak+uk/uk?page=&quot;</span>, i, <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb59-6"><a href="Chapter-4.html#cb59-6"></a>  page &lt;-<span class="st"> </span><span class="kw">read_html</span>(URL)</span>
+<span id="cb59-7"><a href="Chapter-4.html#cb59-7"></a>  title &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.js-headline-text&quot;</span>))</span>
+<span id="cb59-8"><a href="Chapter-4.html#cb59-8"></a>  <span class="co">#Van olyan hogy egy lapon két dátum is szerepel, heti bontás miatt ez nem probléma</span></span>
+<span id="cb59-9"><a href="Chapter-4.html#cb59-9"></a>  time &lt;-<span class="st"> </span><span class="kw">html_text</span>(<span class="kw">html_nodes</span>(page, <span class="st">&quot;.fc-date-headline&quot;</span>))[<span class="dv">1</span>]</span>
+<span id="cb59-10"><a href="Chapter-4.html#cb59-10"></a>  <span class="cf">if</span> (i<span class="op">==</span><span class="dv">1</span>){</span>
+<span id="cb59-11"><a href="Chapter-4.html#cb59-11"></a>    data_raw &lt;-<span class="st"> </span><span class="kw">data.frame</span>(time, title) </span>
+<span id="cb59-12"><a href="Chapter-4.html#cb59-12"></a>  }</span>
+<span id="cb59-13"><a href="Chapter-4.html#cb59-13"></a>  <span class="cf">else</span>{</span>
+<span id="cb59-14"><a href="Chapter-4.html#cb59-14"></a>    data_raw &lt;-<span class="st"> </span><span class="kw">rbind</span>(data_raw, <span class="kw">data.frame</span>(time, title))  </span>
+<span id="cb59-15"><a href="Chapter-4.html#cb59-15"></a>  }</span>
+<span id="cb59-16"><a href="Chapter-4.html#cb59-16"></a>}</span></code></pre></div>
+<p>A Guardian honlapján a COVID keresőszóra nagyjából január 29-től kezdődően nagyjából
+1.05610^{4} cikk címet találtunk</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="Chapter-4.html#cb60-1"></a>data_cleansed &lt;-<span class="st"> </span>data_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">duplicated</span>(title)) <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">mutate</span>(., <span class="dt">id =</span> <span class="kw">seq</span>(<span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb60-2"><a href="Chapter-4.html#cb60-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb60-3"><a href="Chapter-4.html#cb60-3"></a>    <span class="dt">date =</span> <span class="kw">as.Date</span>(time, <span class="dt">format =</span> <span class="st">&quot;%d %B %Y&quot;</span>),</span>
+<span id="cb60-4"><a href="Chapter-4.html#cb60-4"></a>    <span class="dt">month =</span> <span class="kw">format</span>(date, <span class="st">&quot;%Y-%m&quot;</span>)</span>
+<span id="cb60-5"><a href="Chapter-4.html#cb60-5"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span></code></pre></div>
+<p>Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
+dataframebe, minden másodikat ki kellett törölni</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="Chapter-4.html#cb61-1"></a>data_cleansed &lt;-<span class="st"> </span>data_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">duplicated</span>(title)) <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw">mutate</span>(., <span class="dt">id =</span> <span class="kw">seq</span>(<span class="kw">nrow</span>(.)))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb61-2"><a href="Chapter-4.html#cb61-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb61-3"><a href="Chapter-4.html#cb61-3"></a>    <span class="dt">date =</span> <span class="kw">as.Date</span>(time, <span class="dt">format =</span> <span class="st">&quot;%d %B %Y&quot;</span>),</span>
+<span id="cb61-4"><a href="Chapter-4.html#cb61-4"></a>    <span class="dt">month =</span> <span class="kw">format</span>(date, <span class="st">&quot;%Y-%m&quot;</span>)</span>
+<span id="cb61-5"><a href="Chapter-4.html#cb61-5"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span></code></pre></div>
+<div id="bag-of-words" class="section level3">
+<h3>Bag of Words</h3>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="Chapter-4.html#cb62-1"></a>corpus_raw &lt;-<span class="st"> </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed<span class="op">$</span>title)))</span>
+<span id="cb62-2"><a href="Chapter-4.html#cb62-2"></a></span>
+<span id="cb62-3"><a href="Chapter-4.html#cb62-3"></a><span class="co">#Korpusz tisztítása</span></span>
+<span id="cb62-4"><a href="Chapter-4.html#cb62-4"></a>corpus_filtered &lt;-<span class="st"> </span>corpus_raw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb62-5"><a href="Chapter-4.html#cb62-5"></a><span class="st">  </span><span class="kw">tm_map</span>(stripWhitespace) <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">tm_map</span>(removeNumbers) <span class="op">%&gt;%</span></span>
+<span id="cb62-6"><a href="Chapter-4.html#cb62-6"></a><span class="st">  </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb62-7"><a href="Chapter-4.html#cb62-7"></a><span class="st">  </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>, <span class="st">&quot;will&quot;</span>))</span></code></pre></div>
+<p>A korpusz szokásos tisztítása közben voltak olyan stopwordok, amelyeket mi adtunk hozzá,
+majd a strukturált mátrix és a fogalmak eloszlását vizsgáltuk a teljes korpuszban</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="Chapter-4.html#cb63-1"></a>termdocument &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb63-2"><a href="Chapter-4.html#cb63-2"></a>documentterm &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">DocumentTermMatrix</span>(corpus_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb63-3"><a href="Chapter-4.html#cb63-3"></a>words_frequency_all &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Words=</span><span class="kw">row.names</span>(<span class="kw">as.matrix</span>(termdocument)),</span>
+<span id="cb63-4"><a href="Chapter-4.html#cb63-4"></a>                                  <span class="dt">Freq=</span><span class="kw">rowSums</span>(<span class="kw">as.matrix</span>(termdocument), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb63-5"><a href="Chapter-4.html#cb63-5"></a></span>
+<span id="cb63-6"><a href="Chapter-4.html#cb63-6"></a>freqterms &lt;-<span class="st"> </span><span class="kw">findFreqTerms</span>(documentterm, <span class="dt">lowfreq =</span> <span class="dv">100</span>)</span>
+<span id="cb63-7"><a href="Chapter-4.html#cb63-7"></a><span class="kw">ggwordcloud</span>(words_frequency_all<span class="op">$</span>Words, words_frequency_all<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/basic_matrices-1.png" width="672" />
+A havonta leggyakoribb szavakat vizsgáltuk egy ciklusban, amely a havi korpuszokat
+megtisztítja és elemzi</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="Chapter-4.html#cb64-1"></a>data_cleansed_monthly &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(month) <span class="op">%&gt;%</span></span>
+<span id="cb64-2"><a href="Chapter-4.html#cb64-2"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">monthly_text =</span> <span class="kw">paste</span>(title, <span class="dt">collapse =</span> <span class="st">&quot; &quot;</span>))</span>
+<span id="cb64-3"><a href="Chapter-4.html#cb64-3"></a></span>
+<span id="cb64-4"><a href="Chapter-4.html#cb64-4"></a><span class="co">#Táblázat létrehozása</span></span>
+<span id="cb64-5"><a href="Chapter-4.html#cb64-5"></a>words_monthly &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="kw">nrow</span>(data_cleansed_monthly), <span class="dt">nrow=</span><span class="dv">15</span>))</span>
+<span id="cb64-6"><a href="Chapter-4.html#cb64-6"></a><span class="kw">colnames</span>(words_monthly) &lt;-<span class="st"> </span>data_cleansed_monthly<span class="op">$</span>month</span>
+<span id="cb64-7"><a href="Chapter-4.html#cb64-7"></a></span>
+<span id="cb64-8"><a href="Chapter-4.html#cb64-8"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(data_cleansed_monthly)){</span>
+<span id="cb64-9"><a href="Chapter-4.html#cb64-9"></a>  <span class="co">#Corpus létrehozása</span></span>
+<span id="cb64-10"><a href="Chapter-4.html#cb64-10"></a>  corpus_monthly_raw &lt;-<span class="st"> </span></span>
+<span id="cb64-11"><a href="Chapter-4.html#cb64-11"></a><span class="st">    </span><span class="kw">Corpus</span>(<span class="kw">VectorSource</span>(<span class="kw">as.character</span>(data_cleansed_monthly<span class="op">$</span>monthly_text[i])))</span>
+<span id="cb64-12"><a href="Chapter-4.html#cb64-12"></a>  <span class="co">#Korpusz tisztítása</span></span>
+<span id="cb64-13"><a href="Chapter-4.html#cb64-13"></a>  corpus_monthly_filtered &lt;-<span class="st"> </span>corpus_monthly_raw <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-14"><a href="Chapter-4.html#cb64-14"></a><span class="st">    </span><span class="kw">tm_map</span>(<span class="kw">content_transformer</span>(tolower)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-15"><a href="Chapter-4.html#cb64-15"></a><span class="st">    </span><span class="kw">tm_map</span>(removePunctuation, <span class="dt">ucp=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-16"><a href="Chapter-4.html#cb64-16"></a><span class="st">    </span><span class="kw">tm_map</span>(removeNumbers)  <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-17"><a href="Chapter-4.html#cb64-17"></a><span class="st">    </span><span class="kw">tm_map</span>(removeWords, <span class="kw">c</span>(<span class="kw">stopwords</span>(<span class="st">&quot;english&quot;</span>), <span class="st">&quot;also&quot;</span>, <span class="st">&quot;one&quot;</span>, <span class="st">&quot;will&quot;</span>))</span>
+<span id="cb64-18"><a href="Chapter-4.html#cb64-18"></a>  <span class="co">#%&gt;% tm_map(stemDocument)</span></span>
+<span id="cb64-19"><a href="Chapter-4.html#cb64-19"></a>  </span>
+<span id="cb64-20"><a href="Chapter-4.html#cb64-20"></a>  <span class="co">#Term-Document mátrix létrehozása a 10 leggyakoribb szó miatt</span></span>
+<span id="cb64-21"><a href="Chapter-4.html#cb64-21"></a>  matrix_monthly &lt;-<span class="st"> </span><span class="kw">removeSparseTerms</span>(<span class="kw">TermDocumentMatrix</span>(corpus_monthly_filtered), <span class="fl">0.999</span>)</span>
+<span id="cb64-22"><a href="Chapter-4.html#cb64-22"></a>  words_frequency &lt;-<span class="st"> </span></span>
+<span id="cb64-23"><a href="Chapter-4.html#cb64-23"></a><span class="st">    </span><span class="kw">data.frame</span>(<span class="dt">Words =</span> matrix_monthly<span class="op">$</span>dimnames<span class="op">$</span>Terms, <span class="dt">Freq =</span> matrix_monthly<span class="op">$</span>v)</span>
+<span id="cb64-24"><a href="Chapter-4.html#cb64-24"></a>  words_monthly[,data_cleansed_monthly<span class="op">$</span>month[i]]&lt;-<span class="st"> </span></span>
+<span id="cb64-25"><a href="Chapter-4.html#cb64-25"></a><span class="st">    </span><span class="kw">head</span>(words_frequency[<span class="kw">order</span>(<span class="op">-</span>words_frequency<span class="op">$</span>Freq),]<span class="op">$</span>Words,<span class="dv">15</span>)</span>
+<span id="cb64-26"><a href="Chapter-4.html#cb64-26"></a>  </span>
+<span id="cb64-27"><a href="Chapter-4.html#cb64-27"></a>  <span class="co">#Szófelhők készítése, a corpus nagyságától függően</span></span>
+<span id="cb64-28"><a href="Chapter-4.html#cb64-28"></a>  <span class="kw">plot</span>(<span class="kw">ggwordcloud</span>(words_frequency<span class="op">$</span>Words, words_frequency<span class="op">$</span>Freq, <span class="dt">max.words =</span> <span class="dv">100</span>)<span class="op">+</span></span>
+<span id="cb64-29"><a href="Chapter-4.html#cb64-29"></a><span class="st">         </span><span class="kw">ggtitle</span>(data_cleansed_monthly<span class="op">$</span>month[i]))</span>
+<span id="cb64-30"><a href="Chapter-4.html#cb64-30"></a>  <span class="co">#wordcloud(corpus_monthly_filtered, max.words=0.1*matrix_monthly$nrow)</span></span>
+<span id="cb64-31"><a href="Chapter-4.html#cb64-31"></a>}</span></code></pre></div>
+<p><img src="my-book_files/figure-html/monthly_analysis_and_wordclouds-.gif" width="672" /></p>
+<p><strong>A havonta 15 leggyakoribb szó a Guardian címeiben.</strong><br />
+Színekkel a teljes korpusz leggyakoribb szavait jelöltük</p>
+<div id="htmlwidget-5c34732e9abcb0236779" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5c34732e9abcb0236779">{"x":{"filter":"none","fillContainer":true,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"],["coronavirus","britons","china","british","cruise","ship","happened","quarantine","wuhan","cases","fears","leave","chinese","flight","hospital"],["coronavirus","covid","crisis","lockdown","nhs","johnson","boris","says","video","government","happened","amid","people","help","home"],["coronavirus","covid","lockdown","nhs","crisis","says","video","boris","johnson","care","home","workers","government","happened","staff"],["coronavirus","lockdown","covid","cummings","says","johnson","boris","dominic","crisis","nhs","care","government","people","happened","england"],["coronavirus","covid","lockdown","england","boris","says","johnson","happened","people","new","crisis","face","say","video","public"],["covid","coronavirus","lockdown","england","boris","says","johnson","happened","face","masks","video","care","new","government","english"],["covid","coronavirus","england","lockdown","happened","schools","says","boris","johnson","new","crisis","face","quarantine","cases","help"],["covid","coronavirus","england","says","new","johnson","boris","cases","lockdown","happened","rules","rise","people","restrictions","second"],["covid","england","lockdown","coronavirus","says","johnson","happened","boris","tier","new","government","restrictions","cases","rules","englands"],["covid","lockdown","england","vaccine","says","christmas","johnson","new","coronavirus","happened","boris","video","people","nhs","englands"],["covid","christmas","vaccine","england","new","says","tier","boris","video","johnson","rules","coronavirus","happened","lockdown","restrictions"]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>2020-02<\/th>\n      <th>2020-03<\/th>\n      <th>2020-04<\/th>\n      <th>2020-05<\/th>\n      <th>2020-06<\/th>\n      <th>2020-07<\/th>\n      <th>2020-08<\/th>\n      <th>2020-09<\/th>\n      <th>2020-10<\/th>\n      <th>2020-11<\/th>\n      <th>2020-12<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":15,"scrollX":"400px","dom":"t","order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[10,15,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[6]; $(this.api().cell(row, 6).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[7]; $(this.api().cell(row, 7).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[8]; $(this.api().cell(row, 8).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[9]; $(this.api().cell(row, 9).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[10]; $(this.api().cell(row, 10).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\nvar value=data[11]; $(this.api().cell(row, 11).node()).css({'font-weight':'bold','background':value == \"covid\" ? \"#EF4868\" : value == \"coronavirus\" ? \"#F5515D\" : value == \"lockdown\" ? \"#F56055\" : value == \"england\" ? \"#F56E4F\" : value == \"says\" ? \"#F57A4A\" : value == \"johnson\" ? \"#F58548\" : value == \"boris\" ? \"#F49049\" : value == \"happened\" ? \"#F39B4C\" : value == \"video\" ? \"#F2A552\" : value == \"new\" ? \"#F1AE5B\" : value == \"crisis\" ? \"#EFB865\" : value == \"nhs\" ? \"#EEC071\" : value == \"people\" ? \"#EDC97E\" : value == \"government\" ? \"#ECD18B\" : value == \"care\" ? \"#ECD999\" : value,'font-size':'9.5pt'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<p>A táblázatból az alábbi információk olvashatóak le:<br />
+-<strong>a január-februári időszakban az Egyesült Királysággal még kevésbé foglalkoztak a cikkek</strong><br />
+-<strong>a következő időszakban Nagy-Britannia miniszterelnöke és az ott bevezetett tier alapú módszer külcsszavai is előkerültek</strong><br />
+-<strong>a karácsonyi lezárások már novemberben is közbeszéd alapja voltak</strong>
+-<strong>a kezdeti ‘coronavirus’ kifejezésről fokozatosan állt át a Guardian az egyszerűbb, COVID betűszóra</strong><br />
+</p>
+</div>
+<div id="sentiment-elemzés" class="section level3">
+<h3>Sentiment elemzés</h3>
+<p>A sentiment elemzésben a napi címekből, az AFINN szótár érzelmi skálájának felhasználásával készült<br />
+A grafikonokon pedig az érzelmet tartalmazó szavak számát és a napi átlagokat ábrázoltuk</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="Chapter-4.html#cb65-1"></a><span class="co">#AFINN lexikon betöltése</span></span>
+<span id="cb65-2"><a href="Chapter-4.html#cb65-2"></a>AFINN &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>)</span>
+<span id="cb65-3"><a href="Chapter-4.html#cb65-3"></a></span>
+<span id="cb65-4"><a href="Chapter-4.html#cb65-4"></a>data_cleansed &lt;-<span class="st"> </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-5"><a href="Chapter-4.html#cb65-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb65-6"><a href="Chapter-4.html#cb65-6"></a>    <span class="dt">title =</span> <span class="kw">as.character</span>(title)</span>
+<span id="cb65-7"><a href="Chapter-4.html#cb65-7"></a>  )</span>
+<span id="cb65-8"><a href="Chapter-4.html#cb65-8"></a></span>
+<span id="cb65-9"><a href="Chapter-4.html#cb65-9"></a></span>
+<span id="cb65-10"><a href="Chapter-4.html#cb65-10"></a><span class="co">#Szavakra bontás, pontszámok összeaggregálása</span></span>
+<span id="cb65-11"><a href="Chapter-4.html#cb65-11"></a>words &lt;-<span class="st"> </span><span class="kw">left_join</span>(</span>
+<span id="cb65-12"><a href="Chapter-4.html#cb65-12"></a>  tidytext<span class="op">::</span><span class="kw">unnest_tokens</span>(data_cleansed, words, title), AFINN, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;words&quot;</span>=<span class="st">&quot;word&quot;</span>))</span>
+<span id="cb65-13"><a href="Chapter-4.html#cb65-13"></a>nr_sentiment_words &lt;-<span class="st"> </span></span>
+<span id="cb65-14"><a href="Chapter-4.html#cb65-14"></a><span class="st">  </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">non_na_count =</span> <span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(value)))</span>
+<span id="cb65-15"><a href="Chapter-4.html#cb65-15"></a>score_by_id &lt;-<span class="st"> </span>words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score=</span><span class="kw">sum</span>(value, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span>
+<span id="cb65-16"><a href="Chapter-4.html#cb65-16"></a></span>
+<span id="cb65-17"><a href="Chapter-4.html#cb65-17"></a><span class="co">#Eredeti adatok mellé rakás</span></span>
+<span id="cb65-18"><a href="Chapter-4.html#cb65-18"></a>data_cleansed &lt;-<span class="st"> </span><span class="kw">left_join</span>(data_cleansed, score_by_id, <span class="dt">by=</span><span class="st">&quot;id&quot;</span>)</span>
+<span id="cb65-19"><a href="Chapter-4.html#cb65-19"></a></span>
+<span id="cb65-20"><a href="Chapter-4.html#cb65-20"></a><span class="co">#Napi (és heti) aggregálás</span></span>
+<span id="cb65-21"><a href="Chapter-4.html#cb65-21"></a>score_by_day &lt;-<span class="st"> </span></span>
+<span id="cb65-22"><a href="Chapter-4.html#cb65-22"></a><span class="st">  </span>data_cleansed <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">score_sum=</span><span class="kw">sum</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>), <span class="dt">score_avg=</span><span class="kw">mean</span>(score, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</span></code></pre></div>
+<p><strong>Grafikonok</strong></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="Chapter-4.html#cb66-1"></a>deaths_in_uk &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data_2020-Dec-29.csv&quot;</span>, </span>
+<span id="cb66-2"><a href="Chapter-4.html#cb66-2"></a>    <span class="dt">col_types =</span> <span class="kw">cols_only</span>(<span class="dt">date =</span> <span class="kw">col_guess</span>(), </span>
+<span id="cb66-3"><a href="Chapter-4.html#cb66-3"></a>        <span class="dt">newDeaths28DaysByDeathDate =</span> <span class="kw">col_guess</span>()))</span></code></pre></div>
+<pre><code>Error: &#39;data_2020-Dec-29.csv&#39; does not exist in current working directory (&#39;C:/rproject/COVID&#39;).</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="Chapter-4.html#cb68-1"></a>nr_sentiment_words &lt;-<span class="st"> </span><span class="kw">merge</span>(nr_sentiment_words, deaths_in_uk, <span class="dt">by=</span><span class="st">&quot;date&quot;</span>)</span></code></pre></div>
+<pre><code>Error in as.data.frame(y): object &#39;deaths_in_uk&#39; not found</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="Chapter-4.html#cb70-1"></a>coeff=<span class="dv">10</span></span>
+<span id="cb70-2"><a href="Chapter-4.html#cb70-2"></a></span>
+<span id="cb70-3"><a href="Chapter-4.html#cb70-3"></a><span class="kw">ggplot</span>(nr_sentiment_words, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb70-4"><a href="Chapter-4.html#cb70-4"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">size=</span>.<span class="dv">5</span>, <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>)<span class="op">+</span></span>
+<span id="cb70-5"><a href="Chapter-4.html#cb70-5"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">y =</span> newDeaths28DaysByDeathDate<span class="op">/</span>coeff), <span class="dt">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="dt">size=</span>.<span class="dv">1</span>, <span class="dt">fill=</span><span class="st">&quot;steelblue&quot;</span>, <span class="dt">alpha=</span>.<span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb70-6"><a href="Chapter-4.html#cb70-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">y=</span>non_na_count), <span class="dt">method=</span><span class="st">&quot;loess&quot;</span>, <span class="dt">colour=</span><span class="st">&quot;#0fad04&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></span>
+<span id="cb70-7"><a href="Chapter-4.html#cb70-7"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
+<span id="cb70-8"><a href="Chapter-4.html#cb70-8"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>) <span class="op">+</span></span>
+<span id="cb70-9"><a href="Chapter-4.html#cb70-9"></a><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="dt">date_labels =</span> <span class="st">&quot;%Y %m&quot;</span>) <span class="op">+</span></span>
+<span id="cb70-10"><a href="Chapter-4.html#cb70-10"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(</span>
+<span id="cb70-11"><a href="Chapter-4.html#cb70-11"></a>    <span class="dt">name =</span> <span class="st">&quot;Érzelmi szavak száma naponta&quot;</span>,</span>
+<span id="cb70-12"><a href="Chapter-4.html#cb70-12"></a>    <span class="dt">sec.axis =</span> <span class="kw">sec_axis</span>(<span class="op">~</span>.<span class="op">*</span>coeff, <span class="dt">name=</span><span class="st">&quot;Napi halálozások száma&quot;</span>)</span>
+<span id="cb70-13"><a href="Chapter-4.html#cb70-13"></a>  )</span></code></pre></div>
+<pre><code>Error in FUN(X[[i]], ...): object &#39;newDeaths28DaysByDeathDate&#39; not found</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="Chapter-4.html#cb72-1"></a><span class="kw">ggplot</span>(score_by_day, <span class="kw">aes</span>(<span class="dt">x=</span>date)) <span class="op">+</span></span>
+<span id="cb72-2"><a href="Chapter-4.html#cb72-2"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">color=</span><span class="st">&quot;#0fad04&quot;</span>) <span class="op">+</span></span>
+<span id="cb72-3"><a href="Chapter-4.html#cb72-3"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="kw">aes</span>(<span class="dt">y=</span>score_avg), <span class="dt">method=</span><span class="st">&quot;loess&quot;</span>, <span class="dt">colour=</span><span class="st">&quot;#0fad04&quot;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></span>
+<span id="cb72-4"><a href="Chapter-4.html#cb72-4"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>, <span class="dt">color=</span><span class="st">&quot;black&quot;</span>, <span class="dt">size=</span>.<span class="dv">75</span>) <span class="op">+</span></span>
+<span id="cb72-5"><a href="Chapter-4.html#cb72-5"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Dátum&quot;</span>)  <span class="op">+</span></span>
+<span id="cb72-6"><a href="Chapter-4.html#cb72-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Átlagos napi érzelmi pontszám&quot;</span>) <span class="op">+</span></span>
+<span id="cb72-7"><a href="Chapter-4.html#cb72-7"></a><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>, <span class="dt">date_labels =</span> <span class="st">&quot;%Y %m&quot;</span>) <span class="op">+</span></span>
+<span id="cb72-8"><a href="Chapter-4.html#cb72-8"></a><span class="st">  </span><span class="kw">ylim</span>(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/plotting_sentiments-1.png" width="672" /></p>
+<p>A grafikonokról el lehet mondani, hogy az érzelemmel töltött szavak száma áprilisban tetőzött.<br />
+A brit kormány ekkor kezdte el bevezetni a szigorúbb intézkedéseit, Európában az egyik legutolsóként, a halottak száma pedig . Ez a tény pedig
+az erősen liberális Guardian lapnál valószínűleg erős érzelmeket válthatott ki.</p>
+<p>Az átlagos érzelmi töltet ugyanakkor viszonylag stabilan növekedik, amely a vakcina megjelenésének
+és az emberek vírushoz való hozzászokásának lehet köszönhető.</p>
 
 </div>
 </div>
 </div>
+
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="Chapter-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="Chapter-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Chapter-3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -657,7 +395,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/MarcellGranat/COVID/blob/main/Chapter-3.Rmd",
+"link": "https://github.com/MarcellGranat/COVID/blob/main/Chapter-4.Rmd",
 "text": "Jump to GitHub"
 },
 "history": {
