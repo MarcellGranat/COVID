@@ -1,4 +1,4 @@
-# Szövegelemzés {#Chapter-4}
+#  Szövegelemzés {#Chapter-4}
 
 ```{css, echo=FALSE}
 p {
@@ -7,7 +7,7 @@ p {
 ```
 
 
-```{r include=FALSE}
+```{r, include=FALSE}
 #AFINN szótárhoz
 library(tidytext)
 library(textdata)
@@ -33,6 +33,7 @@ Sys.setlocale("LC_TIME", "C")
 ```
 
 ## Elemzés
+
 A koronavírus eseményei és a vele kapcsolatos hírek megmutatják, hogy az emberek
 és a különböző médiumok hogyan viszonyulnak a pandémiához az idő elteltével.
 Ezen elemzéshez a **Guardian napilap COVID-19-el kapcsolatos címeit gyűjtöttük össze**.
@@ -41,10 +42,9 @@ havonta és az egy év során leggyakoribb szavakat kerestük meg, sentiment ana
 pedig az AFINN szótár érzelmi skálája segítségével elemeztük a napi hírek korpuszait.
 
 
-
 ```{r get_headlines, warning=FALSE}
 
-nr_of_pages=528
+nr_of_pages=22
 
 #521-ig lehetett visszamenni a keresésben
 for (i in 1:nr_of_pages) {
@@ -67,18 +67,6 @@ A Guardian honlapján a COVID keresőszóra nagyjából január 29-től kezdőd�
 
 ```{r cleanse_headlines, warning=FALSE, message = FALSE}
 
-data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
-  mutate(
-    date = as.Date(time, format = "%d %B %Y"),
-    month = format(date, "%Y-%m")
-  ) %>% na.omit()
-```
-
-
-Mivel nem volt olyan CSS kód ami egyértelműen jelölte volna ki a címeket, így duplikálva kerültek be a
-dataframebe, minden másodikat ki kellett törölni
-
-```{r}
 data_cleansed <- data_raw %>% filter(!duplicated(title)) %>% {mutate(., id = seq(nrow(.)))} %>% 
   mutate(
     date = as.Date(time, format = "%d %B %Y"),
@@ -109,6 +97,7 @@ words_frequency_all <- data.frame(Words=row.names(as.matrix(termdocument)),
 freqterms <- findFreqTerms(documentterm, lowfreq = 100)
 ggwordcloud(words_frequency_all$Words, words_frequency_all$Freq, max.words = 100)
 ```
+
 A havonta leggyakoribb szavakat vizsgáltuk egy ciklusban, amely a havi korpuszokat
 megtisztítja és elemzi
 
@@ -146,6 +135,7 @@ for (i in 1:nrow(data_cleansed_monthly)){
 }
 ```
 
+
 **A havonta 15 leggyakoribb szó a Guardian címeiben.**\
 Színekkel a teljes korpusz leggyakoribb szavait jelöltük
 
@@ -154,7 +144,7 @@ Színekkel a teljes korpusz leggyakoribb szavait jelöltük
 color_freq_terms <- data.frame(words = head(words_frequency_all[order(-words_frequency_all$Freq),]$Words,15), 
                                colors=sequential_hcl(15, palette = "OrYel"))
 
-datatable(words_monthly, filter = "none", options = list(pageLength=15, scrollX='400px', dom = 't'), fillContainer = TRUE) %>% formatStyle(names(words_monthly), font="bold", fontSize = '9.5pt', background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
+datatable(words_monthly, filter = "none", options = list(pageLength=15, scrollX='400px', scrollY='400px', dom='t'), fillContainer = TRUE) %>% formatStyle(names(words_monthly), font="bold", fontSize = '9.5pt', background = styleEqual(as.vector(color_freq_terms$words), as.vector(color_freq_terms$colors)))
 ```
 
 A táblázatból az alábbi információk olvashatóak le:\
@@ -162,7 +152,6 @@ A táblázatból az alábbi információk olvashatóak le:\
 -**a következő időszakban Nagy-Britannia miniszterelnöke és az ott bevezetett tier alapú módszer külcsszavai is előkerültek**\
 -**a karácsonyi lezárások már novemberben is közbeszéd alapja voltak**
 -**a kezdeti 'coronavirus' kifejezésről fokozatosan állt át a Guardian az egyszerűbb, COVID betűszóra**\
-
 
 
 ### Sentiment elemzés
@@ -194,7 +183,6 @@ score_by_day <-
   data_cleansed %>% group_by(date) %>% summarize(score_sum=sum(score, na.rm=TRUE), score_avg=mean(score, na.rm=TRUE))
 
 ```
-
 
 **Grafikonok**
 ```{r plotting_sentiments, warning=FALSE}
@@ -235,4 +223,3 @@ az erősen liberális Guardian lapnál valószínűleg erős érzelmeket váltha
 
 Az átlagos érzelmi töltet ugyanakkor viszonylag stabilan növekedik, amely a vakcina megjelenésének
 és az emberek vírushoz való hozzászokásának lehet köszönhető.
-
