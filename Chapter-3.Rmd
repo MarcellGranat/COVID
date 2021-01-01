@@ -81,6 +81,7 @@ használjuk, így a kontinens változóját nem, csak az országokét használtu
 ## Logit modell kalibrálása
 
 ### Outlierek és VIF mutató szerinti elemzés
+
 ```{r, warning=FALSE, echo=FALSE}
 data_Asia$date <- NULL
 data_Asia <- na.omit(data_Asia)

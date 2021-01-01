@@ -70,7 +70,9 @@ dat %>%
   mutate(
     continent = countrycode::countrycode(country, origin = 'country.name',
                                          destination = 'continent'),
-    date = lubridate::dmy(date_confirmation),
+    date = as.numeric(difftime(time1 = lubridate::dmy(date_confirmation), 
+                               time2 = lubridate::dmy("01/01/2020"), 
+                               units = 'days')),
     age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
   ) %>% 
     mutate( # cleaning the depedent var
@@ -148,15 +150,17 @@ Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrés
     columns = 'n/sum(n)',
     ) %>% 
   summary_rows(groups = T, columns = vars(n), fns = list(TOTAL = 'sum')) %>% 
-  summary_rows(groups = T, columns = vars('n/sum(n)'), fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
+  summary_rows(groups = T, columns = vars('n/sum(n)'), 
+               fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
   tab_options(
     summary_row.background.color = "#ACEACE",
     row_group.background.color = "#FFEFDB"
   ) %>% 
-  tab_header(title = 'Megfigyelések száma országonként', subtitle = 'Elsődleges adattisztítás után')
+  tab_header(title = 'Megfigyelések száma országonként', 
+             subtitle = 'Elsődleges adattisztítás után')
 ```
 
-A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).
+A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}). Indiára való kontrolálás elméleti megfontolásból is helyesnek hangzik, figyelembe véve, hogy az ország rendkívül szegény, a városok zsúfoltak, orvosokból és felszerelésből, pedig hiány van. Korábban a spanyol nátha idején is kiugróan magas volt Indiában a halálozás^[https://www.economist.com/asia/2020/03/21/if-covid-19-takes-hold-in-india-the-toll-will-be-grim].
 
 ```{r add india}
 dat %>% 
@@ -177,18 +181,13 @@ dat %>%
 ## Modellbecslés
 
 ```{r rpart1, fig.height=4}
-dat %>% 
-  rpart::rpart(formula = died ~ ., cp = .01) %>% # TODO tune cp
-  rattle::fancyRpartPlot(palettes = 'OrRd',
-                         sub = 'cp = .01', main = '1. döntési fa') 
+rpart1 <- rpart::rpart(dat, formula = died ~ ., cp = .01)
+
+rattle::fancyRpartPlot(rpart1, palettes = 'OrRd',
+                       sub = 'cp = .01', main = '1. döntési fa')
 ```
 
-```{r rpart2, fig.height=4}
-dat %>% 
-  rpart::rpart(formula = died ~ ., cp = .003) %>% # TODO tune cp
-  rattle::fancyRpartPlot(palettes = 'OrRd',
-                         sub = 'cp = .003', main = '1. döntési fa') 
-```
+A komplexitási paraméter .01-nek választva a döntési fánk egyetlen bontásból áll: **"Kisebb-e az életkor, mint 60?"**. Az eredmény validálható is azzal, ha megfigyeljük, hogy miként változik a mintában szereplő halálozási ráta életkoroknként.
 
 ```{r}
 dat %>% 
@@ -200,10 +199,18 @@ dat %>%
   labs(title = 'Az életkor és a halálozási ráta között összefüggés', x = 'életkor', y = 'halálozási ráta')
 ```
 
-```{r}
-dat %>% 
-  mutate(
-    date = as.numeric(difftime(date, lubridate::dmy("01/01/2020"), units = 'days'))
-  )
+
+
+Mindazonáltal ismerve, hogy a megfigyelések `r scales::percent(1-mean(dat$died), accuracy = 1, decimal.mark = ',')`-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.
+
+
+```{r rpart2, fig.height=7}
+rpart2 <- rpart::rpart(dat, formula = died ~ ., cp = .003)
+  
+rattle::fancyRpartPlot(rpart2, palettes = 'OrRd', # plot
+                         sub = 'cp = .003', main = '2. döntési fa') 
 ```
+
+
+
 

@@ -152,6 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#outlierek-és-vif-mutató-szerinti-elemzés"><i class="fa fa-check"></i>Outlierek és VIF mutató szerinti elemzés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Szövegelemzés</a><ul>
@@ -159,6 +160,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#bag-of-words"><i class="fa fa-check"></i>Bag of Words</a></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#sentiment-elemzés"><i class="fa fa-check"></i>Sentiment elemzés</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
 </ul></li>
 </ul>
 
@@ -757,36 +761,38 @@ p {
 <span id="cb4-4"><a href="Chapter-2.html#cb4-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
 <span id="cb4-5"><a href="Chapter-2.html#cb4-5"></a>    <span class="dt">continent =</span> countrycode<span class="op">::</span><span class="kw">countrycode</span>(country, <span class="dt">origin =</span> <span class="st">&#39;country.name&#39;</span>,</span>
 <span id="cb4-6"><a href="Chapter-2.html#cb4-6"></a>                                         <span class="dt">destination =</span> <span class="st">&#39;continent&#39;</span>),</span>
-<span id="cb4-7"><a href="Chapter-2.html#cb4-7"></a>    <span class="dt">date =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(date_confirmation),</span>
-<span id="cb4-8"><a href="Chapter-2.html#cb4-8"></a>    <span class="dt">age =</span> <span class="kw">as.numeric</span>(<span class="kw">ifelse</span>(<span class="kw">str_detect</span>(age, <span class="st">&#39;-&#39;</span>), <span class="ot">NA</span>, age))</span>
-<span id="cb4-9"><a href="Chapter-2.html#cb4-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-10"><a href="Chapter-2.html#cb4-10"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
-<span id="cb4-11"><a href="Chapter-2.html#cb4-11"></a>    <span class="dt">outcome =</span> <span class="kw">case_when</span>(</span>
-<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a>      outcome <span class="op">==</span><span class="st"> &#39;death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-13"><a href="Chapter-2.html#cb4-13"></a>      outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>, </span>
-<span id="cb4-14"><a href="Chapter-2.html#cb4-14"></a>      outcome <span class="op">==</span><span class="st"> &#39;Death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-15"><a href="Chapter-2.html#cb4-15"></a>      outcome <span class="op">==</span><span class="st"> &#39;dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-16"><a href="Chapter-2.html#cb4-16"></a>      outcome <span class="op">==</span><span class="st"> &#39;Dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-17"><a href="Chapter-2.html#cb4-17"></a>      outcome <span class="op">==</span><span class="st"> &#39;Died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-18"><a href="Chapter-2.html#cb4-18"></a>      outcome <span class="op">==</span><span class="st"> &#39;Deceased&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-19"><a href="Chapter-2.html#cb4-19"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharge&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-20"><a href="Chapter-2.html#cb4-20"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-21"><a href="Chapter-2.html#cb4-21"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-22"><a href="Chapter-2.html#cb4-22"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged from hospital&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-23"><a href="Chapter-2.html#cb4-23"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-24"><a href="Chapter-2.html#cb4-24"></a>      outcome <span class="op">==</span><span class="st"> &#39;released from quarantine&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-7"><a href="Chapter-2.html#cb4-7"></a>    <span class="dt">date =</span> <span class="kw">as.numeric</span>(<span class="kw">difftime</span>(<span class="dt">time1 =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(date_confirmation), </span>
+<span id="cb4-8"><a href="Chapter-2.html#cb4-8"></a>                               <span class="dt">time2 =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(<span class="st">&quot;01/01/2020&quot;</span>), </span>
+<span id="cb4-9"><a href="Chapter-2.html#cb4-9"></a>                               <span class="dt">units =</span> <span class="st">&#39;days&#39;</span>)),</span>
+<span id="cb4-10"><a href="Chapter-2.html#cb4-10"></a>    <span class="dt">age =</span> <span class="kw">as.numeric</span>(<span class="kw">ifelse</span>(<span class="kw">str_detect</span>(age, <span class="st">&#39;-&#39;</span>), <span class="ot">NA</span>, age))</span>
+<span id="cb4-11"><a href="Chapter-2.html#cb4-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
+<span id="cb4-13"><a href="Chapter-2.html#cb4-13"></a>    <span class="dt">outcome =</span> <span class="kw">case_when</span>(</span>
+<span id="cb4-14"><a href="Chapter-2.html#cb4-14"></a>      outcome <span class="op">==</span><span class="st"> &#39;death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-15"><a href="Chapter-2.html#cb4-15"></a>      outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>, </span>
+<span id="cb4-16"><a href="Chapter-2.html#cb4-16"></a>      outcome <span class="op">==</span><span class="st"> &#39;Death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-17"><a href="Chapter-2.html#cb4-17"></a>      outcome <span class="op">==</span><span class="st"> &#39;dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-18"><a href="Chapter-2.html#cb4-18"></a>      outcome <span class="op">==</span><span class="st"> &#39;Dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-19"><a href="Chapter-2.html#cb4-19"></a>      outcome <span class="op">==</span><span class="st"> &#39;Died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-20"><a href="Chapter-2.html#cb4-20"></a>      outcome <span class="op">==</span><span class="st"> &#39;Deceased&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-21"><a href="Chapter-2.html#cb4-21"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharge&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-22"><a href="Chapter-2.html#cb4-22"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-23"><a href="Chapter-2.html#cb4-23"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-24"><a href="Chapter-2.html#cb4-24"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged from hospital&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
 <span id="cb4-25"><a href="Chapter-2.html#cb4-25"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-26"><a href="Chapter-2.html#cb4-26"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-27"><a href="Chapter-2.html#cb4-27"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-26"><a href="Chapter-2.html#cb4-26"></a>      outcome <span class="op">==</span><span class="st"> &#39;released from quarantine&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-27"><a href="Chapter-2.html#cb4-27"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
 <span id="cb4-28"><a href="Chapter-2.html#cb4-28"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-29"><a href="Chapter-2.html#cb4-29"></a>      T <span class="op">~</span><span class="st"> &#39;NA&#39;</span></span>
-<span id="cb4-30"><a href="Chapter-2.html#cb4-30"></a>    )</span>
-<span id="cb4-31"><a href="Chapter-2.html#cb4-31"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-32"><a href="Chapter-2.html#cb4-32"></a><span class="st">  </span><span class="kw">filter</span>(outcome <span class="op">!=</span><span class="st"> &#39;NA&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-33"><a href="Chapter-2.html#cb4-33"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb4-34"><a href="Chapter-2.html#cb4-34"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
-<span id="cb4-35"><a href="Chapter-2.html#cb4-35"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-36"><a href="Chapter-2.html#cb4-36"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
+<span id="cb4-29"><a href="Chapter-2.html#cb4-29"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-30"><a href="Chapter-2.html#cb4-30"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-31"><a href="Chapter-2.html#cb4-31"></a>      T <span class="op">~</span><span class="st"> &#39;NA&#39;</span></span>
+<span id="cb4-32"><a href="Chapter-2.html#cb4-32"></a>    )</span>
+<span id="cb4-33"><a href="Chapter-2.html#cb4-33"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-34"><a href="Chapter-2.html#cb4-34"></a><span class="st">  </span><span class="kw">filter</span>(outcome <span class="op">!=</span><span class="st"> &#39;NA&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-35"><a href="Chapter-2.html#cb4-35"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb4-36"><a href="Chapter-2.html#cb4-36"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
+<span id="cb4-37"><a href="Chapter-2.html#cb4-37"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-38"><a href="Chapter-2.html#cb4-38"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
 <p>Az így kapott új adattáblában már csupán 103616 megfigyelés és 9 változó szerepel.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span></span>
@@ -1146,7 +1152,7 @@ p {
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">latitude</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">longitude</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">continent</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">date</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">died</th>
     </tr>
   </thead>
@@ -1159,7 +1165,7 @@ p {
       <td class="gt_row gt_right">45.297748</td>
       <td class="gt_row gt_right">11.65838</td>
       <td class="gt_row gt_left">Europe</td>
-      <td class="gt_row gt_left">2020-02-21</td>
+      <td class="gt_row gt_right">51</td>
       <td class="gt_row gt_center">TRUE</td>
     </tr>
     <tr>
@@ -1170,7 +1176,7 @@ p {
       <td class="gt_row gt_right">1.353460</td>
       <td class="gt_row gt_right">103.81510</td>
       <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
     <tr>
@@ -1181,7 +1187,7 @@ p {
       <td class="gt_row gt_right">1.353460</td>
       <td class="gt_row gt_right">103.81510</td>
       <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
     <tr>
@@ -1192,7 +1198,7 @@ p {
       <td class="gt_row gt_right">1.353460</td>
       <td class="gt_row gt_right">103.81510</td>
       <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
     <tr>
@@ -1203,7 +1209,7 @@ p {
       <td class="gt_row gt_right">1.353873</td>
       <td class="gt_row gt_right">103.86048</td>
       <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
     <tr>
@@ -1214,7 +1220,7 @@ p {
       <td class="gt_row gt_right">1.353460</td>
       <td class="gt_row gt_right">103.81510</td>
       <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-15</td>
+      <td class="gt_row gt_right">45</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
   </tbody>
@@ -1250,12 +1256,14 @@ p {
 <span id="cb8-16"><a href="Chapter-2.html#cb8-16"></a>    <span class="dt">columns =</span> <span class="st">&#39;n/sum(n)&#39;</span>,</span>
 <span id="cb8-17"><a href="Chapter-2.html#cb8-17"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-18"><a href="Chapter-2.html#cb8-18"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(n), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-19"><a href="Chapter-2.html#cb8-19"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;n/sum(n)&#39;</span>), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>), <span class="dt">formatter =</span> fmt_percent) <span class="op">%&gt;%</span></span>
-<span id="cb8-20"><a href="Chapter-2.html#cb8-20"></a><span class="st">  </span><span class="kw">tab_options</span>(</span>
-<span id="cb8-21"><a href="Chapter-2.html#cb8-21"></a>    <span class="dt">summary_row.background.color =</span> <span class="st">&quot;#ACEACE&quot;</span>,</span>
-<span id="cb8-22"><a href="Chapter-2.html#cb8-22"></a>    <span class="dt">row_group.background.color =</span> <span class="st">&quot;#FFEFDB&quot;</span></span>
-<span id="cb8-23"><a href="Chapter-2.html#cb8-23"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-24"><a href="Chapter-2.html#cb8-24"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Megfigyelések száma országonként&#39;</span>, <span class="dt">subtitle =</span> <span class="st">&#39;Elsődleges adattisztítás után&#39;</span>)</span></code></pre></div>
+<span id="cb8-19"><a href="Chapter-2.html#cb8-19"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;n/sum(n)&#39;</span>), </span>
+<span id="cb8-20"><a href="Chapter-2.html#cb8-20"></a>               <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>), <span class="dt">formatter =</span> fmt_percent) <span class="op">%&gt;%</span></span>
+<span id="cb8-21"><a href="Chapter-2.html#cb8-21"></a><span class="st">  </span><span class="kw">tab_options</span>(</span>
+<span id="cb8-22"><a href="Chapter-2.html#cb8-22"></a>    <span class="dt">summary_row.background.color =</span> <span class="st">&quot;#ACEACE&quot;</span>,</span>
+<span id="cb8-23"><a href="Chapter-2.html#cb8-23"></a>    <span class="dt">row_group.background.color =</span> <span class="st">&quot;#FFEFDB&quot;</span></span>
+<span id="cb8-24"><a href="Chapter-2.html#cb8-24"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-25"><a href="Chapter-2.html#cb8-25"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Megfigyelések száma országonként&#39;</span>, </span>
+<span id="cb8-26"><a href="Chapter-2.html#cb8-26"></a>             <span class="dt">subtitle =</span> <span class="st">&#39;Elsődleges adattisztítás után&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -1863,7 +1871,7 @@ p {
   
   
 </table></div>
-<p>A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).</p>
+<p>A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}). Indiára való kontrolálás elméleti megfontolásból is helyesnek hangzik, figyelembe véve, hogy az ország rendkívül szegény, a városok zsúfoltak, orvosokból és felszerelésből, pedig hiány van. Korábban a spanyol nátha idején is kiugróan magas volt Indiában a halálozás<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="Chapter-2.html#cb9-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb9-2"><a href="Chapter-2.html#cb9-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
 <span id="cb9-3"><a href="Chapter-2.html#cb9-3"></a>    <span class="dt">india =</span> country <span class="op">==</span><span class="st"> &#39;India&#39;</span></span>
@@ -2224,7 +2232,7 @@ p {
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">age</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">sex</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease_binary</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">date</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">died</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">india</th>
     </tr>
@@ -2234,7 +2242,7 @@ p {
       <td class="gt_row gt_right">78</td>
       <td class="gt_row gt_left">male</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-21</td>
+      <td class="gt_row gt_right">51</td>
       <td class="gt_row gt_center">TRUE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2242,7 +2250,7 @@ p {
       <td class="gt_row gt_right">61</td>
       <td class="gt_row gt_left">female</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2250,7 +2258,7 @@ p {
       <td class="gt_row gt_right">28</td>
       <td class="gt_row gt_left">male</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2258,7 +2266,7 @@ p {
       <td class="gt_row gt_right">56</td>
       <td class="gt_row gt_left">female</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2266,7 +2274,7 @@ p {
       <td class="gt_row gt_right">79</td>
       <td class="gt_row gt_left">female</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_right">44</td>
       <td class="gt_row gt_center">FALSE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2274,7 +2282,7 @@ p {
       <td class="gt_row gt_right">26</td>
       <td class="gt_row gt_left">male</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-15</td>
+      <td class="gt_row gt_right">45</td>
       <td class="gt_row gt_center">FALSE</td>
       <td class="gt_row gt_center">FALSE</td>
     </tr>
@@ -2286,42 +2294,26 @@ p {
 </div>
 <div id="modellbecslés" class="section level2">
 <h2>Modellbecslés</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">TODO</span><span class="co"> tune cp</span></span>
-<span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a><span class="st">  </span>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(<span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
-<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>rpart1 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>)</span>
+<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a></span>
+<span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart1, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
+<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/rpart1-1.png" width="672" /></p>
+<p>A komplexitási paraméter .01-nek választva a döntési fánk egyetlen bontásból áll: <strong>“Kisebb-e az életkor, mint 60?”</strong>. Az eredmény validálható is azzal, ha megfigyeljük, hogy miként változik a mintában szereplő halálozási ráta életkoroknként.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-2.html#cb12-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">TODO</span><span class="co"> tune cp</span></span>
-<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a><span class="st">  </span>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(<span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
-<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
-<p><img src="my-book_files/figure-html/rpart2-1.png" width="672" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a><span class="st">  </span><span class="kw">group_by</span>(age) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">deathr =</span> <span class="kw">mean</span>(died)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, deathr)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb13-5"><a href="Chapter-2.html#cb13-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">&#39;coral&#39;</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>) <span class="op">+</span></span>
-<span id="cb13-6"><a href="Chapter-2.html#cb13-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
-<span id="cb13-7"><a href="Chapter-2.html#cb13-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Az életkor és a halálozási ráta között összefüggés&#39;</span>, <span class="dt">x =</span> <span class="st">&#39;életkor&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;halálozási ráta&#39;</span>)</span></code></pre></div>
+<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a><span class="st">  </span><span class="kw">group_by</span>(age) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">deathr =</span> <span class="kw">mean</span>(died)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, deathr)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-5"><a href="Chapter-2.html#cb12-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">&#39;coral&#39;</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>) <span class="op">+</span></span>
+<span id="cb12-6"><a href="Chapter-2.html#cb12-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
+<span id="cb12-7"><a href="Chapter-2.html#cb12-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Az életkor és a halálozási ráta között összefüggés&#39;</span>, <span class="dt">x =</span> <span class="st">&#39;életkor&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;halálozási ráta&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-2.html#cb14-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-2"><a href="Chapter-2.html#cb14-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb14-3"><a href="Chapter-2.html#cb14-3"></a>    <span class="dt">date =</span> <span class="kw">as.numeric</span>(<span class="kw">difftime</span>(date, lubridate<span class="op">::</span><span class="kw">dmy</span>(<span class="st">&quot;01/01/2020&quot;</span>), <span class="dt">units =</span> <span class="st">&#39;days&#39;</span>))</span>
-<span id="cb14-4"><a href="Chapter-2.html#cb14-4"></a>  )</span></code></pre></div>
-<pre><code># A tibble: 103,616 x 6
-     age sex    chronic_disease_binary  date died  india
-   &lt;dbl&gt; &lt;chr&gt;  &lt;lgl&gt;                  &lt;dbl&gt; &lt;lgl&gt; &lt;lgl&gt;
- 1    78 male   FALSE                     51 TRUE  FALSE
- 2    61 female FALSE                     44 FALSE FALSE
- 3    28 male   FALSE                     44 FALSE FALSE
- 4    56 female FALSE                     44 FALSE FALSE
- 5    79 female FALSE                     44 FALSE FALSE
- 6    26 male   FALSE                     45 FALSE FALSE
- 7    25 male   FALSE                     45 FALSE FALSE
- 8    40 male   FALSE                     45 FALSE FALSE
- 9    43 male   FALSE                     45 FALSE FALSE
-10    29 male   FALSE                     45 FALSE FALSE
-# ... with 103,606 more rows</code></pre>
+<p>Mindazonáltal ismerve, hogy a megfigyelések 94%-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>rpart2 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>)</span>
+<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a>  </span>
+<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart2, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, <span class="co"># plot</span></span>
+<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;2. döntési fa&#39;</span>) </span></code></pre></div>
+<p><img src="my-book_files/figure-html/rpart2-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -2330,6 +2322,7 @@ p {
 <ol start="1">
 <li id="fn1"><p>Open COVID-19 Data Working Group, <em>Detailed Epidemiological Data from the COVID-19 Outbreak</em>, <a href="http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337" class="uri">http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337</a>, letöltve: 2020.12.28.<a href="Chapter-2.html#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>Az intervallumok hossza nem egyezett meg.<a href="Chapter-2.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://www.economist.com/asia/2020/03/21/if-covid-19-takes-hold-in-india-the-toll-will-be-grim" class="uri">https://www.economist.com/asia/2020/03/21/if-covid-19-takes-hold-in-india-the-toll-will-be-grim</a><a href="Chapter-2.html#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
