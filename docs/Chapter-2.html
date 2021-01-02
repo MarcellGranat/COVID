@@ -57,6 +57,10 @@
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -163,6 +167,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Főkomponens elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#adatok-forrása"><i class="fa fa-check"></i>Adatok forrása</a></li>
 </ul></li>
 </ul>
 
@@ -793,7 +800,7 @@ p {
 <span id="cb4-36"><a href="Chapter-2.html#cb4-36"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
 <span id="cb4-37"><a href="Chapter-2.html#cb4-37"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb4-38"><a href="Chapter-2.html#cb4-38"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
-<p>Az így kapott új adattáblában már csupán 103616 megfigyelés és 9 változó szerepel.</p>
+<p>Az így kapott új adattáblában már csupán 2676311 megfigyelés és 33 változó szerepel.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span></span>
 <span id="cb5-3"><a href="Chapter-2.html#cb5-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -2308,7 +2315,7 @@ p {
 <span id="cb12-6"><a href="Chapter-2.html#cb12-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
 <span id="cb12-7"><a href="Chapter-2.html#cb12-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Az életkor és a halálozási ráta között összefüggés&#39;</span>, <span class="dt">x =</span> <span class="st">&#39;életkor&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;halálozási ráta&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>Mindazonáltal ismerve, hogy a megfigyelések 94%-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.</p>
+<p>Mindazonáltal ismerve, hogy a megfigyelések NA-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>rpart2 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>)</span>
 <span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a>  </span>
 <span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart2, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, <span class="co"># plot</span></span>
