@@ -1,5 +1,5 @@
 ---
-title: "COVID"
+title: "A COVID járvány elemzése többáltozós statisztikai eszközkkel"
 author: "Granát Marcell & Mazzag Bálint"
 output: bookdown::gitbook
 site: bookdown::bookdown_site

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Logit-modell | COVID</title>
-  <meta name="description" content="Logit-modell | COVID" />
+  <title>Logit-modell | A COVID járvány elemzése többáltozós statisztikai eszközkkel</title>
+  <meta name="description" content="Logit-modell | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Logit-modell | COVID" />
+  <meta property="og:title" content="Logit-modell | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Logit-modell | COVID" />
+  <meta name="twitter:title" content="Logit-modell | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   
   
   
@@ -144,7 +144,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
-<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
@@ -180,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">COVID</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többáltozós statisztikai eszközkkel</a>
           </h1>
         </div>
 
@@ -216,9 +215,9 @@ Philippines       India   Singapore       China     Vietnam South Korea
 -<strong>az országok közül India és a Fülöp-szigetek rendelkezik nagy VIF-mutatóval,</strong>
 <strong>így ezeket összevonjuk</strong>, ezzel eltüntetve a magas VIF-értékeket<br />
 </p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-3.html#cb15-1"></a><span class="co">#Országok közül India és Fülöp-szigetek rendelkezik magas VIF-el</span></span>
-<span id="cb15-2"><a href="Chapter-3.html#cb15-2"></a>logit &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>country<span class="op">+</span>chronic_disease_binary, <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb15-3"><a href="Chapter-3.html#cb15-3"></a><span class="kw">summary</span>(logit)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter-3.html#cb19-1"></a><span class="co">#Országok közül India és Fülöp-szigetek rendelkezik magas VIF-el</span></span>
+<span id="cb19-2"><a href="Chapter-3.html#cb19-2"></a>logit &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>country<span class="op">+</span>chronic_disease_binary, <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb19-3"><a href="Chapter-3.html#cb19-3"></a><span class="kw">summary</span>(logit)</span></code></pre></div>
 <pre><code>
 Call:
 glm(formula = died ~ age + sex + country + chronic_disease_binary, 
@@ -253,7 +252,7 @@ Residual deviance: 3889.3  on 5271  degrees of freedom
 AIC: 3915.3
 
 Number of Fisher Scoring iterations: 16</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="Chapter-3.html#cb17-1"></a><span class="kw">vif</span>(logit)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter-3.html#cb21-1"></a><span class="kw">vif</span>(logit)</span></code></pre></div>
 <pre><code>                       age                    sexTRUE 
                   1.064698                   1.017816 
               countryIndia               countryJapan 
@@ -266,15 +265,15 @@ Number of Fisher Scoring iterations: 16</code></pre>
                   1.280892                   1.028172 
             countryVietnam chronic_disease_binaryTRUE 
                   1.429719                   1.104861 </code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter-3.html#cb19-1"></a><span class="co">#Outlierek leszűrése</span></span>
-<span id="cb19-2"><a href="Chapter-3.html#cb19-2"></a>data_Asia &lt;-<span class="st"> </span>data_Asia[<span class="kw">abs</span>(<span class="kw">rstudent</span>(logit))<span class="op">&lt;</span><span class="dv">3</span>, ]</span>
-<span id="cb19-3"><a href="Chapter-3.html#cb19-3"></a></span>
-<span id="cb19-4"><a href="Chapter-3.html#cb19-4"></a><span class="co">#Indiát és Fülöp-szigeteket összevonva csökken a VIF-mutató</span></span>
-<span id="cb19-5"><a href="Chapter-3.html#cb19-5"></a>data_Asia<span class="op">$</span>country_alt &lt;-<span class="st"> </span>data_Asia<span class="op">$</span>country</span>
-<span id="cb19-6"><a href="Chapter-3.html#cb19-6"></a>data_Asia[data_Asia<span class="op">$</span>country_alt<span class="op">==</span><span class="st">&quot;India&quot;</span>, <span class="st">&quot;country_alt&quot;</span>] &lt;-<span class="st"> &quot;Philippines&quot;</span></span>
-<span id="cb19-7"><a href="Chapter-3.html#cb19-7"></a></span>
-<span id="cb19-8"><a href="Chapter-3.html#cb19-8"></a>logit2 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>country_alt, <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb19-9"><a href="Chapter-3.html#cb19-9"></a><span class="kw">summary</span>(logit2)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter-3.html#cb23-1"></a><span class="co">#Outlierek leszűrése</span></span>
+<span id="cb23-2"><a href="Chapter-3.html#cb23-2"></a>data_Asia &lt;-<span class="st"> </span>data_Asia[<span class="kw">abs</span>(<span class="kw">rstudent</span>(logit))<span class="op">&lt;</span><span class="dv">3</span>, ]</span>
+<span id="cb23-3"><a href="Chapter-3.html#cb23-3"></a></span>
+<span id="cb23-4"><a href="Chapter-3.html#cb23-4"></a><span class="co">#Indiát és Fülöp-szigeteket összevonva csökken a VIF-mutató</span></span>
+<span id="cb23-5"><a href="Chapter-3.html#cb23-5"></a>data_Asia<span class="op">$</span>country_alt &lt;-<span class="st"> </span>data_Asia<span class="op">$</span>country</span>
+<span id="cb23-6"><a href="Chapter-3.html#cb23-6"></a>data_Asia[data_Asia<span class="op">$</span>country_alt<span class="op">==</span><span class="st">&quot;India&quot;</span>, <span class="st">&quot;country_alt&quot;</span>] &lt;-<span class="st"> &quot;Philippines&quot;</span></span>
+<span id="cb23-7"><a href="Chapter-3.html#cb23-7"></a></span>
+<span id="cb23-8"><a href="Chapter-3.html#cb23-8"></a>logit2 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>country_alt, <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb23-9"><a href="Chapter-3.html#cb23-9"></a><span class="kw">summary</span>(logit2)</span></code></pre></div>
 <pre><code>
 Call:
 glm(formula = died ~ age + sex + chronic_disease_binary + country_alt, 
@@ -308,7 +307,7 @@ Residual deviance: 4348.6  on 5256  degrees of freedom
 AIC: 4372.6
 
 Number of Fisher Scoring iterations: 16</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter-3.html#cb21-1"></a><span class="kw">vif</span>(logit2)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="Chapter-3.html#cb25-1"></a><span class="kw">vif</span>(logit2)</span></code></pre></div>
 <pre><code>                       age                    sexTRUE 
                   1.047368                   1.010986 
 chronic_disease_binaryTRUE           country_altJapan 
@@ -331,21 +330,21 @@ Ezek alapján pedig a jelenlegi modellünk nemlineáris, amely miatt az életkor
 2. ötvenfelett dummy létrehozása<br />
 </p>
 <p>Mivel az első módszer sikerre vezetett, a másodikat nem próbáltuk meg.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter-3.html#cb23-1"></a><span class="co">#Linearitás tesztelése megmutatja, hogy még nem lineáris a modell</span></span>
-<span id="cb23-2"><a href="Chapter-3.html#cb23-2"></a><span class="kw">resettest</span>(logit2, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="Chapter-3.html#cb27-1"></a><span class="co">#Linearitás tesztelése megmutatja, hogy még nem lineáris a modell</span></span>
+<span id="cb27-2"><a href="Chapter-3.html#cb27-2"></a><span class="kw">resettest</span>(logit2, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
 <pre><code>
     RESET test
 
 data:  logit2
 RESET = 22.451, df1 = 6, df2 = 5250, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="Chapter-3.html#cb25-1"></a><span class="kw">crPlots</span>(logit2)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="Chapter-3.html#cb26-1"></a><span class="kw">crPlots</span>(logit2, <span class="op">~</span>age)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="Chapter-3.html#cb27-1"></a><span class="co">#Az életkor változó nagyjából 35 évnél törik meg, ezt kell belevennünk a modellbe</span></span>
-<span id="cb27-2"><a href="Chapter-3.html#cb27-2"></a></span>
-<span id="cb27-3"><a href="Chapter-3.html#cb27-3"></a>logit3 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>country_alt<span class="op">+</span><span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>), <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb27-4"><a href="Chapter-3.html#cb27-4"></a><span class="kw">summary</span>(logit3)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="Chapter-3.html#cb29-1"></a><span class="kw">crPlots</span>(logit2)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="Chapter-3.html#cb30-1"></a><span class="kw">crPlots</span>(logit2, <span class="op">~</span>age)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="Chapter-3.html#cb31-1"></a><span class="co">#Az életkor változó nagyjából 35 évnél törik meg, ezt kell belevennünk a modellbe</span></span>
+<span id="cb31-2"><a href="Chapter-3.html#cb31-2"></a></span>
+<span id="cb31-3"><a href="Chapter-3.html#cb31-3"></a>logit3 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>country_alt<span class="op">+</span><span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>), <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb31-4"><a href="Chapter-3.html#cb31-4"></a><span class="kw">summary</span>(logit3)</span></code></pre></div>
 <pre><code>
 Call:
 glm(formula = died ~ age + sex + chronic_disease_binary + country_alt + 
@@ -380,15 +379,15 @@ Residual deviance: 4340.9  on 5255  degrees of freedom
 AIC: 4366.9
 
 Number of Fisher Scoring iterations: 16</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="Chapter-3.html#cb29-1"></a><span class="kw">resettest</span>(logit3, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="Chapter-3.html#cb33-1"></a><span class="kw">resettest</span>(logit3, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
 <pre><code>
     RESET test
 
 data:  logit3
 RESET = 0.44526, df1 = 8, df2 = 5247, p-value = 0.8943</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="Chapter-3.html#cb31-1"></a><span class="kw">crPlots</span>(logit3)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="Chapter-3.html#cb32-1"></a><span class="kw">linearHypothesis</span>(logit3, <span class="kw">c</span>(<span class="st">&quot;country_altJapan=0&quot;</span>, <span class="st">&quot;country_altMalaysia=0&quot;</span>, <span class="st">&quot;country_altNepal=0&quot;</span>, <span class="st">&quot;country_altVietnam=0&quot;</span>, <span class="st">&quot;country_altSingapore=0&quot;</span>, <span class="st">&quot;country_altSouth Korea=0&quot;</span>, <span class="st">&quot;country_altThailand=0&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="Chapter-3.html#cb35-1"></a><span class="kw">crPlots</span>(logit3)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="Chapter-3.html#cb36-1"></a><span class="kw">linearHypothesis</span>(logit3, <span class="kw">c</span>(<span class="st">&quot;country_altJapan=0&quot;</span>, <span class="st">&quot;country_altMalaysia=0&quot;</span>, <span class="st">&quot;country_altNepal=0&quot;</span>, <span class="st">&quot;country_altVietnam=0&quot;</span>, <span class="st">&quot;country_altSingapore=0&quot;</span>, <span class="st">&quot;country_altSouth Korea=0&quot;</span>, <span class="st">&quot;country_altThailand=0&quot;</span>))</span></code></pre></div>
 <pre><code>Linear hypothesis test
 
 Hypothesis:
@@ -407,16 +406,16 @@ Model 2: died ~ age + sex + chronic_disease_binary + country_alt + pmax(age -
   Res.Df Df  Chisq Pr(&gt;Chisq)
 1   5262                     
 2   5255  7 0.0045          1</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="Chapter-3.html#cb34-1"></a>data_Asia<span class="op">$</span>fulopindia &lt;-<span class="st"> </span><span class="kw">as.logical</span>(data_Asia<span class="op">$</span>country_alt<span class="op">==</span><span class="st">&quot;Philippines&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="Chapter-3.html#cb38-1"></a>data_Asia<span class="op">$</span>fulopindia &lt;-<span class="st"> </span><span class="kw">as.logical</span>(data_Asia<span class="op">$</span>country_alt<span class="op">==</span><span class="st">&quot;Philippines&quot;</span>)</span></code></pre></div>
 <p>Ezután a nem szignifikáns változók közül az országokat látjuk csak, így ezek
 összevont elhagyását teszteljük, a Fülöp-szk. és Indiát kivéve.</p>
 <p>Mivel a tesztnél p&gt;0,05, így ezeket a változót kidobhatjuk,
 az új dummyval pedig elkészült a modellünk.</p>
 <p>Az új modellben viszont az életkor változó átalakított formájában magas VIF-et okoz,
 így <strong>az eredeti életkort - amely a kevésbé szignifikáns változó - kihagyjuk a modellből.</strong></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="Chapter-3.html#cb35-1"></a>logit4 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>fulopindia<span class="op">+</span><span class="kw">I</span>(<span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>)), </span>
-<span id="cb35-2"><a href="Chapter-3.html#cb35-2"></a>              <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb35-3"><a href="Chapter-3.html#cb35-3"></a><span class="kw">summary</span>(logit4)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="Chapter-3.html#cb39-1"></a>logit4 &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>age<span class="op">+</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>fulopindia<span class="op">+</span><span class="kw">I</span>(<span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>)), </span>
+<span id="cb39-2"><a href="Chapter-3.html#cb39-2"></a>              <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb39-3"><a href="Chapter-3.html#cb39-3"></a><span class="kw">summary</span>(logit4)</span></code></pre></div>
 <pre><code>
 Call:
 glm(formula = died ~ age + sex + chronic_disease_binary + fulopindia + 
@@ -444,20 +443,20 @@ Residual deviance: 4428.9  on 5262  degrees of freedom
 AIC: 4440.9
 
 Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="Chapter-3.html#cb37-1"></a><span class="kw">resettest</span>(logit4, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="Chapter-3.html#cb41-1"></a><span class="kw">resettest</span>(logit4, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
 <pre><code>
     RESET test
 
 data:  logit4
 RESET = 0.41565, df1 = 10, df2 = 5252, p-value = 0.9399</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="Chapter-3.html#cb39-1"></a><span class="kw">vif</span>(logit4)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="Chapter-3.html#cb43-1"></a><span class="kw">vif</span>(logit4)</span></code></pre></div>
 <pre><code>                       age                    sexTRUE 
                  13.751477                   1.008184 
 chronic_disease_binaryTRUE             fulopindiaTRUE 
                   1.057303                   1.020537 
       I(pmax(age - 35, 0)) 
                  13.803814 </code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="Chapter-3.html#cb41-1"></a><span class="kw">linearHypothesis</span>(logit4, <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="Chapter-3.html#cb45-1"></a><span class="kw">linearHypothesis</span>(logit4, <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
 <pre><code>Linear hypothesis test
 
 Hypothesis:
@@ -472,9 +471,9 @@ Model 2: died ~ age + sex + chronic_disease_binary + fulopindia + I(pmax(age -
 2   5262  1 5.3783    0.02039 *
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="Chapter-3.html#cb43-1"></a>logit_final &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>fulopindia<span class="op">+</span><span class="kw">I</span>(<span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>)), </span>
-<span id="cb43-2"><a href="Chapter-3.html#cb43-2"></a>                   <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
-<span id="cb43-3"><a href="Chapter-3.html#cb43-3"></a><span class="kw">summary</span>(logit_final)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="Chapter-3.html#cb47-1"></a>logit_final &lt;-<span class="st"> </span><span class="kw">glm</span>(died<span class="op">~</span>sex<span class="op">+</span>chronic_disease_binary<span class="op">+</span>fulopindia<span class="op">+</span><span class="kw">I</span>(<span class="kw">pmax</span>(age<span class="dv">-35</span>,<span class="dv">0</span>)), </span>
+<span id="cb47-2"><a href="Chapter-3.html#cb47-2"></a>                   <span class="dt">data=</span>data_Asia, <span class="dt">family=</span><span class="kw">binomial</span>(logit))</span>
+<span id="cb47-3"><a href="Chapter-3.html#cb47-3"></a><span class="kw">summary</span>(logit_final)</span></code></pre></div>
 <pre><code>
 Call:
 glm(formula = died ~ sex + chronic_disease_binary + fulopindia + 
@@ -501,29 +500,29 @@ Residual deviance: 4435.0  on 5263  degrees of freedom
 AIC: 4445
 
 Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="Chapter-3.html#cb45-1"></a><span class="kw">vif</span>(logit_final)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="Chapter-3.html#cb49-1"></a><span class="kw">vif</span>(logit_final)</span></code></pre></div>
 <pre><code>                   sexTRUE chronic_disease_binaryTRUE 
                   1.007962                   1.056893 
             fulopindiaTRUE       I(pmax(age - 35, 0)) 
                   1.017931                   1.044902 </code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="Chapter-3.html#cb47-1"></a><span class="kw">resettest</span>(logit_final, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="Chapter-3.html#cb51-1"></a><span class="kw">resettest</span>(logit_final, <span class="dt">type=</span><span class="st">&quot;regressor&quot;</span>)</span></code></pre></div>
 <pre><code>
     RESET test
 
 data:  logit_final
 RESET = 0.31875, df1 = 8, df2 = 5255, p-value = 0.9593</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="Chapter-3.html#cb49-1"></a><span class="co">#Az együtthatók jelentése</span></span>
-<span id="cb49-2"><a href="Chapter-3.html#cb49-2"></a><span class="kw">exp</span>(<span class="kw">coef</span>(logit_final))</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="Chapter-3.html#cb53-1"></a><span class="co">#Az együtthatók jelentése</span></span>
+<span id="cb53-2"><a href="Chapter-3.html#cb53-2"></a><span class="kw">exp</span>(<span class="kw">coef</span>(logit_final))</span></code></pre></div>
 <pre><code>               (Intercept)                    sexTRUE 
                 0.02691822                 1.60952006 
 chronic_disease_binaryTRUE             fulopindiaTRUE 
                 8.14730002                 1.93472091 
       I(pmax(age - 35, 0)) 
                 1.08380014 </code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="Chapter-3.html#cb51-1"></a><span class="kw">plotmo</span>(logit_final)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="Chapter-3.html#cb55-1"></a><span class="kw">plotmo</span>(logit_final)</span></code></pre></div>
 <pre><code> plotmo grid:    sex chronic_disease_binary fulopindia age
                 TRUE                  FALSE       TRUE  46</code></pre>
-<p><img src="my-book_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="my-book_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Az átalakított modellünk megfelel minden feltevésnek és tesztnek, így ennek
 együtthatóit értelmezhetjük:<br />
 -<strong>cet. par. a férfi lét 1,61-szeresére növeli a halálozás oddsának értékét</strong><br />
@@ -534,17 +533,17 @@ együtthatóit értelmezhetjük:<br />
 </div>
 <div id="előrejelzés-a-kiválasztott-modellel" class="section level3">
 <h3>Előrejelzés a kiválasztott modellel</h3>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="Chapter-3.html#cb53-1"></a>deathval &lt;-<span class="st"> </span><span class="kw">predict</span>(logit_final, data_Asia, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</span>
-<span id="cb53-2"><a href="Chapter-3.html#cb53-2"></a>data_Asia<span class="op">$</span>deathval &lt;-<span class="st"> </span>deathval</span>
-<span id="cb53-3"><a href="Chapter-3.html#cb53-3"></a>data_Asia<span class="op">$</span>becsult &lt;-<span class="st"> </span><span class="kw">ifelse</span>(deathval<span class="op">&gt;</span><span class="fl">0.5</span>, <span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)</span>
-<span id="cb53-4"><a href="Chapter-3.html#cb53-4"></a><span class="kw">xtabs</span>(<span class="op">~</span>died<span class="op">+</span>becsult, <span class="dt">data=</span>data_Asia)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="Chapter-3.html#cb57-1"></a>deathval &lt;-<span class="st"> </span><span class="kw">predict</span>(logit_final, data_Asia, <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</span>
+<span id="cb57-2"><a href="Chapter-3.html#cb57-2"></a>data_Asia<span class="op">$</span>deathval &lt;-<span class="st"> </span>deathval</span>
+<span id="cb57-3"><a href="Chapter-3.html#cb57-3"></a>data_Asia<span class="op">$</span>becsult &lt;-<span class="st"> </span><span class="kw">ifelse</span>(deathval<span class="op">&gt;</span><span class="fl">0.5</span>, <span class="st">&quot;TRUE&quot;</span>, <span class="st">&quot;FALSE&quot;</span>)</span>
+<span id="cb57-4"><a href="Chapter-3.html#cb57-4"></a><span class="kw">xtabs</span>(<span class="op">~</span>died<span class="op">+</span>becsult, <span class="dt">data=</span>data_Asia)</span></code></pre></div>
 <pre><code>       becsult
 died    FALSE TRUE
   FALSE  3674  317
   TRUE    766  511</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="Chapter-3.html#cb55-1"></a>fin_perc &lt;-<span class="st"> </span><span class="kw">sum</span>(data_Asia<span class="op">$</span>died<span class="op">==</span>data_Asia<span class="op">$</span>becsult)<span class="op">/</span><span class="kw">nrow</span>(data_Asia)<span class="op">*</span><span class="dv">100</span></span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="Chapter-3.html#cb59-1"></a>fin_perc &lt;-<span class="st"> </span><span class="kw">sum</span>(data_Asia<span class="op">$</span>died<span class="op">==</span>data_Asia<span class="op">$</span>becsult)<span class="op">/</span><span class="kw">nrow</span>(data_Asia)<span class="op">*</span><span class="dv">100</span></span></code></pre></div>
 <p>A próba 50%-os cutoff értéknél a modell 79.4419134%-ban helyes eredményt ad.</p>
-<p><img src="my-book_files/figure-html/unnamed-chunk-23-1.png" width="672" /><img src="my-book_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<p><img src="my-book_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="my-book_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <p>Az ROC-görbe GINI-mutatója 0.6554136.
 A modellünk kalibrálása során a másodfajú hiba súlya 3, így a
 simított költségfüggvény alapján a 0.2960607 lesz az optimális küszöbérték.</p>
