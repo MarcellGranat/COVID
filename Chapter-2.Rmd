@@ -1,4 +1,4 @@
-# Döntési fa {#Chapter-2}
+# Döntési fa és véletlen erdő {#Chapter-2}
 
 ```{css, echo=FALSE}
 p {

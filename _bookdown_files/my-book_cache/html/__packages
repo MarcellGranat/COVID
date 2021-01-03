@@ -10,6 +10,9 @@ stringr
 forcats
 gt
 ggwordcloud
+lattice
+caret
+randomForest
 Formula
 plotrix
 TeachingDemos
@@ -17,7 +20,6 @@ plotmo
 pROC
 carData
 car
-lattice
 latticeExtra
 mvtnorm
 survival
@@ -42,3 +44,7 @@ plotly
 gifski
 xml2
 rvest
+readxl
+countrycode
+igraph
+factoextra

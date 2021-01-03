@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A COVID járvány elemzése többáltozós statisztikai eszközkkel</title>
-  <meta name="description" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  <title>A COVID járvány elemzése többváltozós statisztikai eszközökkel</title>
+  <meta name="description" content="A COVID járvány elemzése többváltozós statisztikai eszközökkel" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  <meta property="og:title" content="A COVID járvány elemzése többváltozós statisztikai eszközökkel" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  <meta name="twitter:title" content="A COVID járvány elemzése többváltozós statisztikai eszközökkel" />
   
   
   
@@ -57,10 +57,6 @@
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -144,12 +140,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
-<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa és véletlen erdő</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-elemzéshez-való-előkészítése"><i class="fa fa-check"></i>Adatok elemzéshez való előkészítése</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#modellbecslés"><i class="fa fa-check"></i>Modellbecslés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#keresztvalidáció-és-véletlen-erdő-hiperparamétere"><i class="fa fa-check"></i>Keresztvalidáció és véletlen erdő hiperparamétere</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
@@ -167,8 +164,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Főkomponens elemzés</a><ul>
-<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#adatok-forrása"><i class="fa fa-check"></i>Adatok forrása</a></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Klaszterezés és főkomponens elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#klaszterezés"><i class="fa fa-check"></i>Klaszterezés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#főkomponens-elemzés"><i class="fa fa-check"></i>Főkomponens elemzés</a></li>
 </ul></li>
 </ul>
 
@@ -179,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többáltozós statisztikai eszközkkel</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többváltozós statisztikai eszközökkel</a>
           </h1>
         </div>
 
@@ -188,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">A COVID járvány elemzése többáltozós statisztikai eszközkkel</h1>
+<h1 class="title">A COVID járvány elemzése többváltozós statisztikai eszközökkel</h1>
 <p class="author"><em>Granát Marcell &amp; Mazzag Bálint</em></p>
 </div>
 <div id="index" class="section level1">
