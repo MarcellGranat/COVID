@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Döntési fa | COVID</title>
-  <meta name="description" content="Döntési fa | COVID" />
+  <title>Döntési fa | A COVID járvány elemzése többáltozós statisztikai eszközkkel</title>
+  <meta name="description" content="Döntési fa | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Döntési fa | COVID" />
+  <meta property="og:title" content="Döntési fa | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Döntési fa | COVID" />
+  <meta name="twitter:title" content="Döntési fa | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   
   
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
-<link rel="prev" href="Chapter-1.html"/>
+<link rel="prev" href="index.html"/>
 <link rel="next" href="Chapter-3.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -57,6 +57,10 @@
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -140,7 +144,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
-<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
@@ -152,6 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#outlierek-és-vif-mutató-szerinti-elemzés"><i class="fa fa-check"></i>Outlierek és VIF mutató szerinti elemzés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Szövegelemzés</a><ul>
@@ -159,6 +163,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#bag-of-words"><i class="fa fa-check"></i>Bag of Words</a></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#sentiment-elemzés"><i class="fa fa-check"></i>Sentiment elemzés</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Főkomponens elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#adatok-forrása"><i class="fa fa-check"></i>Adatok forrása</a></li>
 </ul></li>
 </ul>
 
@@ -169,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">COVID</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többáltozós statisztikai eszközkkel</a>
           </h1>
         </div>
 
@@ -201,7 +211,7 @@ p {
 <span id="cb2-7"><a href="Chapter-2.html#cb2-7"></a><span class="st">  </span><span class="kw">geom_text_wordcloud</span>(<span class="dt">color =</span>  <span class="st">&#39;aquamarine4&#39;</span>) <span class="op">+</span></span>
 <span id="cb2-8"><a href="Chapter-2.html#cb2-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Az nyers adattáblában a kimenet változó által felvett értékek&quot;</span>) <span class="op">+</span></span>
 <span id="cb2-9"><a href="Chapter-2.html#cb2-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="my-book_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="adatok-elemzéshez-való-előkészítése" class="section level3">
 <h3>Adatok elemzéshez való előkészítése</h3>
@@ -757,37 +767,39 @@ p {
 <span id="cb4-4"><a href="Chapter-2.html#cb4-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
 <span id="cb4-5"><a href="Chapter-2.html#cb4-5"></a>    <span class="dt">continent =</span> countrycode<span class="op">::</span><span class="kw">countrycode</span>(country, <span class="dt">origin =</span> <span class="st">&#39;country.name&#39;</span>,</span>
 <span id="cb4-6"><a href="Chapter-2.html#cb4-6"></a>                                         <span class="dt">destination =</span> <span class="st">&#39;continent&#39;</span>),</span>
-<span id="cb4-7"><a href="Chapter-2.html#cb4-7"></a>    <span class="dt">date =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(date_confirmation),</span>
-<span id="cb4-8"><a href="Chapter-2.html#cb4-8"></a>    <span class="dt">age =</span> <span class="kw">as.numeric</span>(<span class="kw">ifelse</span>(<span class="kw">str_detect</span>(age, <span class="st">&#39;-&#39;</span>), <span class="ot">NA</span>, age))</span>
-<span id="cb4-9"><a href="Chapter-2.html#cb4-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-10"><a href="Chapter-2.html#cb4-10"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
-<span id="cb4-11"><a href="Chapter-2.html#cb4-11"></a>    <span class="dt">outcome =</span> <span class="kw">case_when</span>(</span>
-<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a>      outcome <span class="op">==</span><span class="st"> &#39;death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-13"><a href="Chapter-2.html#cb4-13"></a>      outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>, </span>
-<span id="cb4-14"><a href="Chapter-2.html#cb4-14"></a>      outcome <span class="op">==</span><span class="st"> &#39;Death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-15"><a href="Chapter-2.html#cb4-15"></a>      outcome <span class="op">==</span><span class="st"> &#39;dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-16"><a href="Chapter-2.html#cb4-16"></a>      outcome <span class="op">==</span><span class="st"> &#39;Dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-17"><a href="Chapter-2.html#cb4-17"></a>      outcome <span class="op">==</span><span class="st"> &#39;Died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-18"><a href="Chapter-2.html#cb4-18"></a>      outcome <span class="op">==</span><span class="st"> &#39;Deceased&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
-<span id="cb4-19"><a href="Chapter-2.html#cb4-19"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharge&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-20"><a href="Chapter-2.html#cb4-20"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-21"><a href="Chapter-2.html#cb4-21"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-22"><a href="Chapter-2.html#cb4-22"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged from hospital&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-23"><a href="Chapter-2.html#cb4-23"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-24"><a href="Chapter-2.html#cb4-24"></a>      outcome <span class="op">==</span><span class="st"> &#39;released from quarantine&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-7"><a href="Chapter-2.html#cb4-7"></a>    <span class="dt">date =</span> <span class="kw">as.numeric</span>(<span class="kw">difftime</span>(<span class="dt">time1 =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(date_confirmation), </span>
+<span id="cb4-8"><a href="Chapter-2.html#cb4-8"></a>                               <span class="dt">time2 =</span> lubridate<span class="op">::</span><span class="kw">dmy</span>(<span class="st">&quot;01/01/2020&quot;</span>), </span>
+<span id="cb4-9"><a href="Chapter-2.html#cb4-9"></a>                               <span class="dt">units =</span> <span class="st">&#39;days&#39;</span>)),</span>
+<span id="cb4-10"><a href="Chapter-2.html#cb4-10"></a>    <span class="dt">age =</span> <span class="kw">as.numeric</span>(<span class="kw">ifelse</span>(<span class="kw">str_detect</span>(age, <span class="st">&#39;-&#39;</span>), <span class="ot">NA</span>, age))</span>
+<span id="cb4-11"><a href="Chapter-2.html#cb4-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
+<span id="cb4-13"><a href="Chapter-2.html#cb4-13"></a>    <span class="dt">outcome =</span> <span class="kw">case_when</span>(</span>
+<span id="cb4-14"><a href="Chapter-2.html#cb4-14"></a>      outcome <span class="op">==</span><span class="st"> &#39;death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-15"><a href="Chapter-2.html#cb4-15"></a>      outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>, </span>
+<span id="cb4-16"><a href="Chapter-2.html#cb4-16"></a>      outcome <span class="op">==</span><span class="st"> &#39;Death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-17"><a href="Chapter-2.html#cb4-17"></a>      outcome <span class="op">==</span><span class="st"> &#39;dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-18"><a href="Chapter-2.html#cb4-18"></a>      outcome <span class="op">==</span><span class="st"> &#39;Dead&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-19"><a href="Chapter-2.html#cb4-19"></a>      outcome <span class="op">==</span><span class="st"> &#39;Died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-20"><a href="Chapter-2.html#cb4-20"></a>      outcome <span class="op">==</span><span class="st"> &#39;Deceased&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
+<span id="cb4-21"><a href="Chapter-2.html#cb4-21"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharge&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-22"><a href="Chapter-2.html#cb4-22"></a>      outcome <span class="op">==</span><span class="st"> &#39;discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-23"><a href="Chapter-2.html#cb4-23"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-24"><a href="Chapter-2.html#cb4-24"></a>      outcome <span class="op">==</span><span class="st"> &#39;Discharged from hospital&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
 <span id="cb4-25"><a href="Chapter-2.html#cb4-25"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-26"><a href="Chapter-2.html#cb4-26"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-27"><a href="Chapter-2.html#cb4-27"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-26"><a href="Chapter-2.html#cb4-26"></a>      outcome <span class="op">==</span><span class="st"> &#39;released from quarantine&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-27"><a href="Chapter-2.html#cb4-27"></a>      outcome <span class="op">==</span><span class="st"> &#39;recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
 <span id="cb4-28"><a href="Chapter-2.html#cb4-28"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
-<span id="cb4-29"><a href="Chapter-2.html#cb4-29"></a>      T <span class="op">~</span><span class="st"> &#39;NA&#39;</span></span>
-<span id="cb4-30"><a href="Chapter-2.html#cb4-30"></a>    )</span>
-<span id="cb4-31"><a href="Chapter-2.html#cb4-31"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-32"><a href="Chapter-2.html#cb4-32"></a><span class="st">  </span><span class="kw">filter</span>(outcome <span class="op">!=</span><span class="st"> &#39;NA&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-33"><a href="Chapter-2.html#cb4-33"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb4-34"><a href="Chapter-2.html#cb4-34"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
-<span id="cb4-35"><a href="Chapter-2.html#cb4-35"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-36"><a href="Chapter-2.html#cb4-36"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
-<p>Az így kapott új adattáblában már csupán 103616 megfigyelés és 9 változó szerepel.</p>
+<span id="cb4-29"><a href="Chapter-2.html#cb4-29"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-30"><a href="Chapter-2.html#cb4-30"></a>      outcome <span class="op">==</span><span class="st"> &#39;Recovered&#39;</span> <span class="op">~</span><span class="st"> &#39;survived&#39;</span>,</span>
+<span id="cb4-31"><a href="Chapter-2.html#cb4-31"></a>      T <span class="op">~</span><span class="st"> &#39;NA&#39;</span></span>
+<span id="cb4-32"><a href="Chapter-2.html#cb4-32"></a>    )</span>
+<span id="cb4-33"><a href="Chapter-2.html#cb4-33"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-34"><a href="Chapter-2.html#cb4-34"></a><span class="st">  </span><span class="kw">filter</span>(outcome <span class="op">!=</span><span class="st"> &#39;NA&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-35"><a href="Chapter-2.html#cb4-35"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb4-36"><a href="Chapter-2.html#cb4-36"></a>    <span class="dt">died =</span> outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span></span>
+<span id="cb4-37"><a href="Chapter-2.html#cb4-37"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>outcome, <span class="op">-</span>date_confirmation) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-38"><a href="Chapter-2.html#cb4-38"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
+<p>Az így kapott új adattáblában már csupán 2676311 megfigyelés és 33 változó szerepel.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="Chapter-2.html#cb5-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb5-2"><a href="Chapter-2.html#cb5-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span></span>
 <span id="cb5-3"><a href="Chapter-2.html#cb5-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1131,91 +1143,260 @@ p {
 <div id="vrzpkjgsbj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="9" class="gt_heading gt_title gt_font_normal" style>Adattábla modellezésre előkészítve</th>
+      <th colspan="33" class="gt_heading gt_title gt_font_normal" style>Adattábla modellezésre előkészítve</th>
     </tr>
     <tr>
-      <th colspan="9" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+      <th colspan="33" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
     </tr>
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">age</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">age</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">sex</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">city</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">province</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">country</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease_binary</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">latitude</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">longitude</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">continent</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">died</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_resolution</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_onset_symptoms</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_admission_hospital</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_confirmation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">symptoms</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">lives_in_Wuhan</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">travel_history_dates</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">travel_history_location</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">reported_market_exposure</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">additional_information</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease_binary</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">source</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">sequence_available</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">outcome</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">date_death_or_discharge</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">notes_for_discussion</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">location</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">country_new</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">admin_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">data_moderator_initials</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">travel_history_binary</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
     <tr>
-      <td class="gt_row gt_right">78</td>
+      <td class="gt_row gt_left">000-1-1</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_left">male</td>
+      <td class="gt_row gt_left">Shek Lei</td>
+      <td class="gt_row gt_left">Hong Kong</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">22.36502</td>
+      <td class="gt_row gt_right">114.13381</td>
+      <td class="gt_row gt_left">point</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">22.01.2020</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Case 55; mainland China travel via the Lok Ma Chau border crossing</td>
+      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.scmp.com/news/hong-kong/health-environment/article/3050681/coronavirus-hong-kong-confirms-three-news-cases</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">critical condition, intubated as of 14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Shek Lei</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Hong Kong</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">8029</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">000-1-10</td>
+      <td class="gt_row gt_left">78</td>
+      <td class="gt_row gt_left">male</td>
+      <td class="gt_row gt_left">Vo Euganeo</td>
+      <td class="gt_row gt_left">Veneto</td>
       <td class="gt_row gt_left">Italy</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">45.297748</td>
+      <td class="gt_row gt_right">45.29775</td>
       <td class="gt_row gt_right">11.65838</td>
-      <td class="gt_row gt_left">Europe</td>
-      <td class="gt_row gt_left">2020-02-21</td>
-      <td class="gt_row gt_center">TRUE</td>
+      <td class="gt_row gt_left">point</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">21.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Hospitalized on 12.02.2020 for other reasons</td>
+      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.corriere.it/cronache/20_febbraio_21/coronavirus-italia-cosa-sappiamo-casi-codogno-lombardia-27fa736c-548b-11ea-9196-da7d305401b7.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">death</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Vo' Euganeo</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Veneto</td>
+      <td class="gt_row gt_left">Italy</td>
+      <td class="gt_row gt_right">8954</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">61</td>
+      <td class="gt_row gt_left">000-1-100</td>
+      <td class="gt_row gt_left">61</td>
       <td class="gt_row gt_left">female</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_left">Singapore</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">1.353460</td>
+      <td class="gt_row gt_right">1.35346</td>
       <td class="gt_row gt_right">103.81510</td>
-      <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
+      <td class="gt_row gt_left">admin0</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Case 65; family member of Case 50, a DBS employee, as is Case 55</td>
       <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.channelnewsasia.com/news/singapore/coronavirus-covid-19-singapore-cases-grace-assembly-of-god--12434646
+https://bnonews.com/wp-content/uploads/2020/02/2172020Cases.pdf</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">discharge</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_right">200</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">28</td>
-      <td class="gt_row gt_left">male</td>
-      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_left">000-1-1000</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Zhengzhou City</td>
+      <td class="gt_row gt_left">Henan</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">34.62931</td>
+      <td class="gt_row gt_right">113.46800</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">26.01.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">1.353460</td>
-      <td class="gt_row gt_right">103.81510</td>
-      <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://news.163.com/special/epidemic/?spssid=7283291fcdba1d8c2d13ee3da2cfb760&amp;spsw=7&amp;spss=other</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Zhengzhou City</td>
+      <td class="gt_row gt_left">Henan</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">10091</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">56</td>
-      <td class="gt_row gt_left">female</td>
-      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_left">000-1-10000</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Pingxiang City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">27.51356</td>
+      <td class="gt_row gt_right">113.90290</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">1.353460</td>
-      <td class="gt_row gt_right">103.81510</td>
-      <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">http://hc.jiangxi.gov.cn/doc/2020/02/15/138898.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Pingxiang City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">7060</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">79</td>
-      <td class="gt_row gt_left">female</td>
-      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_left">000-1-10001</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Yichun City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">28.30755</td>
+      <td class="gt_row gt_right">114.97320</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">1.353873</td>
-      <td class="gt_row gt_right">103.86048</td>
-      <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_right">26</td>
-      <td class="gt_row gt_left">male</td>
-      <td class="gt_row gt_left">Singapore</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_right">1.353460</td>
-      <td class="gt_row gt_right">103.81510</td>
-      <td class="gt_row gt_left">Asia</td>
-      <td class="gt_row gt_left">2020-02-15</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">http://hc.jiangxi.gov.cn/doc/2020/02/15/138898.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Yichun City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">9794</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
   </tbody>
   
@@ -1225,655 +1406,54 @@ p {
 <span id="cb6-2"><a href="Chapter-2.html#cb6-2"></a><span class="st">  </span><span class="kw">select</span>(age, sex, died) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-3"><a href="Chapter-2.html#cb6-3"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">color =</span> died), </span>
 <span id="cb6-4"><a href="Chapter-2.html#cb6-4"></a>    <span class="dt">title =</span> <span class="st">&#39;Életkor, nem és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="Chapter-2.html#cb7-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-2"><a href="Chapter-2.html#cb7-2"></a><span class="st">  </span><span class="kw">select</span>(continent, date, died) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-3"><a href="Chapter-2.html#cb7-3"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="kw">aes</span>(<span class="dt">color =</span> died),</span>
-<span id="cb7-4"><a href="Chapter-2.html#cb7-4"></a>        <span class="dt">title =</span> <span class="st">&#39;A kontinens a rögzítés dátuma és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre><code>Error: Can&#39;t subset columns that don&#39;t exist.
+[31mx[39m Column `died` doesn&#39;t exist.</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-2.html#cb8-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-2"><a href="Chapter-2.html#cb8-2"></a><span class="st">  </span><span class="kw">select</span>(continent, date, died) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-3"><a href="Chapter-2.html#cb8-3"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="kw">aes</span>(<span class="dt">color =</span> died),</span>
+<span id="cb8-4"><a href="Chapter-2.html#cb8-4"></a>        <span class="dt">title =</span> <span class="st">&#39;A kontinens a rögzítés dátuma és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
+<pre><code>Error: Can&#39;t subset columns that don&#39;t exist.
+[31mx[39m Column `continent` doesn&#39;t exist.</code></pre>
 <p>Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-2.html#cb8-1"></a>  dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-2"><a href="Chapter-2.html#cb8-2"></a><span class="st">  </span><span class="kw">group_by</span>(continent, country) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-3"><a href="Chapter-2.html#cb8-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-4"><a href="Chapter-2.html#cb8-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-5"><a href="Chapter-2.html#cb8-5"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-6"><a href="Chapter-2.html#cb8-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb8-7"><a href="Chapter-2.html#cb8-7"></a>    <span class="dt">r =</span> n<span class="op">/</span><span class="kw">nrow</span>(dat)</span>
-<span id="cb8-8"><a href="Chapter-2.html#cb8-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-9"><a href="Chapter-2.html#cb8-9"></a><span class="st">  </span><span class="kw">arrange</span>(continent) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-10"><a href="Chapter-2.html#cb8-10"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="st">&#39;continent&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;n/sum(n)&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-11"><a href="Chapter-2.html#cb8-11"></a><span class="st">  </span><span class="kw">gt</span>(</span>
-<span id="cb8-12"><a href="Chapter-2.html#cb8-12"></a>    <span class="dt">rowname_col =</span> <span class="st">&#39;country&#39;</span>,</span>
-<span id="cb8-13"><a href="Chapter-2.html#cb8-13"></a>    <span class="dt">groupname_col =</span> <span class="st">&#39;continent&#39;</span></span>
-<span id="cb8-14"><a href="Chapter-2.html#cb8-14"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-15"><a href="Chapter-2.html#cb8-15"></a><span class="st">  </span><span class="kw">fmt_percent</span>(</span>
-<span id="cb8-16"><a href="Chapter-2.html#cb8-16"></a>    <span class="dt">columns =</span> <span class="st">&#39;n/sum(n)&#39;</span>,</span>
-<span id="cb8-17"><a href="Chapter-2.html#cb8-17"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-18"><a href="Chapter-2.html#cb8-18"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(n), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-19"><a href="Chapter-2.html#cb8-19"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;n/sum(n)&#39;</span>), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>), <span class="dt">formatter =</span> fmt_percent) <span class="op">%&gt;%</span></span>
-<span id="cb8-20"><a href="Chapter-2.html#cb8-20"></a><span class="st">  </span><span class="kw">tab_options</span>(</span>
-<span id="cb8-21"><a href="Chapter-2.html#cb8-21"></a>    <span class="dt">summary_row.background.color =</span> <span class="st">&quot;#ACEACE&quot;</span>,</span>
-<span id="cb8-22"><a href="Chapter-2.html#cb8-22"></a>    <span class="dt">row_group.background.color =</span> <span class="st">&quot;#FFEFDB&quot;</span></span>
-<span id="cb8-23"><a href="Chapter-2.html#cb8-23"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-24"><a href="Chapter-2.html#cb8-24"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Megfigyelések száma országonként&#39;</span>, <span class="dt">subtitle =</span> <span class="st">&#39;Elsődleges adattisztítás után&#39;</span>)</span></code></pre></div>
-<style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-}
-
-#akzozxjpul .gt_table {
-  display: table;
-  border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#akzozxjpul .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 4px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#akzozxjpul .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#akzozxjpul .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#akzozxjpul .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#akzozxjpul .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#akzozxjpul .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#akzozxjpul .gt_group_heading {
-  padding: 8px;
-  color: #333333;
-  background-color: #FFEFDB;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#akzozxjpul .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFEFDB;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#akzozxjpul .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#akzozxjpul .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#akzozxjpul .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#akzozxjpul .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 12px;
-}
-
-#akzozxjpul .gt_summary_row {
-  color: #333333;
-  background-color: #ACEACE;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#akzozxjpul .gt_first_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#akzozxjpul .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#akzozxjpul .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding: 4px;
-}
-
-#akzozxjpul .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#akzozxjpul .gt_sourcenote {
-  font-size: 90%;
-  padding: 4px;
-}
-
-#akzozxjpul .gt_left {
-  text-align: left;
-}
-
-#akzozxjpul .gt_center {
-  text-align: center;
-}
-
-#akzozxjpul .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#akzozxjpul .gt_font_normal {
-  font-weight: normal;
-}
-
-#akzozxjpul .gt_font_bold {
-  font-weight: bold;
-}
-
-#akzozxjpul .gt_font_italic {
-  font-style: italic;
-}
-
-#akzozxjpul .gt_super {
-  font-size: 65%;
-}
-
-#akzozxjpul .gt_footnote_marks {
-  font-style: italic;
-  font-size: 65%;
-}
-</style>
-<div id="akzozxjpul" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
-  <thead class="gt_header">
-    <tr>
-      <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Megfigyelések száma országonként</th>
-    </tr>
-    <tr>
-      <th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Elsődleges adattisztítás után</th>
-    </tr>
-  </thead>
-  <thead class="gt_col_headings">
-    <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">n</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n/sum(n)</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr class="gt_group_heading_row">
-      <td colspan="3" class="gt_group_heading">Africa</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Algeria</td>
-      <td class="gt_row gt_center">9</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Burkina Faso</td>
-      <td class="gt_row gt_center">3</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Cabo Verde</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Cameroon</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Egypt</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Eswatini</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Ethiopia</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Gabon</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Gambia</td>
-      <td class="gt_row gt_center">5</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Ghana</td>
-      <td class="gt_row gt_center">7</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Niger</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Nigeria</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Sudan</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Tanzania</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Togo</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Zimbabwe</td>
-      <td class="gt_row gt_center">5</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_stub gt_right gt_summary_row gt_first_summary_row">TOTAL</td>
-      <td class="gt_row gt_center gt_summary_row gt_first_summary_row">42.00</td>
-      <td class="gt_row gt_right gt_summary_row gt_first_summary_row">0.04&percnt;</td>
-    </tr>
-    <tr class="gt_group_heading_row">
-      <td colspan="3" class="gt_group_heading">Americas</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Bahamas</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Brazil</td>
-      <td class="gt_row gt_center">4</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Canada</td>
-      <td class="gt_row gt_center">6</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Cuba</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Guyana</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">United States</td>
-      <td class="gt_row gt_center">48</td>
-      <td class="gt_row gt_right">0.05&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_stub gt_right gt_summary_row gt_first_summary_row">TOTAL</td>
-      <td class="gt_row gt_center gt_summary_row gt_first_summary_row">62.00</td>
-      <td class="gt_row gt_right gt_summary_row gt_first_summary_row">0.06&percnt;</td>
-    </tr>
-    <tr class="gt_group_heading_row">
-      <td colspan="3" class="gt_group_heading">Asia</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">China</td>
-      <td class="gt_row gt_center">105</td>
-      <td class="gt_row gt_right">0.10&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">India</td>
-      <td class="gt_row gt_center">98645</td>
-      <td class="gt_row gt_right">95.20&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Iran</td>
-      <td class="gt_row gt_center">4</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Japan</td>
-      <td class="gt_row gt_center">8</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Malaysia</td>
-      <td class="gt_row gt_center">6</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Nepal</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Philippines</td>
-      <td class="gt_row gt_center">4505</td>
-      <td class="gt_row gt_right">4.35&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Singapore</td>
-      <td class="gt_row gt_center">118</td>
-      <td class="gt_row gt_right">0.11&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">South Korea</td>
-      <td class="gt_row gt_center">26</td>
-      <td class="gt_row gt_right">0.03&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Thailand</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">United Arab Emirates</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Vietnam</td>
-      <td class="gt_row gt_center">32</td>
-      <td class="gt_row gt_right">0.03&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_stub gt_right gt_summary_row gt_first_summary_row">TOTAL</td>
-      <td class="gt_row gt_center gt_summary_row gt_first_summary_row">103,455.00</td>
-      <td class="gt_row gt_right gt_summary_row gt_first_summary_row">99.84&percnt;</td>
-    </tr>
-    <tr class="gt_group_heading_row">
-      <td colspan="3" class="gt_group_heading">Europe</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">France</td>
-      <td class="gt_row gt_center">7</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Germany</td>
-      <td class="gt_row gt_center">3</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Italy</td>
-      <td class="gt_row gt_center">7</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Romania</td>
-      <td class="gt_row gt_center">8</td>
-      <td class="gt_row gt_right">0.01&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">San Marino</td>
-      <td class="gt_row gt_center">1</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Spain</td>
-      <td class="gt_row gt_center">2</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Switzerland</td>
-      <td class="gt_row gt_center">3</td>
-      <td class="gt_row gt_right">0.00&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_stub gt_right gt_summary_row gt_first_summary_row">TOTAL</td>
-      <td class="gt_row gt_center gt_summary_row gt_first_summary_row">31.00</td>
-      <td class="gt_row gt_right gt_summary_row gt_first_summary_row">0.03&percnt;</td>
-    </tr>
-    <tr class="gt_group_heading_row">
-      <td colspan="3" class="gt_group_heading">Oceania</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_left gt_stub">Australia</td>
-      <td class="gt_row gt_center">24</td>
-      <td class="gt_row gt_right">0.02&percnt;</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_stub gt_right gt_summary_row gt_first_summary_row">TOTAL</td>
-      <td class="gt_row gt_center gt_summary_row gt_first_summary_row">24.00</td>
-      <td class="gt_row gt_right gt_summary_row gt_first_summary_row">0.02&percnt;</td>
-    </tr>
-  </tbody>
-  
-  
-</table></div>
-<p>A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="Chapter-2.html#cb9-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-2"><a href="Chapter-2.html#cb9-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb9-3"><a href="Chapter-2.html#cb9-3"></a>    <span class="dt">india =</span> country <span class="op">==</span><span class="st"> &#39;India&#39;</span></span>
-<span id="cb9-4"><a href="Chapter-2.html#cb9-4"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-5"><a href="Chapter-2.html#cb9-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>continent, <span class="op">-</span>latitude, <span class="op">-</span>longitude) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-6"><a href="Chapter-2.html#cb9-6"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter-2.html#cb10-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-2"><a href="Chapter-2.html#cb10-2"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-3"><a href="Chapter-2.html#cb10-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-4"><a href="Chapter-2.html#cb10-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Végső adattábla modellezéshez&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter-2.html#cb10-1"></a>  dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-2"><a href="Chapter-2.html#cb10-2"></a><span class="st">  </span><span class="kw">group_by</span>(continent, country) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-3"><a href="Chapter-2.html#cb10-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-4"><a href="Chapter-2.html#cb10-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-5"><a href="Chapter-2.html#cb10-5"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-6"><a href="Chapter-2.html#cb10-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb10-7"><a href="Chapter-2.html#cb10-7"></a>    <span class="dt">r =</span> n<span class="op">/</span><span class="kw">nrow</span>(dat)</span>
+<span id="cb10-8"><a href="Chapter-2.html#cb10-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-9"><a href="Chapter-2.html#cb10-9"></a><span class="st">  </span><span class="kw">arrange</span>(continent) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-10"><a href="Chapter-2.html#cb10-10"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="st">&#39;continent&#39;</span>, <span class="st">&#39;country&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;n/sum(n)&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-11"><a href="Chapter-2.html#cb10-11"></a><span class="st">  </span><span class="kw">gt</span>(</span>
+<span id="cb10-12"><a href="Chapter-2.html#cb10-12"></a>    <span class="dt">rowname_col =</span> <span class="st">&#39;country&#39;</span>,</span>
+<span id="cb10-13"><a href="Chapter-2.html#cb10-13"></a>    <span class="dt">groupname_col =</span> <span class="st">&#39;continent&#39;</span></span>
+<span id="cb10-14"><a href="Chapter-2.html#cb10-14"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-15"><a href="Chapter-2.html#cb10-15"></a><span class="st">  </span><span class="kw">fmt_percent</span>(</span>
+<span id="cb10-16"><a href="Chapter-2.html#cb10-16"></a>    <span class="dt">columns =</span> <span class="st">&#39;n/sum(n)&#39;</span>,</span>
+<span id="cb10-17"><a href="Chapter-2.html#cb10-17"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-18"><a href="Chapter-2.html#cb10-18"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(n), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-19"><a href="Chapter-2.html#cb10-19"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;n/sum(n)&#39;</span>), </span>
+<span id="cb10-20"><a href="Chapter-2.html#cb10-20"></a>               <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>), <span class="dt">formatter =</span> fmt_percent) <span class="op">%&gt;%</span></span>
+<span id="cb10-21"><a href="Chapter-2.html#cb10-21"></a><span class="st">  </span><span class="kw">tab_options</span>(</span>
+<span id="cb10-22"><a href="Chapter-2.html#cb10-22"></a>    <span class="dt">summary_row.background.color =</span> <span class="st">&quot;#ACEACE&quot;</span>,</span>
+<span id="cb10-23"><a href="Chapter-2.html#cb10-23"></a>    <span class="dt">row_group.background.color =</span> <span class="st">&quot;#FFEFDB&quot;</span></span>
+<span id="cb10-24"><a href="Chapter-2.html#cb10-24"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-25"><a href="Chapter-2.html#cb10-25"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Megfigyelések száma országonként&#39;</span>, </span>
+<span id="cb10-26"><a href="Chapter-2.html#cb10-26"></a>             <span class="dt">subtitle =</span> <span class="st">&#39;Elsődleges adattisztítás után&#39;</span>)</span></code></pre></div>
+<pre><code>Error: Must group by variables found in `.data`.
+* Column `continent` is not found.</code></pre>
+<p>A táblázatból jól látható, hogy a legtöbb felhasználható megfigyelésünk Indiából származik. Logikusnak tűnik egy dummy változót létrehozni ezért Indiára (india = {TRUE, ha Indiából származik, FALSE egyébként}). Indiára való kontrolálás elméleti megfontolásból is helyesnek hangzik, figyelembe véve, hogy az ország rendkívül szegény, a városok zsúfoltak, orvosokból és felszerelésből, pedig hiány van. Korábban a spanyol nátha idején is kiugróan magas volt Indiában a halálozás<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-2.html#cb12-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a>    <span class="dt">india =</span> country <span class="op">==</span><span class="st"> &#39;India&#39;</span></span>
+<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-5"><a href="Chapter-2.html#cb12-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>country, <span class="op">-</span>continent, <span class="op">-</span>latitude, <span class="op">-</span>longitude) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-6"><a href="Chapter-2.html#cb12-6"></a><span class="st">  </span>{dat &lt;&lt;-<span class="st"> </span>.}</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a><span class="st">  </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Végső adattábla modellezéshez&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -2213,70 +1793,260 @@ p {
 <div id="gxuvhaszck" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
-      <th colspan="6" class="gt_heading gt_title gt_font_normal" style>Végső adattábla modellezéshez</th>
+      <th colspan="33" class="gt_heading gt_title gt_font_normal" style>Végső adattábla modellezéshez</th>
     </tr>
     <tr>
-      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+      <th colspan="33" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
     </tr>
   </thead>
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">age</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">age</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">sex</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">city</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">province</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">country</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">latitude</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">longitude</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_resolution</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_onset_symptoms</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_admission_hospital</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date_confirmation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">symptoms</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">lives_in_Wuhan</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">travel_history_dates</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">travel_history_location</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">reported_market_exposure</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">additional_information</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease_binary</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">died</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">india</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">chronic_disease</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">source</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">sequence_available</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">outcome</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">date_death_or_discharge</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">notes_for_discussion</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">location</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">admin1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">country_new</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">admin_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">data_moderator_initials</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">travel_history_binary</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
     <tr>
-      <td class="gt_row gt_right">78</td>
+      <td class="gt_row gt_left">000-1-1</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_left">male</td>
+      <td class="gt_row gt_left">Shek Lei</td>
+      <td class="gt_row gt_left">Hong Kong</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">22.36502</td>
+      <td class="gt_row gt_right">114.13381</td>
+      <td class="gt_row gt_left">point</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">22.01.2020</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Case 55; mainland China travel via the Lok Ma Chau border crossing</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-21</td>
-      <td class="gt_row gt_center">TRUE</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.scmp.com/news/hong-kong/health-environment/article/3050681/coronavirus-hong-kong-confirms-three-news-cases</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">critical condition, intubated as of 14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Shek Lei</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Hong Kong</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">8029</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">61</td>
-      <td class="gt_row gt_left">female</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_center">FALSE</td>
-    </tr>
-    <tr>
-      <td class="gt_row gt_right">28</td>
+      <td class="gt_row gt_left">000-1-10</td>
+      <td class="gt_row gt_left">78</td>
       <td class="gt_row gt_left">male</td>
+      <td class="gt_row gt_left">Vo Euganeo</td>
+      <td class="gt_row gt_left">Veneto</td>
+      <td class="gt_row gt_left">Italy</td>
+      <td class="gt_row gt_right">45.29775</td>
+      <td class="gt_row gt_right">11.65838</td>
+      <td class="gt_row gt_left">point</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">21.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Hospitalized on 12.02.2020 for other reasons</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.corriere.it/cronache/20_febbraio_21/coronavirus-italia-cosa-sappiamo-casi-codogno-lombardia-27fa736c-548b-11ea-9196-da7d305401b7.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">death</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Vo' Euganeo</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Veneto</td>
+      <td class="gt_row gt_left">Italy</td>
+      <td class="gt_row gt_right">8954</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">56</td>
+      <td class="gt_row gt_left">000-1-100</td>
+      <td class="gt_row gt_left">61</td>
       <td class="gt_row gt_left">female</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_right">1.35346</td>
+      <td class="gt_row gt_right">103.81510</td>
+      <td class="gt_row gt_left">admin0</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">Case 65; family member of Case 50, a DBS employee, as is Case 55</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://www.channelnewsasia.com/news/singapore/coronavirus-covid-19-singapore-cases-grace-assembly-of-god--12434646
+https://bnonews.com/wp-content/uploads/2020/02/2172020Cases.pdf</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">discharge</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Singapore</td>
+      <td class="gt_row gt_right">200</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">79</td>
-      <td class="gt_row gt_left">female</td>
+      <td class="gt_row gt_left">000-1-1000</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Zhengzhou City</td>
+      <td class="gt_row gt_left">Henan</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">34.62931</td>
+      <td class="gt_row gt_right">113.46800</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">26.01.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-14</td>
-      <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">https://news.163.com/special/epidemic/?spssid=7283291fcdba1d8c2d13ee3da2cfb760&amp;spsw=7&amp;spss=other</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Zhengzhou City</td>
+      <td class="gt_row gt_left">Henan</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">10091</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
     <tr>
-      <td class="gt_row gt_right">26</td>
-      <td class="gt_row gt_left">male</td>
+      <td class="gt_row gt_left">000-1-10000</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Pingxiang City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">27.51356</td>
+      <td class="gt_row gt_right">113.90290</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_left">2020-02-15</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">http://hc.jiangxi.gov.cn/doc/2020/02/15/138898.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Pingxiang City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">7060</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">000-1-10001</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Yichun City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">28.30755</td>
+      <td class="gt_row gt_right">114.97320</td>
+      <td class="gt_row gt_left">admin2</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">14.02.2020</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
       <td class="gt_row gt_center">FALSE</td>
-      <td class="gt_row gt_center">FALSE</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">http://hc.jiangxi.gov.cn/doc/2020/02/15/138898.shtml</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_center">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Yichun City</td>
+      <td class="gt_row gt_left">Jiangxi</td>
+      <td class="gt_row gt_left">China</td>
+      <td class="gt_row gt_right">9794</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_center">NA</td>
     </tr>
   </tbody>
   
@@ -2286,42 +2056,29 @@ p {
 </div>
 <div id="modellbecslés" class="section level2">
 <h2>Modellbecslés</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">TODO</span><span class="co"> tune cp</span></span>
-<span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a><span class="st">  </span>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(<span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
-<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-2.html#cb14-1"></a>rpart1 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>)</span>
+<span id="cb14-2"><a href="Chapter-2.html#cb14-2"></a></span>
+<span id="cb14-3"><a href="Chapter-2.html#cb14-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart1, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
+<span id="cb14-4"><a href="Chapter-2.html#cb14-4"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/rpart1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-2.html#cb12-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a><span class="st">  </span>rpart<span class="op">::</span><span class="kw">rpart</span>(<span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># </span><span class="al">TODO</span><span class="co"> tune cp</span></span>
-<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a><span class="st">  </span>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(<span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>,</span>
-<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
+<p>A komplexitási paraméter .01-nek választva a döntési fánk egyetlen bontásból áll: <strong>“Kisebb-e az életkor, mint 60?”</strong>. Az eredmény validálható is azzal, ha megfigyeljük, hogy miként változik a mintában szereplő halálozási ráta életkoroknként.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-2.html#cb15-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-2"><a href="Chapter-2.html#cb15-2"></a><span class="st">  </span><span class="kw">group_by</span>(age) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="Chapter-2.html#cb15-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">deathr =</span> <span class="kw">mean</span>(died)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-4"><a href="Chapter-2.html#cb15-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, deathr)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb15-5"><a href="Chapter-2.html#cb15-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">&#39;coral&#39;</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>) <span class="op">+</span></span>
+<span id="cb15-6"><a href="Chapter-2.html#cb15-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
+<span id="cb15-7"><a href="Chapter-2.html#cb15-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Az életkor és a halálozási ráta között összefüggés&#39;</span>, <span class="dt">x =</span> <span class="st">&#39;életkor&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;halálozási ráta&#39;</span>)</span></code></pre></div>
+<pre><code>Error: Problem with `summarise()` input `deathr`.
+x object &#39;died&#39; not found
+i Input `deathr` is `mean(died)`.
+i The error occured in group 1: age = &quot;0&quot;.</code></pre>
+<p>Mindazonáltal ismerve, hogy a megfigyelések NA-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="Chapter-2.html#cb17-1"></a>rpart2 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> died <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>)</span>
+<span id="cb17-2"><a href="Chapter-2.html#cb17-2"></a>  </span>
+<span id="cb17-3"><a href="Chapter-2.html#cb17-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart2, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, <span class="co"># plot</span></span>
+<span id="cb17-4"><a href="Chapter-2.html#cb17-4"></a>                         <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;2. döntési fa&#39;</span>) </span></code></pre></div>
 <p><img src="my-book_files/figure-html/rpart2-1.png" width="672" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a><span class="st">  </span><span class="kw">group_by</span>(age) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">deathr =</span> <span class="kw">mean</span>(died)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, deathr)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb13-5"><a href="Chapter-2.html#cb13-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">&#39;coral&#39;</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>, <span class="dt">color =</span> <span class="st">&#39;black&#39;</span>) <span class="op">+</span></span>
-<span id="cb13-6"><a href="Chapter-2.html#cb13-6"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span></span>
-<span id="cb13-7"><a href="Chapter-2.html#cb13-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Az életkor és a halálozási ráta között összefüggés&#39;</span>, <span class="dt">x =</span> <span class="st">&#39;életkor&#39;</span>, <span class="dt">y =</span> <span class="st">&#39;halálozási ráta&#39;</span>)</span></code></pre></div>
-<p><img src="my-book_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="Chapter-2.html#cb14-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-2"><a href="Chapter-2.html#cb14-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb14-3"><a href="Chapter-2.html#cb14-3"></a>    <span class="dt">date =</span> <span class="kw">as.numeric</span>(<span class="kw">difftime</span>(date, lubridate<span class="op">::</span><span class="kw">dmy</span>(<span class="st">&quot;01/01/2020&quot;</span>), <span class="dt">units =</span> <span class="st">&#39;days&#39;</span>))</span>
-<span id="cb14-4"><a href="Chapter-2.html#cb14-4"></a>  )</span></code></pre></div>
-<pre><code># A tibble: 103,616 x 6
-     age sex    chronic_disease_binary  date died  india
-   &lt;dbl&gt; &lt;chr&gt;  &lt;lgl&gt;                  &lt;dbl&gt; &lt;lgl&gt; &lt;lgl&gt;
- 1    78 male   FALSE                     51 TRUE  FALSE
- 2    61 female FALSE                     44 FALSE FALSE
- 3    28 male   FALSE                     44 FALSE FALSE
- 4    56 female FALSE                     44 FALSE FALSE
- 5    79 female FALSE                     44 FALSE FALSE
- 6    26 male   FALSE                     45 FALSE FALSE
- 7    25 male   FALSE                     45 FALSE FALSE
- 8    40 male   FALSE                     45 FALSE FALSE
- 9    43 male   FALSE                     45 FALSE FALSE
-10    29 male   FALSE                     45 FALSE FALSE
-# ... with 103,606 more rows</code></pre>
 
 </div>
 </div>
@@ -2330,6 +2087,7 @@ p {
 <ol start="1">
 <li id="fn1"><p>Open COVID-19 Data Working Group, <em>Detailed Epidemiological Data from the COVID-19 Outbreak</em>, <a href="http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337" class="uri">http://virological.org/t/epidemiological-data-from-the-ncov-2019-outbreak-early-descriptions-from-publicly-available-data/337</a>, letöltve: 2020.12.28.<a href="Chapter-2.html#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>Az intervallumok hossza nem egyezett meg.<a href="Chapter-2.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://www.economist.com/asia/2020/03/21/if-covid-19-takes-hold-in-india-the-toll-will-be-grim" class="uri">https://www.economist.com/asia/2020/03/21/if-covid-19-takes-hold-in-india-the-toll-will-be-grim</a><a href="Chapter-2.html#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -2337,7 +2095,7 @@ p {
           </div>
         </div>
       </div>
-<a href="Chapter-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="Chapter-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

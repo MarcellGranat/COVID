@@ -1,0 +1,168 @@
+#  Főkomponens elemzés {#Chapter-6}
+
+## Adatok forrása
+
+Főbb koronavírusos adatok keresztmetszeti tábláját 187 országra az alábbi weboldalról töltöttünk le: https://www.kaggle.com/imdevskp/corona-virus-report?select=country_wise_latest.csv
+
+```{css, echo=FALSE}
+p {
+  text-align: justify;
+}
+```
+
+```{r d.covid}
+d.covid <- vroom::vroom('country_wise_latest.csv')
+d.covid %>% 
+  head %>% 
+  gt %>% 
+  tab_header('Letöltött adattábla COVID-19 adatokról')
+```
+
+https://apps.who.int/nha/database/ViewData/Indicators/en
+
+```{r d.WHO}
+d.WHO <- readxl::read_excel('NHA indicators.xlsx') %>% 
+  select(-3) %>% 
+  na.omit %>% 
+  pivot_wider(names_from = Indicators, values_from = '2018') %>% 
+  mutate_at(-1, function(x) as.numeric(x))
+```
+
+```{r fig.height=10}
+options(scipen = 999) # avoid scientific notation
+(d.WHO %>% 
+  pivot_longer(-1) %>% 
+  ggplot +
+  geom_col(aes(Countries, value)) +
+  facet_wrap(~name, scales = 'free_y', ncol = 1) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  ) + 
+  labs(y = NULL, title = 'WHO adatbázisából származó adatok (2008)')) %>% 
+  plotly::ggplotly()
+```
+
+```{r}
+d.WHO <- d.WHO %>% # set usable var names
+  set_names('Country', 'CHE', 'GDP', 'pop') 
+```
+
+
+https://data.worldbank.org/indicator/SP.POP.DPND.OL
+
+```{r}
+d.depedency <- readxl::read_excel('depedency.xls') %>% 
+  na.omit() %>% 
+  select(-2) %>% # country code remove
+  set_names('Country', 'depedencyr')
+```
+
+
+```{r}
+(d.depedency %>%   
+  arrange(depedencyr) %>% 
+  mutate(
+    Country = factor(Country, levels = Country)
+  ) %>% 
+  ggplot + 
+  geom_col(aes(Country, depedencyr)) +
+  labs(title = 'Öregségi eltartottsági ráta (2019)', y = NULL) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )) %>% 
+  plotly::ggplotly()
+```
+
+```{r}
+d.location <- map_data("world") %>% 
+  filter(!duplicated(region)) %>% 
+  select(Country = region, long, lat)
+
+d.location %>% 
+  head %>% 
+  gt %>% 
+  tab_header('Országok földrajzi elhelyezkedése')
+```
+
+```{r ch6_merge}
+dat <- d.covid %>% 
+  rename(Country = 'Country/Region', deathr = 'Deaths / 100 Cases') %>% 
+  select(Country,  deathr, Confirmed) %>% 
+  merge(d.WHO, all.x = T) %>% 
+  merge(d.depedency, all.x = T) %>% 
+  merge(d.location, all.x = T) %>% 
+  na.omit # lost 46 observation ~ 25%
+```
+
+```{r}
+p <- dat %>% 
+  select(-1) %>% 
+  scale %>% 
+  princomp
+```
+
+```{r fig.height=10}
+p %>% 
+  .$loadings %>% 
+  unclass() %>% 
+  data.frame() %>% 
+  rownames_to_column() %>% 
+  pivot_longer(-1) %>% 
+  mutate(
+    name = str_c('# ', str_remove(name, 'Comp.'))
+  ) %>% 
+  ggplot +
+  aes(rowname, value, fill = value < 0) +
+  geom_hline(yintercept = 0) +
+  geom_col(color = 'black') +
+  coord_flip() +
+  scale_fill_discrete(guide = F) +
+  scale_y_continuous(labels = scales::percent) +
+  facet_wrap(~name) +
+  labs(x = NULL, y = NULL, title = 'Főkomponensek')
+```
+
+```{r}
+p %>% 
+  .$sdev %>% 
+  {data.frame(Komponens = names(.), Variancia = .^2)} %>% 
+  mutate(
+    Komponens = str_c('# ', str_remove(Komponens, 'Comp.'))
+  ) %>% 
+  gt %>% 
+  tab_header('Főkomponensek varianciái') %>% 
+  fmt_number(
+    columns = vars(Variancia),
+    use_seps = TRUE,
+    dec_mark = ','
+  ) # TODO Kaiser
+```
+
+```{r}
+sapply(1:6, function(i)
+  p %>% 
+  .$scores %>% 
+  cbind(dat) %>% 
+  rename(x = str_c('Comp.', i)) %>% 
+  arrange(desc(x)) %>% 
+  pull(Country) %>% 
+  head(5)
+) %>% 
+  data.frame() %>% 
+  {set_names(., str_c("# ", str_remove(names(.), "X")))} %>% 
+  gt %>% 
+  tab_header('Főkomponenseket leginkább jellemző országok')
+```
+
+
+```{r biplot}
+dat %>% 
+  select(-1, -2) %>% 
+  kmeans(centers = 5, iter.max = 100, nstart = 100) %>% 
+  .$cluster %>% 
+  {factoextra::fviz_pca_biplot(p, habillage = .)} # TODO improve
+```
+
+

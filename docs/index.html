@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>COVID</title>
-  <meta name="description" content="COVID" />
+  <title>A COVID járvány elemzése többáltozós statisztikai eszközkkel</title>
+  <meta name="description" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="COVID" />
+  <meta property="og:title" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="COVID" />
+  <meta name="twitter:title" content="A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
   
   
   
@@ -31,7 +31,7 @@
   
   <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
 
-<link rel="next" href="Chapter-1.html"/>
+<link rel="next" href="Chapter-2.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -57,6 +57,10 @@
 <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -140,7 +144,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
-<li class="chapter" data-level="" data-path="Chapter-1.html"><a href="Chapter-1.html"><i class="fa fa-check"></i>Bevezetés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
@@ -152,6 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#outlierek-és-vif-mutató-szerinti-elemzés"><i class="fa fa-check"></i>Outlierek és VIF mutató szerinti elemzés</a></li>
 <li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Szövegelemzés</a><ul>
@@ -159,6 +163,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#bag-of-words"><i class="fa fa-check"></i>Bag of Words</a></li>
 <li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#sentiment-elemzés"><i class="fa fa-check"></i>Sentiment elemzés</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Főkomponens elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#adatok-forrása"><i class="fa fa-check"></i>Adatok forrása</a></li>
 </ul></li>
 </ul>
 
@@ -169,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">COVID</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többáltozós statisztikai eszközkkel</a>
           </h1>
         </div>
 
@@ -178,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">COVID</h1>
+<h1 class="title">A COVID járvány elemzése többáltozós statisztikai eszközkkel</h1>
 <p class="author"><em>Granát Marcell &amp; Mazzag Bálint</em></p>
 </div>
 <div id="index" class="section level1">
@@ -207,7 +217,7 @@ text-align: justify;
         </div>
       </div>
 
-<a href="Chapter-1.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Chapter-2.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Főkomponens elemzés | A COVID járvány elemzése többáltozós statisztikai eszközkkel</title>
+  <meta name="description" content="Főkomponens elemzés | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Főkomponens elemzés | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Főkomponens elemzés | A COVID járvány elemzése többáltozós statisztikai eszközkkel" />
+  
+  
+  
+
+<meta name="author" content="Granát Marcell &amp; Mazzag Bálint" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
+<link rel="prev" href="Chapter-5.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<img src="logo.png" width="300" height="300">
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Mi ez a projekt?</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html"><i class="fa fa-check"></i>Döntési fa</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-bemutatása"><i class="fa fa-check"></i>Adatok bemutatása</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#forrás"><i class="fa fa-check"></i>Forrás</a></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#adatok-elemzéshez-való-előkészítése"><i class="fa fa-check"></i>Adatok elemzéshez való előkészítése</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-2.html"><a href="Chapter-2.html#modellbecslés"><i class="fa fa-check"></i>Modellbecslés</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html"><i class="fa fa-check"></i>Logit-modell</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#logit-modell-kalibrálása"><i class="fa fa-check"></i>Logit modell kalibrálása</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#outlierek-és-vif-mutató-szerinti-elemzés"><i class="fa fa-check"></i>Outlierek és VIF mutató szerinti elemzés</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#nemlinearitás-vizsgálata-a-reset-teszttel"><i class="fa fa-check"></i>Nemlinearitás vizsgálata a RESET-teszttel</a></li>
+<li class="chapter" data-level="" data-path="Chapter-3.html"><a href="Chapter-3.html#előrejelzés-a-kiválasztott-modellel"><i class="fa fa-check"></i>Előrejelzés a kiválasztott modellel</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html"><i class="fa fa-check"></i>Szövegelemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#elemzés"><i class="fa fa-check"></i>Elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#bag-of-words"><i class="fa fa-check"></i>Bag of Words</a></li>
+<li class="chapter" data-level="" data-path="Chapter-4.html"><a href="Chapter-4.html#sentiment-elemzés"><i class="fa fa-check"></i>Sentiment elemzés</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html"><i class="fa fa-check"></i>Idősor elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-5.html"><a href="Chapter-5.html#sarima"><i class="fa fa-check"></i>SARIMA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html"><i class="fa fa-check"></i>Főkomponens elemzés</a><ul>
+<li class="chapter" data-level="" data-path="Chapter-6.html"><a href="Chapter-6.html#adatok-forrása"><i class="fa fa-check"></i>Adatok forrása</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A COVID járvány elemzése többáltozós statisztikai eszközkkel</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Chapter-6" class="section level1">
+<h1>Főkomponens elemzés</h1>
+<div id="adatok-forrása" class="section level2">
+<h2>Adatok forrása</h2>
+<p>Főbb koronavírusos adatok keresztmetszeti tábláját 187 országra az alábbi weboldalról töltöttünk le: <a href="https://www.kaggle.com/imdevskp/corona-virus-report?select=country_wise_latest.csv" class="uri">https://www.kaggle.com/imdevskp/corona-virus-report?select=country_wise_latest.csv</a></p>
+<style type="text/css">
+p {
+  text-align: justify;
+}
+</style>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="Chapter-6.html#cb84-1"></a>d.covid &lt;-<span class="st"> </span>vroom<span class="op">::</span><span class="kw">vroom</span>(<span class="st">&#39;country_wise_latest.csv&#39;</span>)</span>
+<span id="cb84-2"><a href="Chapter-6.html#cb84-2"></a>d.covid <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb84-3"><a href="Chapter-6.html#cb84-3"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb84-4"><a href="Chapter-6.html#cb84-4"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb84-5"><a href="Chapter-6.html#cb84-5"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Letöltött adattábla COVID-19 adatokról&#39;)</span></span></code></pre></div>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mnjfscrcsi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mnjfscrcsi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mnjfscrcsi .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mnjfscrcsi .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mnjfscrcsi .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mnjfscrcsi .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mnjfscrcsi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mnjfscrcsi .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mnjfscrcsi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mnjfscrcsi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mnjfscrcsi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mnjfscrcsi .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mnjfscrcsi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#mnjfscrcsi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mnjfscrcsi .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mnjfscrcsi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mnjfscrcsi .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mnjfscrcsi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mnjfscrcsi .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mnjfscrcsi .gt_left {
+  text-align: left;
+}
+
+#mnjfscrcsi .gt_center {
+  text-align: center;
+}
+
+#mnjfscrcsi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mnjfscrcsi .gt_font_normal {
+  font-weight: normal;
+}
+
+#mnjfscrcsi .gt_font_bold {
+  font-weight: bold;
+}
+
+#mnjfscrcsi .gt_font_italic {
+  font-style: italic;
+}
+
+#mnjfscrcsi .gt_super {
+  font-size: 65%;
+}
+
+#mnjfscrcsi .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="mnjfscrcsi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="15" class="gt_heading gt_title gt_font_normal" style>Letöltött adattábla COVID-19 adatokról</th>
+    </tr>
+    <tr>
+      <th colspan="15" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Country/Region</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Confirmed</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Deaths</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Recovered</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Active</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">New cases</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">New deaths</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">New recovered</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Deaths / 100 Cases</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Recovered / 100 Cases</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Deaths / 100 Recovered</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Confirmed last week</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">1 week change</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">1 week % increase</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">WHO Region</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">Afghanistan</td>
+      <td class="gt_row gt_right">36263</td>
+      <td class="gt_row gt_right">1269</td>
+      <td class="gt_row gt_right">25198</td>
+      <td class="gt_row gt_right">9796</td>
+      <td class="gt_row gt_right">106</td>
+      <td class="gt_row gt_right">10</td>
+      <td class="gt_row gt_right">18</td>
+      <td class="gt_row gt_right">3.50</td>
+      <td class="gt_row gt_right">69.49</td>
+      <td class="gt_row gt_right">5.04</td>
+      <td class="gt_row gt_right">35526</td>
+      <td class="gt_row gt_right">737</td>
+      <td class="gt_row gt_right">2.07</td>
+      <td class="gt_row gt_left">Eastern Mediterranean</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Albania</td>
+      <td class="gt_row gt_right">4880</td>
+      <td class="gt_row gt_right">144</td>
+      <td class="gt_row gt_right">2745</td>
+      <td class="gt_row gt_right">1991</td>
+      <td class="gt_row gt_right">117</td>
+      <td class="gt_row gt_right">6</td>
+      <td class="gt_row gt_right">63</td>
+      <td class="gt_row gt_right">2.95</td>
+      <td class="gt_row gt_right">56.25</td>
+      <td class="gt_row gt_right">5.25</td>
+      <td class="gt_row gt_right">4171</td>
+      <td class="gt_row gt_right">709</td>
+      <td class="gt_row gt_right">17.00</td>
+      <td class="gt_row gt_left">Europe</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Algeria</td>
+      <td class="gt_row gt_right">27973</td>
+      <td class="gt_row gt_right">1163</td>
+      <td class="gt_row gt_right">18837</td>
+      <td class="gt_row gt_right">7973</td>
+      <td class="gt_row gt_right">616</td>
+      <td class="gt_row gt_right">8</td>
+      <td class="gt_row gt_right">749</td>
+      <td class="gt_row gt_right">4.16</td>
+      <td class="gt_row gt_right">67.34</td>
+      <td class="gt_row gt_right">6.17</td>
+      <td class="gt_row gt_right">23691</td>
+      <td class="gt_row gt_right">4282</td>
+      <td class="gt_row gt_right">18.07</td>
+      <td class="gt_row gt_left">Africa</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Andorra</td>
+      <td class="gt_row gt_right">907</td>
+      <td class="gt_row gt_right">52</td>
+      <td class="gt_row gt_right">803</td>
+      <td class="gt_row gt_right">52</td>
+      <td class="gt_row gt_right">10</td>
+      <td class="gt_row gt_right">0</td>
+      <td class="gt_row gt_right">0</td>
+      <td class="gt_row gt_right">5.73</td>
+      <td class="gt_row gt_right">88.53</td>
+      <td class="gt_row gt_right">6.48</td>
+      <td class="gt_row gt_right">884</td>
+      <td class="gt_row gt_right">23</td>
+      <td class="gt_row gt_right">2.60</td>
+      <td class="gt_row gt_left">Europe</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Angola</td>
+      <td class="gt_row gt_right">950</td>
+      <td class="gt_row gt_right">41</td>
+      <td class="gt_row gt_right">242</td>
+      <td class="gt_row gt_right">667</td>
+      <td class="gt_row gt_right">18</td>
+      <td class="gt_row gt_right">1</td>
+      <td class="gt_row gt_right">0</td>
+      <td class="gt_row gt_right">4.32</td>
+      <td class="gt_row gt_right">25.47</td>
+      <td class="gt_row gt_right">16.94</td>
+      <td class="gt_row gt_right">749</td>
+      <td class="gt_row gt_right">201</td>
+      <td class="gt_row gt_right">26.84</td>
+      <td class="gt_row gt_left">Africa</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Antigua and Barbuda</td>
+      <td class="gt_row gt_right">86</td>
+      <td class="gt_row gt_right">3</td>
+      <td class="gt_row gt_right">65</td>
+      <td class="gt_row gt_right">18</td>
+      <td class="gt_row gt_right">4</td>
+      <td class="gt_row gt_right">0</td>
+      <td class="gt_row gt_right">5</td>
+      <td class="gt_row gt_right">3.49</td>
+      <td class="gt_row gt_right">75.58</td>
+      <td class="gt_row gt_right">4.62</td>
+      <td class="gt_row gt_right">76</td>
+      <td class="gt_row gt_right">10</td>
+      <td class="gt_row gt_right">13.16</td>
+      <td class="gt_row gt_left">Americas</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p><a href="https://apps.who.int/nha/database/ViewData/Indicators/en" class="uri">https://apps.who.int/nha/database/ViewData/Indicators/en</a></p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="Chapter-6.html#cb85-1"></a>d.WHO &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;NHA indicators.xlsx&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb85-2"><a href="Chapter-6.html#cb85-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb85-3"><a href="Chapter-6.html#cb85-3"></a><span class="st">  </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb85-4"><a href="Chapter-6.html#cb85-4"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> Indicators, <span class="dt">values_from =</span> <span class="st">&#39;2018&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb85-5"><a href="Chapter-6.html#cb85-5"></a><span class="st">  </span><span class="kw">mutate_at</span>(<span class="op">-</span><span class="dv">1</span>, <span class="cf">function</span>(x) <span class="kw">as.numeric</span>(x))</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="Chapter-6.html#cb86-1"></a><span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">999</span>) <span class="co"># avoid scientific notation</span></span>
+<span id="cb86-2"><a href="Chapter-6.html#cb86-2"></a>(d.WHO <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-3"><a href="Chapter-6.html#cb86-3"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-4"><a href="Chapter-6.html#cb86-4"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
+<span id="cb86-5"><a href="Chapter-6.html#cb86-5"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(Countries, value)) <span class="op">+</span></span>
+<span id="cb86-6"><a href="Chapter-6.html#cb86-6"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name, <span class="dt">scales =</span> <span class="st">&#39;free_y&#39;</span>, <span class="dt">ncol =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb86-7"><a href="Chapter-6.html#cb86-7"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb86-8"><a href="Chapter-6.html#cb86-8"></a>    <span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb86-9"><a href="Chapter-6.html#cb86-9"></a>    <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>()</span>
+<span id="cb86-10"><a href="Chapter-6.html#cb86-10"></a>  ) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb86-11"><a href="Chapter-6.html#cb86-11"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="ot">NULL</span>, <span class="dt">title =</span> <span class="st">&#39;WHO adatbázisából származó adatok (2008)&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-12"><a href="Chapter-6.html#cb86-12"></a><span class="st">  </span>plotly<span class="op">::</span><span class="kw">ggplotly</span>()</span></code></pre></div>
+<div id="htmlwidget-faab06fbe0c4959b0cb5" style="width:672px;height:960px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-faab06fbe0c4959b0cb5">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000002,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999991,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[3,5,19,23,27,28,29,31,33,34,38,39,42,47,55,56,58,59,63,64,67,71,72,89,96,97,100,101,104,107,108,115,117,123,124,142,148,150,152,153,158,159,170,177,181,188,189,6,7,12,15,18,21,24,32,35,37,41,44,50,51,52,54,69,70,73,74,75,85,109,122,130,132,133,143,144,145,163,172,182,183,186,1,13,49,53,80,81,87,91,95,114,127,128,137,149,162,173,179,2,4,8,10,11,16,17,22,26,43,45,46,48,57,61,62,65,66,68,76,77,82,83,84,88,92,94,98,99,105,111,113,120,126,135,136,139,140,141,147,151,155,156,160,164,165,166,168,174,175,178,180,184,14,20,78,79,103,116,119,161,167,169,9,25,30,36,40,60,86,90,93,102,106,110,112,118,121,125,129,131,134,138,146,154,157,171,176,185,187],"y":[962.71936035,164.70602417,83.21243286,1088.72900391,111.71577454,65.79267883,399.53582764,133.60945129,97.0058136,79.01350403,134.20884705,125.36307526,176.27853394,30.71561813,696.58062744,73.70491028,695.69836426,66.64078522,490.83758545,80.81072998,167.97952271,109.24282074,123.18437958,179.18043518,308.99752808,12642.83105469,79.07378387,119.51282501,90.00173187,190.13778687,1380.73596191,117.79573822,882.66326904,77.98433685,232.99221802,169.82418823,213.92353821,146.39419556,1548.97497559,257.32653809,1129.38391113,113.77922821,109.35966492,139.33383179,112.45636749,208.44441223,198.01686096,1405.76794434,1989.63562012,2005.24621582,1203.78686523,506.31762695,496.09091187,1530.82226563,5199.97314453,2305.67651367,1155.4074707,1336.52856445,2519.29418945,710.24499512,1017.50299072,954.76373291,592.34143066,693.81774902,482.96057129,512.92156982,143.62878418,362.26046753,559.11590576,1065.95007324,473.92501831,1856.69128418,935.32897949,766.63635254,1555.55664063,610.52154541,549.60974121,1179.64086914,2099.59667969,10623.84960938,2169.28540039,383.50854492,186.4072876,1955.35192871,134.88937378,614.10858154,1691.33569336,715.95831299,737.75085449,3669.01660156,1085.85119629,467.12515259,1729.54199219,178.24232483,3165.85791016,3519.90722656,293.05581665,912.25427246,3172.60766602,697.30487061,3607.00097656,1036.95446777,5879.10302734,633.56213379,1132.46948242,5404.91601563,1300.77648926,1633.80444336,1876.10449219,2624.85083008,3040.51904297,5794.25927734,2427.62768555,4457.17089844,5250.4453125,795.90411377,6098.20263672,2340.16577148,2115.19238281,5113.22167969,5896.69189453,3207.46630859,3624.08227539,783.76342773,259.92599487,1895.77575684,2312.95532227,6047.82226563,3897.32861328,2982.52807617,1711.20996094,5634.52929688,6818.34619141,2015.28588867,3242.35180664,479.85287476,1576.29931641,1488.3170166,4340.04199219,1484.64892578,2179.54223633,3158.38500977,3576.49194336,5828.40966797,8113.94335938,249.74613953,1073.19555664,1170.77990723,1275.11584473,682.50952148,4619.57324219,459.42245483,109.6439209,322.09790039,275.13040161,375.15563965,1442.57324219,291.7381897,180.40550232,516.92150879,722.69683838,352.51229858,5004.86669922,1952.52880859,261.15719604,935.19287109,751.69213867,372.46304321,4503.68212891,277.83273315,167.1159668,1193.85388184,677.16558838,414.04211426,519.26660156,1174.43530273,4024.38623047,1404.69458008,2011.51733398,101.27780151,393.90402222,3213.66333008,355.18405151,4439.28173828,107.63027954,355.33111572,757.80279541,108.67279053,440.16650391],"text":["Countries: Algeria<br />value:      962.71936","Countries: Angola<br />value:      164.70602","Countries: Benin<br />value:       83.21243","Countries: Botswana<br />value:     1088.72900","Countries: Burkina Faso<br />value:      111.71577","Countries: Burundi<br />value:       65.79268","Countries: Cabo Verde Republic of<br />value:      399.53583","Countries: Cameroon<br />value:      133.60945","Countries: Central African Republic<br />value:       97.00581","Countries: Chad<br />value:       79.01350","Countries: Comoros<br />value:      134.20885","Countries: Congo<br />value:      125.36308","Countries: Côte d'Ivoire<br />value:      176.27853","Countries: Democratic Republic of the Congo<br />value:       30.71562","Countries: Equatorial Guinea<br />value:      696.58063","Countries: Eritrea<br />value:       73.70491","Countries: Eswatini<br />value:      695.69836","Countries: Ethiopia<br />value:       66.64079","Countries: Gabon<br />value:      490.83759","Countries: Gambia<br />value:       80.81073","Countries: Ghana<br />value:      167.97952","Countries: Guinea<br />value:      109.24282","Countries: Guinea-Bissau<br />value:      123.18438","Countries: Kenya<br />value:      179.18044","Countries: Lesotho<br />value:      308.99753","Countries: Liberia<br />value:    12642.83105","Countries: Madagascar<br />value:       79.07378","Countries: Malawi<br />value:      119.51283","Countries: Mali<br />value:       90.00173","Countries: Mauritania<br />value:      190.13779","Countries: Mauritius<br />value:     1380.73596","Countries: Mozambique<br />value:      117.79574","Countries: Namibia<br />value:      882.66327","Countries: Niger<br />value:       77.98434","Countries: Nigeria<br />value:      232.99222","Countries: Rwanda<br />value:      169.82419","Countries: Sao Tome and Principe<br />value:      213.92354","Countries: Senegal<br />value:      146.39420","Countries: Seychelles<br />value:     1548.97498","Countries: Sierra Leone<br />value:      257.32654","Countries: South Africa<br />value:     1129.38391","Countries: South Sudan<br />value:      113.77923","Countries: Togo<br />value:      109.35966","Countries: Uganda<br />value:      139.33383","Countries: United Republic of Tanzania<br />value:      112.45637","Countries: Zambia<br />value:      208.44441","Countries: Zimbabwe<br />value:      198.01686","Countries: Antigua and Barbuda<br />value:     1405.76794","Countries: Argentina<br />value:     1989.63562","Countries: Bahamas<br />value:     2005.24622","Countries: Barbados<br />value:     1203.78687","Countries: Belize<br />value:      506.31763","Countries: Bolivia Plurinational States of<br />value:      496.09091","Countries: Brazil<br />value:     1530.82227","Countries: Canada<br />value:     5199.97314","Countries: Chile<br />value:     2305.67651","Countries: Colombia<br />value:     1155.40747","Countries: Costa Rica<br />value:     1336.52856","Countries: Cuba<br />value:     2519.29419","Countries: Dominica<br />value:      710.24500","Countries: Dominican Republic<br />value:     1017.50299","Countries: Ecuador<br />value:      954.76373","Countries: El Salvador<br />value:      592.34143","Countries: Grenada<br />value:      693.81775","Countries: Guatemala<br />value:      482.96057","Countries: Guyana<br />value:      512.92157","Countries: Haiti<br />value:      143.62878","Countries: Honduras<br />value:      362.26047","Countries: Jamaica<br />value:      559.11591","Countries: Mexico<br />value:     1065.95007","Countries: Nicaragua<br />value:      473.92502","Countries: Panama<br />value:     1856.69128","Countries: Paraguay<br />value:      935.32898","Countries: Peru<br />value:      766.63635","Countries: Saint Kitts and Nevis<br />value:     1555.55664","Countries: Saint Lucia<br />value:      610.52155","Countries: Saint Vincent and the Grenadines<br />value:      549.60974","Countries: Suriname<br />value:     1179.64087","Countries: Trinidad and Tobago<br />value:     2099.59668","Countries: United States of America<br />value:    10623.84961","Countries: Uruguay<br />value:     2169.28540","Countries: Venezuela (Bolivarian Republic of)<br />value:      383.50854","Countries: Afghanistan<br />value:      186.40729","Countries: Bahrain<br />value:     1955.35193","Countries: Djibouti<br />value:      134.88937","Countries: Egypt<br />value:      614.10858","Countries: Iran<br />value:     1691.33569","Countries: Iraq<br />value:      715.95831","Countries: Jordan<br />value:      737.75085","Countries: Kuwait<br />value:     3669.01660","Countries: Lebanon<br />value:     1085.85120","Countries: Morocco<br />value:      467.12515","Countries: Oman<br />value:     1729.54199","Countries: Pakistan<br />value:      178.24232","Countries: Qatar<br />value:     3165.85791","Countries: Saudi Arabia<br />value:     3519.90723","Countries: Sudan<br />value:      293.05582","Countries: Tunisia<br />value:      912.25427","Countries: United Arab Emirates<br />value:     3172.60767","Countries: Albania<br />value:      697.30487","Countries: Andorra<br />value:     3607.00098","Countries: Armenia<br />value:     1036.95447","Countries: Austria<br />value:     5879.10303","Countries: Azerbaijan<br />value:      633.56213","Countries: Belarus<br />value:     1132.46948","Countries: Belgium<br />value:     5404.91602","Countries: Bosnia and Herzegovina<br />value:     1300.77649","Countries: Bulgaria<br />value:     1633.80444","Countries: Croatia<br />value:     1876.10449","Countries: Cyprus<br />value:     2624.85083","Countries: Czech Republic<br />value:     3040.51904","Countries: Denmark<br />value:     5794.25928","Countries: Estonia<br />value:     2427.62769","Countries: Finland<br />value:     4457.17090","Countries: France<br />value:     5250.44531","Countries: Georgia<br />value:      795.90411","Countries: Germany<br />value:     6098.20264","Countries: Greece<br />value:     2340.16577","Countries: Hungary<br />value:     2115.19238","Countries: Iceland<br />value:     5113.22168","Countries: Ireland<br />value:     5896.69189","Countries: Israel<br />value:     3207.46631","Countries: Italy<br />value:     3624.08228","Countries: Kazakhstan<br />value:      783.76343","Countries: Kyrgyzstan<br />value:      259.92599","Countries: Latvia<br />value:     1895.77576","Countries: Lithuania<br />value:     2312.95532","Countries: Luxembourg<br />value:     6047.82227","Countries: Malta<br />value:     3897.32861","Countries: Monaco<br />value:     2982.52808","Countries: Montenegro<br />value:     1711.20996","Countries: Netherlands<br />value:     5634.52930","Countries: Norway<br />value:     6818.34619","Countries: Poland<br />value:     2015.28589","Countries: Portugal<br />value:     3242.35181","Countries: Republic of Moldova<br />value:      479.85287","Countries: Romania<br />value:     1576.29932","Countries: Russian Federation<br />value:     1488.31702","Countries: San Marino<br />value:     4340.04199","Countries: Serbia<br />value:     1484.64893","Countries: Slovakia<br />value:     2179.54224","Countries: Slovenia<br />value:     3158.38501","Countries: Spain<br />value:     3576.49194","Countries: Sweden<br />value:     5828.40967","Countries: Switzerland<br />value:     8113.94336","Countries: Tajikistan<br />value:      249.74614","Countries: The Republic of North Macedonia<br />value:     1073.19556","Countries: Turkey<br />value:     1170.77991","Countries: Turkmenistan<br />value:     1275.11584","Countries: Ukraine<br />value:      682.50952","Countries: United Kingdom<br />value:     4619.57324","Countries: Uzbekistan<br />value:      459.42245","Countries: Bangladesh<br />value:      109.64392","Countries: Bhutan<br />value:      322.09790","Countries: India<br />value:      275.13040","Countries: Indonesia<br />value:      375.15564","Countries: Maldives<br />value:     1442.57324","Countries: Myanmar<br />value:      291.73819","Countries: Nepal<br />value:      180.40550","Countries: Sri Lanka<br />value:      516.92151","Countries: Thailand<br />value:      722.69684","Countries: Timor-Leste<br />value:      352.51230","Countries: Australia<br />value:     5004.86670","Countries: Brunei Darussalam<br />value:     1952.52881","Countries: Cambodia<br />value:      261.15720","Countries: China<br />value:      935.19287","Countries: Cook Islands<br />value:      751.69214","Countries: Fiji<br />value:      372.46304","Countries: Japan<br />value:     4503.68213","Countries: Kiribati<br />value:      277.83273","Countries: Lao People's Democratic Republic<br />value:      167.11597","Countries: Malaysia<br />value:     1193.85388","Countries: Marshall Islands<br />value:      677.16559","Countries: Micronesia (Federated States of)<br />value:      414.04211","Countries: Mongolia<br />value:      519.26660","Countries: Nauru<br />value:     1174.43530","Countries: New Zealand<br />value:     4024.38623","Countries: Niue<br />value:     1404.69458","Countries: Palau<br />value:     2011.51733","Countries: Papua New Guinea<br />value:      101.27780","Countries: Philippines<br />value:      393.90402","Countries: Republic of Korea<br />value:     3213.66333","Countries: Samoa<br />value:      355.18405","Countries: Singapore<br />value:     4439.28174","Countries: Solomon Islands<br />value:      107.63028","Countries: Tonga<br />value:      355.33112","Countries: Tuvalu<br />value:      757.80280","Countries: Vanuatu<br />value:      108.67279","Countries: Viet Nam<br />value:      440.16650"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000002,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999991,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[3,5,19,23,27,28,29,31,33,34,38,39,42,47,55,56,58,59,63,64,67,71,72,89,96,97,100,101,104,107,108,115,117,123,124,142,148,150,152,153,158,159,170,177,181,188,189,6,7,12,15,18,21,24,32,35,37,41,44,50,51,52,54,69,70,73,74,75,85,109,122,130,132,133,143,144,145,163,172,182,183,186,1,13,49,53,80,81,87,91,95,114,127,128,137,149,162,173,179,2,4,8,10,11,16,17,22,26,43,45,46,48,57,61,62,65,66,68,76,77,82,83,84,88,92,94,98,99,105,111,113,120,126,135,136,139,140,141,147,151,155,156,160,164,165,166,168,174,175,178,180,184,14,20,78,79,103,116,119,161,167,169,9,25,30,36,40,60,86,90,93,102,106,110,112,118,121,125,129,131,134,138,146,154,157,171,176,185,187],"y":[653768.33767264,199079.91338748,38359.59019187,41962.45329658,39203.00236805,9497.42325,4053.26654108,95445.62509896,4117.93087043,29836.75356108,2434.27054498,30743.71805754,105468.43192474,78230.63583085,30410.69062248,6218.29393628,12086.65291264,220867.1207058,37894.53096716,5955.66189812,141295.05162304,34493.07020391,3300.45852448,178208.16411298,7017.44756075,903998.1112,43358.01980141,23230.04210977,44197.23913372,18278.70804014,30030.46278786,42505.20579715,27180.07068007,23864.6845865,1173222.53276368,27697.98369508,720.40447221,58345.47682882,2943.02427829,12255.34794492,790822.90997322,19511.85218567,13993.57179439,91225.64470319,174520.87246381,73292.4294812,60391.34267418,2587.29289141,917056.98657472,12374.80950512,5257.90284816,3408.07555808,89385.29118008,3370267.8289625,1786638.73716696,472439.35722019,751050.42973361,88345.6001168,255322.57055812,771.76697195,188612.90190178,200474.34510768,53496.38071537,1732.32610403,145957.43633655,6731.17751691,20762.71282309,49267.8925061,27071.8206856,2504211.40957564,35777.33206271,106734.38252687,97771.41549602,468196.30156611,1535.82315341,2524.87355658,1354.56074482,8525.80167241,42097.25214389,20580159.776,81307.48209981,310957.59145901,73747.52838413,74241.50012502,5564.85041934,1221664.10148132,1597282.3690775,670122.62881164,94371.38754203,303645.43517873,89169.43757836,316794.92042918,202162.5061041,1181412.88043792,352989.93073338,1864810.21528689,272630.76906733,144682.75363546,723046.66317995,38196.04354299,4139.29945401,30530.73636529,502314.85247115,179400.38360751,189657.95934008,597058.69742314,48607.74911231,156783.47498732,112821.25841343,33509.1568783,421892.6709409,332624.95129203,47883.11678722,272371.21862061,3120958.80740034,44788.76462105,4417206.51843713,325789.64569679,308700.18746918,20328.55547643,411091.81364004,357633.41341857,2528935.69338553,491362.82066408,25075.5294376,59250.48171123,98920.63243553,68878.3230924,20681.06128989,7222.43949658,12754.45327576,970539.73699687,359298.9617161,1208903.72691346,354673.81831067,25784.42932144,554045.41862498,4080182.56778698,2052.40574656,121732.04748474,177427.60203395,78660.96126505,1858815.49819012,541220.41081756,579644.17882857,31395.87828813,33958.03857047,2337508.08294409,112946.516637,390972.95194748,3062486.47587615,281968.11019568,755247.03757849,7947.4318984,10500206.0878706,3498242.76027684,7904.44951313,327028.46867142,86779.06873118,291974.29538911,1322836.96936432,10331.47207562,1342135.95284439,34711.62766693,70417.65250063,24950587.2152887,457.37647094,9611.47502168,5230146.55151194,265.7437849,52534.78311866,1002046.29044792,225.34772497,370.41230544,43459.16917922,130.83205343,207247.26439597,27.18942987,331.46838018,36823.27520445,954650.46194067,2174501.23649674,1336.40671046,572504.54311655,1570.41602435,719.48508364,45.78480178,942.76613012,710660.12214295],"text":["Countries: Algeria<br />value:   653768.33767","Countries: Angola<br />value:   199079.91339","Countries: Benin<br />value:    38359.59019","Countries: Botswana<br />value:    41962.45330","Countries: Burkina Faso<br />value:    39203.00237","Countries: Burundi<br />value:     9497.42325","Countries: Cabo Verde Republic of<br />value:     4053.26654","Countries: Cameroon<br />value:    95445.62510","Countries: Central African Republic<br />value:     4117.93087","Countries: Chad<br />value:    29836.75356","Countries: Comoros<br />value:     2434.27054","Countries: Congo<br />value:    30743.71806","Countries: Côte d'Ivoire<br />value:   105468.43192","Countries: Democratic Republic of the Congo<br />value:    78230.63583","Countries: Equatorial Guinea<br />value:    30410.69062","Countries: Eritrea<br />value:     6218.29394","Countries: Eswatini<br />value:    12086.65291","Countries: Ethiopia<br />value:   220867.12071","Countries: Gabon<br />value:    37894.53097","Countries: Gambia<br />value:     5955.66190","Countries: Ghana<br />value:   141295.05162","Countries: Guinea<br />value:    34493.07020","Countries: Guinea-Bissau<br />value:     3300.45852","Countries: Kenya<br />value:   178208.16411","Countries: Lesotho<br />value:     7017.44756","Countries: Liberia<br />value:   903998.11120","Countries: Madagascar<br />value:    43358.01980","Countries: Malawi<br />value:    23230.04211","Countries: Mali<br />value:    44197.23913","Countries: Mauritania<br />value:    18278.70804","Countries: Mauritius<br />value:    30030.46279","Countries: Mozambique<br />value:    42505.20580","Countries: Namibia<br />value:    27180.07068","Countries: Niger<br />value:    23864.68459","Countries: Nigeria<br />value:  1173222.53276","Countries: Rwanda<br />value:    27697.98370","Countries: Sao Tome and Principe<br />value:      720.40447","Countries: Senegal<br />value:    58345.47683","Countries: Seychelles<br />value:     2943.02428","Countries: Sierra Leone<br />value:    12255.34794","Countries: South Africa<br />value:   790822.90997","Countries: South Sudan<br />value:    19511.85219","Countries: Togo<br />value:    13993.57179","Countries: Uganda<br />value:    91225.64470","Countries: United Republic of Tanzania<br />value:   174520.87246","Countries: Zambia<br />value:    73292.42948","Countries: Zimbabwe<br />value:    60391.34267","Countries: Antigua and Barbuda<br />value:     2587.29289","Countries: Argentina<br />value:   917056.98657","Countries: Bahamas<br />value:    12374.80951","Countries: Barbados<br />value:     5257.90285","Countries: Belize<br />value:     3408.07556","Countries: Bolivia Plurinational States of<br />value:    89385.29118","Countries: Brazil<br />value:  3370267.82896","Countries: Canada<br />value:  1786638.73717","Countries: Chile<br />value:   472439.35722","Countries: Colombia<br />value:   751050.42973","Countries: Costa Rica<br />value:    88345.60012","Countries: Cuba<br />value:   255322.57056","Countries: Dominica<br />value:      771.76697","Countries: Dominican Republic<br />value:   188612.90190","Countries: Ecuador<br />value:   200474.34511","Countries: El Salvador<br />value:    53496.38072","Countries: Grenada<br />value:     1732.32610","Countries: Guatemala<br />value:   145957.43634","Countries: Guyana<br />value:     6731.17752","Countries: Haiti<br />value:    20762.71282","Countries: Honduras<br />value:    49267.89251","Countries: Jamaica<br />value:    27071.82069","Countries: Mexico<br />value:  2504211.40958","Countries: Nicaragua<br />value:    35777.33206","Countries: Panama<br />value:   106734.38253","Countries: Paraguay<br />value:    97771.41550","Countries: Peru<br />value:   468196.30157","Countries: Saint Kitts and Nevis<br />value:     1535.82315","Countries: Saint Lucia<br />value:     2524.87356","Countries: Saint Vincent and the Grenadines<br />value:     1354.56074","Countries: Suriname<br />value:     8525.80167","Countries: Trinidad and Tobago<br />value:    42097.25214","Countries: United States of America<br />value: 20580159.77600","Countries: Uruguay<br />value:    81307.48210","Countries: Venezuela (Bolivarian Republic of)<br />value:   310957.59146","Countries: Afghanistan<br />value:    73747.52838","Countries: Bahrain<br />value:    74241.50013","Countries: Djibouti<br />value:     5564.85042","Countries: Egypt<br />value:  1221664.10148","Countries: Iran<br />value:  1597282.36908","Countries: Iraq<br />value:   670122.62881","Countries: Jordan<br />value:    94371.38754","Countries: Kuwait<br />value:   303645.43518","Countries: Lebanon<br />value:    89169.43758","Countries: Morocco<br />value:   316794.92043","Countries: Oman<br />value:   202162.50610","Countries: Pakistan<br />value:  1181412.88044","Countries: Qatar<br />value:   352989.93073","Countries: Saudi Arabia<br />value:  1864810.21529","Countries: Sudan<br />value:   272630.76907","Countries: Tunisia<br />value:   144682.75364","Countries: United Arab Emirates<br />value:   723046.66318","Countries: Albania<br />value:    38196.04354","Countries: Andorra<br />value:     4139.29945","Countries: Armenia<br />value:    30530.73637","Countries: Austria<br />value:   502314.85247","Countries: Azerbaijan<br />value:   179400.38361","Countries: Belarus<br />value:   189657.95934","Countries: Belgium<br />value:   597058.69742","Countries: Bosnia and Herzegovina<br />value:    48607.74911","Countries: Bulgaria<br />value:   156783.47499","Countries: Croatia<br />value:   112821.25841","Countries: Cyprus<br />value:    33509.15688","Countries: Czech Republic<br />value:   421892.67094","Countries: Denmark<br />value:   332624.95129","Countries: Estonia<br />value:    47883.11679","Countries: Finland<br />value:   272371.21862","Countries: France<br />value:  3120958.80740","Countries: Georgia<br />value:    44788.76462","Countries: Germany<br />value:  4417206.51844","Countries: Greece<br />value:   325789.64570","Countries: Hungary<br />value:   308700.18747","Countries: Iceland<br />value:    20328.55548","Countries: Ireland<br />value:   411091.81364","Countries: Israel<br />value:   357633.41342","Countries: Italy<br />value:  2528935.69339","Countries: Kazakhstan<br />value:   491362.82066","Countries: Kyrgyzstan<br />value:    25075.52944","Countries: Latvia<br />value:    59250.48171","Countries: Lithuania<br />value:    98920.63244","Countries: Luxembourg<br />value:    68878.32309","Countries: Malta<br />value:    20681.06129","Countries: Monaco<br />value:     7222.43950","Countries: Montenegro<br />value:    12754.45328","Countries: Netherlands<br />value:   970539.73700","Countries: Norway<br />value:   359298.96172","Countries: Poland<br />value:  1208903.72691","Countries: Portugal<br />value:   354673.81831","Countries: Republic of Moldova<br />value:    25784.42932","Countries: Romania<br />value:   554045.41862","Countries: Russian Federation<br />value:  4080182.56779","Countries: San Marino<br />value:     2052.40575","Countries: Serbia<br />value:   121732.04748","Countries: Slovakia<br />value:   177427.60203","Countries: Slovenia<br />value:    78660.96127","Countries: Spain<br />value:  1858815.49819","Countries: Sweden<br />value:   541220.41082","Countries: Switzerland<br />value:   579644.17883","Countries: Tajikistan<br />value:    31395.87829","Countries: The Republic of North Macedonia<br />value:    33958.03857","Countries: Turkey<br />value:  2337508.08294","Countries: Turkmenistan<br />value:   112946.51664","Countries: Ukraine<br />value:   390972.95195","Countries: United Kingdom<br />value:  3062486.47588","Countries: Uzbekistan<br />value:   281968.11020","Countries: Bangladesh<br />value:   755247.03758","Countries: Bhutan<br />value:     7947.43190","Countries: India<br />value: 10500206.08787","Countries: Indonesia<br />value:  3498242.76028","Countries: Maldives<br />value:     7904.44951","Countries: Myanmar<br />value:   327028.46867","Countries: Nepal<br />value:    86779.06873","Countries: Sri Lanka<br />value:   291974.29539","Countries: Thailand<br />value:  1322836.96936","Countries: Timor-Leste<br />value:    10331.47208","Countries: Australia<br />value:  1342135.95284","Countries: Brunei Darussalam<br />value:    34711.62767","Countries: Cambodia<br />value:    70417.65250","Countries: China<br />value: 24950587.21529","Countries: Cook Islands<br />value:      457.37647","Countries: Fiji<br />value:     9611.47502","Countries: Japan<br />value:  5230146.55151","Countries: Kiribati<br />value:      265.74378","Countries: Lao People's Democratic Republic<br />value:    52534.78312","Countries: Malaysia<br />value:  1002046.29045","Countries: Marshall Islands<br />value:      225.34772","Countries: Micronesia (Federated States of)<br />value:      370.41231","Countries: Mongolia<br />value:    43459.16918","Countries: Nauru<br />value:      130.83205","Countries: New Zealand<br />value:   207247.26440","Countries: Niue<br />value:       27.18943","Countries: Palau<br />value:      331.46838","Countries: Papua New Guinea<br />value:    36823.27520","Countries: Philippines<br />value:   954650.46194","Countries: Republic of Korea<br />value:  2174501.23650","Countries: Samoa<br />value:     1336.40671","Countries: Singapore<br />value:   572504.54312","Countries: Solomon Islands<br />value:     1570.41602","Countries: Tonga<br />value:      719.48508","Countries: Tuvalu<br />value:       45.78480","Countries: Vanuatu<br />value:      942.76613","Countries: Viet Nam<br />value:   710660.12214"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y2","hoverinfo":"text","frame":null},{"orientation":"v","width":[0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000002,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999991,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[3,5,19,23,27,28,29,31,33,34,38,39,42,47,55,56,58,59,63,64,67,71,72,89,96,97,100,101,104,107,108,115,117,123,124,142,148,150,152,153,158,159,170,177,181,188,189,6,7,12,15,18,21,24,32,35,37,41,44,50,51,52,54,69,70,73,74,75,85,109,122,130,132,133,143,144,145,163,172,182,183,186,1,13,49,53,80,81,87,91,95,114,127,128,137,149,162,173,179,2,4,8,10,11,16,17,22,26,43,45,46,48,57,61,62,65,66,68,76,77,82,83,84,88,92,94,98,99,105,111,113,120,126,135,136,139,140,141,147,151,155,156,160,164,165,166,168,174,175,178,180,184,14,20,78,79,103,116,119,161,167,169,9,25,30,36,40,60,86,90,93,102,106,110,112,118,121,125,129,131,134,138,146,154,157,171,176,185,187],"y":[42228.408,30809.787,11485.044,2254.068,19751.466,11175.374,543.767,25216.267,4666.368,15477.729,832.322,5244.359,25069.23,84068.091,1308.975,3452.786,1136.281,109224.414,2119.275,2280.094,29767.102,12414.293,1874.303,51392.565,2108.328,4818.973,26262.313,18143.217,19077.749,4403.313,1267.185,29496.004,2448.301,22442.822,195874.683,12301.97,211.028,15854.323,97.096,7650.15,57792.518,10975.927,7889.093,42729.036,56313.438,17351.708,14438.802,96.286,44361.15,385.637,286.641,383.071,11353.142,209469.323,37074.562,18729.16,49661.048,4999.441,11338.134,71.625,10627.141,17084.358,6420.746,111.454,17247.849,779.006,11123.178,9587.522,2934.847,126190.788,6465.501,4176.869,6956.066,31989.26,52.441,181.889,110.211,575.99,1389.843,327096.265,3449.285,28887.118,37171.921,1569.446,958.923,98423.598,81800.188,38433.6,9965.318,4137.312,6859.408,36029.093,4829.473,212228.286,2781.682,33702.756,41985,11565.201,9630.959,2882.74,77.006,2951.745,8822.267,9949.537,9452.617,11398.589,3323.925,7050.034,4105.493,864.236,10610.055,5781.19,1319.133,5522.576,66918.941,4002.942,82792.351,10741.165,9778.371,336.713,4830.392,8381.516,60483.973,18319.618,6304.03,1934.379,2808.901,602.005,475.701,38.682,627.809,17181.084,5295.619,37976.687,10291.027,3544,19530.631,145734.038,33.785,7001.444,5443.12,2066.88,46658.447,10120.242,8484.13,9100.835,2082.957,82340.088,5850.901,44246.156,66273.576,32476.244,161376.708,754.388,1352642.28,267670.543,515.696,53708.32,28095.714,21228.763,69428.453,1267.974,24898.152,428.963,16249.792,1427647.786,17.518,883.483,127202.192,115.847,7061.507,31528.033,58.413,112.64,3170.216,10.67,4743.131,1.61,17.907,8606.323,106651.394,51171.706,196.129,5757.499,652.857,103.197,11.508,292.68,95545.962],"text":["Countries: Algeria<br />value:    42228.40800","Countries: Angola<br />value:    30809.78700","Countries: Benin<br />value:    11485.04400","Countries: Botswana<br />value:     2254.06800","Countries: Burkina Faso<br />value:    19751.46600","Countries: Burundi<br />value:    11175.37400","Countries: Cabo Verde Republic of<br />value:      543.76700","Countries: Cameroon<br />value:    25216.26700","Countries: Central African Republic<br />value:     4666.36800","Countries: Chad<br />value:    15477.72900","Countries: Comoros<br />value:      832.32200","Countries: Congo<br />value:     5244.35900","Countries: Côte d'Ivoire<br />value:    25069.23000","Countries: Democratic Republic of the Congo<br />value:    84068.09100","Countries: Equatorial Guinea<br />value:     1308.97500","Countries: Eritrea<br />value:     3452.78600","Countries: Eswatini<br />value:     1136.28100","Countries: Ethiopia<br />value:   109224.41400","Countries: Gabon<br />value:     2119.27500","Countries: Gambia<br />value:     2280.09400","Countries: Ghana<br />value:    29767.10200","Countries: Guinea<br />value:    12414.29300","Countries: Guinea-Bissau<br />value:     1874.30300","Countries: Kenya<br />value:    51392.56500","Countries: Lesotho<br />value:     2108.32800","Countries: Liberia<br />value:     4818.97300","Countries: Madagascar<br />value:    26262.31300","Countries: Malawi<br />value:    18143.21700","Countries: Mali<br />value:    19077.74900","Countries: Mauritania<br />value:     4403.31300","Countries: Mauritius<br />value:     1267.18500","Countries: Mozambique<br />value:    29496.00400","Countries: Namibia<br />value:     2448.30100","Countries: Niger<br />value:    22442.82200","Countries: Nigeria<br />value:   195874.68300","Countries: Rwanda<br />value:    12301.97000","Countries: Sao Tome and Principe<br />value:      211.02800","Countries: Senegal<br />value:    15854.32300","Countries: Seychelles<br />value:       97.09600","Countries: Sierra Leone<br />value:     7650.15000","Countries: South Africa<br />value:    57792.51800","Countries: South Sudan<br />value:    10975.92700","Countries: Togo<br />value:     7889.09300","Countries: Uganda<br />value:    42729.03600","Countries: United Republic of Tanzania<br />value:    56313.43800","Countries: Zambia<br />value:    17351.70800","Countries: Zimbabwe<br />value:    14438.80200","Countries: Antigua and Barbuda<br />value:       96.28600","Countries: Argentina<br />value:    44361.15000","Countries: Bahamas<br />value:      385.63700","Countries: Barbados<br />value:      286.64100","Countries: Belize<br />value:      383.07100","Countries: Bolivia Plurinational States of<br />value:    11353.14200","Countries: Brazil<br />value:   209469.32300","Countries: Canada<br />value:    37074.56200","Countries: Chile<br />value:    18729.16000","Countries: Colombia<br />value:    49661.04800","Countries: Costa Rica<br />value:     4999.44100","Countries: Cuba<br />value:    11338.13400","Countries: Dominica<br />value:       71.62500","Countries: Dominican Republic<br />value:    10627.14100","Countries: Ecuador<br />value:    17084.35800","Countries: El Salvador<br />value:     6420.74600","Countries: Grenada<br />value:      111.45400","Countries: Guatemala<br />value:    17247.84900","Countries: Guyana<br />value:      779.00600","Countries: Haiti<br />value:    11123.17800","Countries: Honduras<br />value:     9587.52200","Countries: Jamaica<br />value:     2934.84700","Countries: Mexico<br />value:   126190.78800","Countries: Nicaragua<br />value:     6465.50100","Countries: Panama<br />value:     4176.86900","Countries: Paraguay<br />value:     6956.06600","Countries: Peru<br />value:    31989.26000","Countries: Saint Kitts and Nevis<br />value:       52.44100","Countries: Saint Lucia<br />value:      181.88900","Countries: Saint Vincent and the Grenadines<br />value:      110.21100","Countries: Suriname<br />value:      575.99000","Countries: Trinidad and Tobago<br />value:     1389.84300","Countries: United States of America<br />value:   327096.26500","Countries: Uruguay<br />value:     3449.28500","Countries: Venezuela (Bolivarian Republic of)<br />value:    28887.11800","Countries: Afghanistan<br />value:    37171.92100","Countries: Bahrain<br />value:     1569.44600","Countries: Djibouti<br />value:      958.92300","Countries: Egypt<br />value:    98423.59800","Countries: Iran<br />value:    81800.18800","Countries: Iraq<br />value:    38433.60000","Countries: Jordan<br />value:     9965.31800","Countries: Kuwait<br />value:     4137.31200","Countries: Lebanon<br />value:     6859.40800","Countries: Morocco<br />value:    36029.09300","Countries: Oman<br />value:     4829.47300","Countries: Pakistan<br />value:   212228.28600","Countries: Qatar<br />value:     2781.68200","Countries: Saudi Arabia<br />value:    33702.75600","Countries: Sudan<br />value:    41985.00000","Countries: Tunisia<br />value:    11565.20100","Countries: United Arab Emirates<br />value:     9630.95900","Countries: Albania<br />value:     2882.74000","Countries: Andorra<br />value:       77.00600","Countries: Armenia<br />value:     2951.74500","Countries: Austria<br />value:     8822.26700","Countries: Azerbaijan<br />value:     9949.53700","Countries: Belarus<br />value:     9452.61700","Countries: Belgium<br />value:    11398.58900","Countries: Bosnia and Herzegovina<br />value:     3323.92500","Countries: Bulgaria<br />value:     7050.03400","Countries: Croatia<br />value:     4105.49300","Countries: Cyprus<br />value:      864.23600","Countries: Czech Republic<br />value:    10610.05500","Countries: Denmark<br />value:     5781.19000","Countries: Estonia<br />value:     1319.13300","Countries: Finland<br />value:     5522.57600","Countries: France<br />value:    66918.94100","Countries: Georgia<br />value:     4002.94200","Countries: Germany<br />value:    82792.35100","Countries: Greece<br />value:    10741.16500","Countries: Hungary<br />value:     9778.37100","Countries: Iceland<br />value:      336.71300","Countries: Ireland<br />value:     4830.39200","Countries: Israel<br />value:     8381.51600","Countries: Italy<br />value:    60483.97300","Countries: Kazakhstan<br />value:    18319.61800","Countries: Kyrgyzstan<br />value:     6304.03000","Countries: Latvia<br />value:     1934.37900","Countries: Lithuania<br />value:     2808.90100","Countries: Luxembourg<br />value:      602.00500","Countries: Malta<br />value:      475.70100","Countries: Monaco<br />value:       38.68200","Countries: Montenegro<br />value:      627.80900","Countries: Netherlands<br />value:    17181.08400","Countries: Norway<br />value:     5295.61900","Countries: Poland<br />value:    37976.68700","Countries: Portugal<br />value:    10291.02700","Countries: Republic of Moldova<br />value:     3544.00000","Countries: Romania<br />value:    19530.63100","Countries: Russian Federation<br />value:   145734.03800","Countries: San Marino<br />value:       33.78500","Countries: Serbia<br />value:     7001.44400","Countries: Slovakia<br />value:     5443.12000","Countries: Slovenia<br />value:     2066.88000","Countries: Spain<br />value:    46658.44700","Countries: Sweden<br />value:    10120.24200","Countries: Switzerland<br />value:     8484.13000","Countries: Tajikistan<br />value:     9100.83500","Countries: The Republic of North Macedonia<br />value:     2082.95700","Countries: Turkey<br />value:    82340.08800","Countries: Turkmenistan<br />value:     5850.90100","Countries: Ukraine<br />value:    44246.15600","Countries: United Kingdom<br />value:    66273.57600","Countries: Uzbekistan<br />value:    32476.24400","Countries: Bangladesh<br />value:   161376.70800","Countries: Bhutan<br />value:      754.38800","Countries: India<br />value:  1352642.28000","Countries: Indonesia<br />value:   267670.54300","Countries: Maldives<br />value:      515.69600","Countries: Myanmar<br />value:    53708.32000","Countries: Nepal<br />value:    28095.71400","Countries: Sri Lanka<br />value:    21228.76300","Countries: Thailand<br />value:    69428.45300","Countries: Timor-Leste<br />value:     1267.97400","Countries: Australia<br />value:    24898.15200","Countries: Brunei Darussalam<br />value:      428.96300","Countries: Cambodia<br />value:    16249.79200","Countries: China<br />value:  1427647.78600","Countries: Cook Islands<br />value:       17.51800","Countries: Fiji<br />value:      883.48300","Countries: Japan<br />value:   127202.19200","Countries: Kiribati<br />value:      115.84700","Countries: Lao People's Democratic Republic<br />value:     7061.50700","Countries: Malaysia<br />value:    31528.03300","Countries: Marshall Islands<br />value:       58.41300","Countries: Micronesia (Federated States of)<br />value:      112.64000","Countries: Mongolia<br />value:     3170.21600","Countries: Nauru<br />value:       10.67000","Countries: New Zealand<br />value:     4743.13100","Countries: Niue<br />value:        1.61000","Countries: Palau<br />value:       17.90700","Countries: Papua New Guinea<br />value:     8606.32300","Countries: Philippines<br />value:   106651.39400","Countries: Republic of Korea<br />value:    51171.70600","Countries: Samoa<br />value:      196.12900","Countries: Singapore<br />value:     5757.49900","Countries: Solomon Islands<br />value:      652.85700","Countries: Tonga<br />value:      103.19700","Countries: Tuvalu<br />value:       11.50800","Countries: Vanuatu<br />value:      292.68000","Countries: Viet Nam<br />value:    95545.96200"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y3","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":52.994603569946,"r":7.30593607305936,"b":24.7073474470735,"l":42.8393524283935},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"title":{"text":"WHO adatbázisából származó adatok (2008)","font":{"color":"rgba(0,0,0,1)","family":"","size":19.1282689912827},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,189.6],"tickmode":"array","ticktext":["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia Plurinational States of","Bosnia and Herzegovina","Botswana","Brazil","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cabo Verde Republic of","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia (Federated States of)","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Republic of Korea","Republic of Moldova","Romania","Russian Federation","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Tajikistan","Thailand","The Republic of North Macedonia","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United Republic of Tanzania","United States of America","Uruguay","Uzbekistan","Vanuatu","Venezuela (Bolivarian Republic of)","Viet Nam","Zambia","Zimbabwe"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189],"categoryorder":"array","categoryarray":["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia Plurinational States of","Bosnia and Herzegovina","Botswana","Brazil","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cabo Verde Republic of","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia (Federated States of)","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Republic of Korea","Republic of Moldova","Romania","Russian Federation","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Tajikistan","Thailand","The Republic of North Macedonia","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United Republic of Tanzania","United States of America","Uruguay","Uzbekistan","Vanuatu","Venezuela (Bolivarian Republic of)","Viet Nam","Zambia","Zimbabwe"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":false,"tickfont":{"color":null,"family":null,"size":0},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y3","title":"","hoverformat":".2f"},"annotations":[{"text":"Countries","x":0.5,"y":-0.00454026567040266,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"top","annotationType":"axis"},{"text":"Current Health Expenditure (CHE) per Capita in PPP","x":0.5,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"Gross Domestic Product","x":0.5,"y":0.658831465338315,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"},{"text":"Population (in thousands)","x":0.5,"y":0.325498132004981,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(26,26,26,1)","family":"","size":12.7521793275218},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"center","yanchor":"bottom"}],"yaxis":{"domain":[0.674501867995019,1],"automargin":true,"type":"linear","autorange":false,"range":[-632.1415527345,13274.9726074245],"tickmode":"array","ticktext":["0","5000","10000"],"tickvals":[0,5000,10000],"categoryorder":"array","categoryarray":["0","5000","10000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0.674501867995019,"y1":1},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":1,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0.341168534661685,"y1":0.658831465338315},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":0.658831465338315,"ysizemode":"pixel"},{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":0.325498132004981},{"type":"rect","fillcolor":"rgba(217,217,217,1)","line":{"color":"transparent","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":24.4416770444168,"yanchor":0.325498132004981,"ysizemode":"pixel"}],"yaxis2":{"type":"linear","autorange":false,"range":[-1247529.36076444,26198116.5760531],"tickmode":"array","ticktext":["0","5000000","10000000","15000000","20000000","25000000"],"tickvals":[0,5000000,10000000,15000000,20000000,25000000],"categoryorder":"array","categoryarray":["0","5000000","10000000","15000000","20000000","25000000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0.341168534661685,0.658831465338315],"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"yaxis3":{"type":"linear","autorange":false,"range":[-71382.3893,1499030.1753],"tickmode":"array","ticktext":["0","500000","1000000"],"tickvals":[0,500000,1000000],"categoryorder":"array","categoryarray":["0","500000","1000000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"domain":[0,0.325498132004981],"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"","hoverformat":".2f"},"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3ff04138147d":{"x":{},"y":{},"type":"bar"}},"cur_data":"3ff04138147d","visdat":{"3ff04138147d":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="Chapter-6.html#cb87-1"></a>d.WHO &lt;-<span class="st"> </span>d.WHO <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># set usable var names</span></span>
+<span id="cb87-2"><a href="Chapter-6.html#cb87-2"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="st">&#39;Country&#39;</span>, <span class="st">&#39;CHE&#39;</span>, <span class="st">&#39;GDP&#39;</span>, <span class="st">&#39;pop&#39;</span>) </span></code></pre></div>
+<p><a href="https://data.worldbank.org/indicator/SP.POP.DPND.OL" class="uri">https://data.worldbank.org/indicator/SP.POP.DPND.OL</a></p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter-6.html#cb88-1"></a>d.depedency &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;depedency.xls&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-2"><a href="Chapter-6.html#cb88-2"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-3"><a href="Chapter-6.html#cb88-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># country code remove</span></span>
+<span id="cb88-4"><a href="Chapter-6.html#cb88-4"></a><span class="st">  </span><span class="kw">set_names</span>(<span class="st">&#39;Country&#39;</span>, <span class="st">&#39;depedencyr&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter-6.html#cb89-1"></a>(d.depedency <span class="op">%&gt;%</span><span class="st">   </span></span>
+<span id="cb89-2"><a href="Chapter-6.html#cb89-2"></a><span class="st">  </span><span class="kw">arrange</span>(depedencyr) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-3"><a href="Chapter-6.html#cb89-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb89-4"><a href="Chapter-6.html#cb89-4"></a>    <span class="dt">Country =</span> <span class="kw">factor</span>(Country, <span class="dt">levels =</span> Country)</span>
+<span id="cb89-5"><a href="Chapter-6.html#cb89-5"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-6"><a href="Chapter-6.html#cb89-6"></a><span class="st">  </span>ggplot <span class="op">+</span><span class="st"> </span></span>
+<span id="cb89-7"><a href="Chapter-6.html#cb89-7"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="kw">aes</span>(Country, depedencyr)) <span class="op">+</span></span>
+<span id="cb89-8"><a href="Chapter-6.html#cb89-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Öregségi eltartottsági ráta (2019)&#39;</span>, <span class="dt">y =</span> <span class="ot">NULL</span>) <span class="op">+</span></span>
+<span id="cb89-9"><a href="Chapter-6.html#cb89-9"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb89-10"><a href="Chapter-6.html#cb89-10"></a>    <span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb89-11"><a href="Chapter-6.html#cb89-11"></a>    <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>()</span>
+<span id="cb89-12"><a href="Chapter-6.html#cb89-12"></a>  )) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-13"><a href="Chapter-6.html#cb89-13"></a><span class="st">  </span>plotly<span class="op">::</span><span class="kw">ggplotly</span>()</span></code></pre></div>
+<div id="htmlwidget-80f47c6b3175587e8fd8" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-80f47c6b3175587e8fd8">{"x":{"data":[{"orientation":"v","width":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.899999999999999,0.900000000000002,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.900000000000006,0.899999999999991,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977,0.899999999999977],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239],"y":[1.37470334650928,1.79447020136155,3.19798116704883,3.2590064306901,3.65266724153367,3.80800908578775,3.95961915166304,3.99960583030508,4.15161100531284,4.29738273872188,4.42190974857622,4.54935746047511,4.75855097711038,4.76263211056638,4.76361694888949,4.80366057104141,4.88222229705782,4.89494568472457,4.90268902994243,4.9157008503835,4.95982635097495,4.97035679463044,5.01454260014865,5.12061742585458,5.14547567636813,5.14942687196303,5.15676572833895,5.18499628458669,5.20227801863753,5.20753052030805,5.23316846261234,5.28448304512069,5.2936198324957,5.29911742524612,5.37924149538645,5.39258456091012,5.43299186813578,5.45475823869025,5.45640243500862,5.45973572083724,5.47301179480387,5.487799979639,5.49065009885587,5.49065009885587,5.54166021687591,5.60394682449579,5.69511199666598,5.73137554647606,5.75272174261758,5.80147119906767,5.87135901510773,5.91769576398527,5.96720020710865,5.98006541327461,5.9873630950161,5.99466143504406,6.06538054864994,6.10700391252024,6.13349639145245,6.17090440795734,6.21741695787033,6.22504961192066,6.26032052539258,6.2633777400476,6.2699477311624,6.44390053597029,6.45235219692219,6.45615152842485,6.51538734605827,6.55404831337016,6.60739390459138,6.79479740153134,6.89899975204602,6.90374595053626,6.96380905084114,7.02348591932152,7.05666337140079,7.10359810887259,7.12995467696089,7.21695307653443,7.30248538852824,7.31388420643632,7.33727090056628,7.35049255010814,7.43200320011483,7.43928175692343,7.54258644639078,7.65115984982659,7.66264276715844,7.86781925367436,8.05236016672826,8.15698074218835,8.18662090941388,8.25289715968003,8.27763407270422,8.43752118219248,8.62279687188808,8.62388575990066,8.64174723756906,8.66551776658798,8.67651897386431,8.71247367687881,8.81193029328312,8.8311454416539,8.88618346112976,8.93236936841601,8.94482735016523,9.0817799492767,9.0817799492767,9.11856907754855,9.19445528278974,9.21700995217332,9.4389850129794,9.51874832508143,9.97455669772163,10.0736582516711,10.2688798367487,10.3128368465798,10.4182936955012,10.6171444637669,10.6234623024913,10.8306857701015,10.9105882388526,11.1067269947771,11.1699688111668,11.2295155483969,11.2506615771245,11.3556759628361,11.4020649408948,11.4142297102162,11.711957562888,11.7568094305406,11.8296134889158,12.0573175130207,12.625439395912,12.6499211175715,12.669923324302,12.6921085391275,12.775685042755,12.7916240218528,12.8088358117115,12.9622091020213,12.9687310669034,13.0276304824477,13.0858916041159,13.0962181692719,13.1249813438405,13.2092800443495,13.2660086016813,13.3290880702817,13.8344254353535,13.9445792765581,13.9853155330553,14.2485366949127,14.2631870748988,14.31057616941,14.3109826068766,14.529490616622,14.5475733438457,14.9952072974378,15.5153269258774,16.0055220045032,16.1598827008672,16.2024322034518,16.2212358176963,16.4637303497033,16.6227297295244,16.6623871003433,16.9499679121542,16.9613260902585,17.3139247907184,17.5231748606151,17.5303277033183,18.046632723157,19.3659137341851,20.2606802762418,20.2878731102755,20.3798026642829,20.387615830872,20.5768568871756,20.7647356526265,20.8608848330503,22.0076298803475,22.4324202144658,22.6125997250658,22.7582201325872,23.1286086328156,23.1553947508441,23.2038737655333,23.3148143428732,23.6784742314757,24.3275421803769,24.5684821384735,24.8013045332531,24.8201428631394,24.8457061030307,24.9351548624315,25.0223714624097,25.2567779092934,25.4476771059128,26.1415367636915,26.3149819874949,26.4454282691048,26.5357146957276,26.6854126584776,27.1626939047622,27.9704332355033,28.4470291464026,28.5163000146578,28.6276893946937,28.6581660137141,28.7992543873905,29.0124949422352,29.7278516966691,29.8233204159519,29.8711256772831,29.897919291352,30.3905773283262,30.7101136517917,30.7564623455613,31.1538165066693,31.1959409949151,31.3752493204036,31.4608514308152,31.7729579275974,32.0984321653052,32.0989783481769,32.3024057599357,32.4861452020046,32.525631361,32.7801150776465,32.9922902187957,33.1757962114112,33.3598697414584,34.1970293197925,34.7200943410636,35.8013596650663,36.0571947916619,47.1217280690744],"text":["Country: United Arab Emirates<br />depedencyr:  1.374703","Country: Qatar<br />depedencyr:  1.794470","Country: Bahrain<br />depedencyr:  3.197981","Country: Oman<br />depedencyr:  3.259006","Country: Kuwait<br />depedencyr:  3.652667","Country: Uganda<br />depedencyr:  3.808009","Country: Zambia<br />depedencyr:  3.959619","Country: Equatorial Guinea<br />depedencyr:  3.999606","Country: Kenya<br />depedencyr:  4.151611","Country: Angola<br />depedencyr:  4.297383","Country: Burundi<br />depedencyr:  4.421910","Country: Burkina Faso<br />depedencyr:  4.549357","Country: Saudi Arabia<br />depedencyr:  4.758551","Country: Maldives<br />depedencyr:  4.762632","Country: Afghanistan<br />depedencyr:  4.763617","Country: Gambia, The<br />depedencyr:  4.803661","Country: Congo, Rep.<br />depedencyr:  4.882222","Country: Tanzania<br />depedencyr:  4.894946","Country: Malawi<br />depedencyr:  4.902689","Country: Chad<br />depedencyr:  4.915701","Country: Cameroon<br />depedencyr:  4.959826","Country: Mali<br />depedencyr:  4.970357","Country: Yemen, Rep.<br />depedencyr:  5.014543","Country: Nigeria<br />depedencyr:  5.120617","Country: Togo<br />depedencyr:  5.145476","Country: Pre-demographic dividend<br />depedencyr:  5.149427","Country: Tajikistan<br />depedencyr:  5.156766","Country: Cote d'Ivoire<br />depedencyr:  5.184996","Country: Ghana<br />depedencyr:  5.202278","Country: Guinea-Bissau<br />depedencyr:  5.207531","Country: Sierra Leone<br />depedencyr:  5.233168","Country: Central African Republic<br />depedencyr:  5.284483","Country: Rwanda<br />depedencyr:  5.293620","Country: Comoros<br />depedencyr:  5.299117","Country: Madagascar<br />depedencyr:  5.379241","Country: Sao Tome and Principe<br />depedencyr:  5.392585","Country: Zimbabwe<br />depedencyr:  5.432992","Country: West Bank and Gaza<br />depedencyr:  5.454758","Country: Mozambique<br />depedencyr:  5.456402","Country: Niger<br />depedencyr:  5.459736","Country: Sub-Saharan Africa (excluding high income)<br />depedencyr:  5.473012","Country: Guinea<br />depedencyr:  5.487800","Country: Sub-Saharan Africa<br />depedencyr:  5.490650","Country: Sub-Saharan Africa (IDA & IBRD countries)<br />depedencyr:  5.490650","Country: Mauritania<br />depedencyr:  5.541660","Country: Heavily indebted poor countries (HIPC)<br />depedencyr:  5.603947","Country: Somalia<br />depedencyr:  5.695112","Country: Senegal<br />depedencyr:  5.731376","Country: Papua New Guinea<br />depedencyr:  5.752722","Country: Iraq<br />depedencyr:  5.801471","Country: Liberia<br />depedencyr:  5.871359","Country: Congo, Dem. Rep.<br />depedencyr:  5.917696","Country: Low income<br />depedencyr:  5.967200","Country: Gabon<br />depedencyr:  5.980065","Country: Benin<br />depedencyr:  5.987363","Country: IDA blend<br />depedencyr:  5.994661","Country: Namibia<br />depedencyr:  6.065381","Country: Fragile and conflict affected situations<br />depedencyr:  6.107004","Country: South Sudan<br />depedencyr:  6.133496","Country: IDA total<br />depedencyr:  6.170904","Country: Least developed countries: UN classification<br />depedencyr:  6.217417","Country: Jordan<br />depedencyr:  6.225050","Country: IDA only<br />depedencyr:  6.260321","Country: Ethiopia<br />depedencyr:  6.263378","Country: Vanuatu<br />depedencyr:  6.269948","Country: Mongolia<br />depedencyr:  6.443901","Country: Sudan<br />depedencyr:  6.452352","Country: Solomon Islands<br />depedencyr:  6.456152","Country: Micronesia, Fed. Sts.<br />depedencyr:  6.515387","Country: Lao PDR<br />depedencyr:  6.554048","Country: Libya<br />depedencyr:  6.607394","Country: Kiribati<br />depedencyr:  6.794797","Country: Uzbekistan<br />depedencyr:  6.899000","Country: Eswatini<br />depedencyr:  6.903746","Country: Djibouti<br />depedencyr:  6.963809","Country: Cabo Verde<br />depedencyr:  7.023486","Country: Botswana<br />depedencyr:  7.056663","Country: Turkmenistan<br />depedencyr:  7.103598","Country: Pakistan<br />depedencyr:  7.129955","Country: Brunei Darussalam<br />depedencyr:  7.216953","Country: Syrian Arab Republic<br />depedencyr:  7.302485","Country: Kyrgyz Republic<br />depedencyr:  7.313884","Country: Timor-Leste<br />depedencyr:  7.337271","Country: Cambodia<br />depedencyr:  7.350493","Country: Arab World<br />depedencyr:  7.432003","Country: Belize<br />depedencyr:  7.439282","Country: Honduras<br />depedencyr:  7.542586","Country: Pacific island small states<br />depedencyr:  7.651160","Country: Bangladesh<br />depedencyr:  7.662643","Country: Lesotho<br />depedencyr:  7.867819","Country: Guatemala<br />depedencyr:  8.052360","Country: Haiti<br />depedencyr:  8.156981","Country: Middle East & North Africa<br />depedencyr:  8.186621","Country: South Africa<br />depedencyr:  8.252897","Country: Philippines<br />depedencyr:  8.277634","Country: Nicaragua<br />depedencyr:  8.437521","Country: Other small states<br />depedencyr:  8.622797","Country: Samoa<br />depedencyr:  8.623886","Country: Fiji<br />depedencyr:  8.641747","Country: Egypt, Arab Rep.<br />depedencyr:  8.665518","Country: Middle East & North Africa (excluding high income)<br />depedencyr:  8.676519","Country: Middle East & North Africa (IDA & IBRD countries)<br />depedencyr:  8.712474","Country: Lower middle income<br />depedencyr:  8.811930","Country: Myanmar<br />depedencyr:  8.831145","Country: Bhutan<br />depedencyr:  8.886183","Country: Indonesia<br />depedencyr:  8.932369","Country: Nepal<br />depedencyr:  8.944827","Country: South Asia<br />depedencyr:  9.081780","Country: South Asia (IDA & IBRD)<br />depedencyr:  9.081780","Country: Early-demographic dividend<br />depedencyr:  9.118569","Country: Azerbaijan<br />depedencyr:  9.194455","Country: Iran, Islamic Rep.<br />depedencyr:  9.217010","Country: Small states<br />depedencyr:  9.438985","Country: India<br />depedencyr:  9.518748","Country: Malaysia<br />depedencyr:  9.974557","Country: Tonga<br />depedencyr: 10.073658","Country: Guyana<br />depedencyr: 10.268880","Country: Paraguay<br />depedencyr: 10.312837","Country: Algeria<br />depedencyr: 10.418294","Country: Suriname<br />depedencyr: 10.617144","Country: Bahamas, The<br />depedencyr: 10.623462","Country: Lebanon<br />depedencyr: 10.830686","Country: Vietnam<br />depedencyr: 10.910588","Country: Morocco<br />depedencyr: 11.106727","Country: Mexico<br />depedencyr: 11.169969","Country: Dominican Republic<br />depedencyr: 11.229516","Country: Low & middle income<br />depedencyr: 11.250662","Country: Ecuador<br />depedencyr: 11.355676","Country: Seychelles<br />depedencyr: 11.402065","Country: IDA & IBRD total<br />depedencyr: 11.414230","Country: Venezuela, RB<br />depedencyr: 11.711958","Country: Middle income<br />depedencyr: 11.756809","Country: Bolivia<br />depedencyr: 11.829613","Country: Kazakhstan<br />depedencyr: 12.057318","Country: French Polynesia<br />depedencyr: 12.625439","Country: Peru<br />depedencyr: 12.649921","Country: Latin America & Caribbean (excluding high income)<br />depedencyr: 12.669923","Country: Latin America & the Caribbean (IDA & IBRD countries)<br />depedencyr: 12.692109","Country: Colombia<br />depedencyr: 12.775685","Country: Tunisia<br />depedencyr: 12.791624","Country: Panama<br />depedencyr: 12.808836","Country: IBRD only<br />depedencyr: 12.962209","Country: Latin America & Caribbean<br />depedencyr: 12.968731","Country: Turkey<br />depedencyr: 13.027630","Country: Korea, Dem. People’s Rep.<br />depedencyr: 13.085892","Country: El Salvador<br />depedencyr: 13.096218","Country: Antigua and Barbuda<br />depedencyr: 13.124981","Country: Jamaica<br />depedencyr: 13.209280","Country: Brazil<br />depedencyr: 13.266009","Country: Caribbean small states<br />depedencyr: 13.329088","Country: New Caledonia<br />depedencyr: 13.834425","Country: World<br />depedencyr: 13.944579","Country: St. Lucia<br />depedencyr: 13.985316","Country: East Asia & Pacific (excluding high income)<br />depedencyr: 14.248537","Country: East Asia & Pacific (IDA & IBRD countries)<br />depedencyr: 14.263187","Country: St. Vincent and the Grenadines<br />depedencyr: 14.310576","Country: Costa Rica<br />depedencyr: 14.310983","Country: Grenada<br />depedencyr: 14.529491","Country: Upper middle income<br />depedencyr: 14.547573","Country: Macao SAR, China<br />depedencyr: 14.995207","Country: Guam<br />depedencyr: 15.515327","Country: Late-demographic dividend<br />depedencyr: 16.005522","Country: East Asia & Pacific<br />depedencyr: 16.159883","Country: Trinidad and Tobago<br />depedencyr: 16.202432","Country: China<br />depedencyr: 16.221236","Country: Singapore<br />depedencyr: 16.463730","Country: Sri Lanka<br />depedencyr: 16.622730","Country: Moldova<br />depedencyr: 16.662387","Country: Armenia<br />depedencyr: 16.949968","Country: Mauritius<br />depedencyr: 16.961326","Country: Chile<br />depedencyr: 17.313925","Country: Argentina<br />depedencyr: 17.523175","Country: Thailand<br />depedencyr: 17.530328","Country: Europe & Central Asia (excluding high income)<br />depedencyr: 18.046633","Country: Europe & Central Asia (IDA & IBRD countries)<br />depedencyr: 19.365914","Country: North Macedonia<br />depedencyr: 20.260680","Country: Cyprus<br />depedencyr: 20.287873","Country: Israel<br />depedencyr: 20.379803","Country: Luxembourg<br />depedencyr: 20.387616","Country: Aruba<br />depedencyr: 20.576857","Country: Albania<br />depedencyr: 20.764736","Country: Korea, Rep.<br />depedencyr: 20.860885","Country: Ireland<br />depedencyr: 22.007630","Country: Belarus<br />depedencyr: 22.432420","Country: Russian Federation<br />depedencyr: 22.612600","Country: Cuba<br />depedencyr: 22.758220","Country: Uruguay<br />depedencyr: 23.128609","Country: Montenegro<br />depedencyr: 23.155395","Country: Georgia<br />depedencyr: 23.203874","Country: Iceland<br />depedencyr: 23.314814","Country: Slovak Republic<br />depedencyr: 23.678474","Country: Barbados<br />depedencyr: 24.327542","Country: Australia<br />depedencyr: 24.568482","Country: Ukraine<br />depedencyr: 24.801305","Country: New Zealand<br />depedencyr: 24.820143","Country: United States<br />depedencyr: 24.845706","Country: Hong Kong SAR, China<br />depedencyr: 24.935155","Country: North America<br />depedencyr: 25.022371","Country: Bosnia and Herzegovina<br />depedencyr: 25.256778","Country: Europe & Central Asia<br />depedencyr: 25.447677","Country: Channel Islands<br />depedencyr: 26.141537","Country: OECD members<br />depedencyr: 26.314982","Country: Norway<br />depedencyr: 26.445428","Country: Canada<br />depedencyr: 26.535715","Country: Curacao<br />depedencyr: 26.685413","Country: Poland<br />depedencyr: 27.162694","Country: High income<br />depedencyr: 27.970433","Country: Switzerland<br />depedencyr: 28.447029","Country: Serbia<br />depedencyr: 28.516300","Country: Romania<br />depedencyr: 28.627689","Country: Austria<br />depedencyr: 28.658166","Country: Central Europe and the Baltics<br />depedencyr: 28.799254","Country: United Kingdom<br />depedencyr: 29.012495","Country: Belgium<br />depedencyr: 29.727852","Country: Post-demographic dividend<br />depedencyr: 29.823320","Country: Spain<br />depedencyr: 29.871126","Country: Hungary<br />depedencyr: 29.897919","Country: Netherlands<br />depedencyr: 30.390577","Country: Czech Republic<br />depedencyr: 30.710114","Country: Puerto Rico<br />depedencyr: 30.756462","Country: Lithuania<br />depedencyr: 31.153817","Country: Slovenia<br />depedencyr: 31.195941","Country: Denmark<br />depedencyr: 31.375249","Country: Estonia<br />depedencyr: 31.460851","Country: European Union<br />depedencyr: 31.772958","Country: Malta<br />depedencyr: 32.098432","Country: Latvia<br />depedencyr: 32.098978","Country: Croatia<br />depedencyr: 32.302406","Country: Sweden<br />depedencyr: 32.486145","Country: Euro area<br />depedencyr: 32.525631","Country: Virgin Islands (U.S.)<br />depedencyr: 32.780115","Country: France<br />depedencyr: 32.992290","Country: Bulgaria<br />depedencyr: 33.175796","Country: Germany<br />depedencyr: 33.359870","Country: Greece<br />depedencyr: 34.197029","Country: Portugal<br />depedencyr: 34.720094","Country: Finland<br />depedencyr: 35.801360","Country: Italy<br />depedencyr: 36.057195","Country: Japan<br />depedencyr: 47.121728"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(89,89,89,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":45.3565794935658,"r":7.30593607305936,"b":29.821502698215,"l":23.7110834371108},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022},"title":{"text":"Öregségi eltartottsági ráta (2019)","font":{"color":"rgba(0,0,0,1)","family":"","size":19.1282689912827},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,239.6],"tickmode":"array","ticktext":["United Arab Emirates","Qatar","Bahrain","Oman","Kuwait","Uganda","Zambia","Equatorial Guinea","Kenya","Angola","Burundi","Burkina Faso","Saudi Arabia","Maldives","Afghanistan","Gambia, The","Congo, Rep.","Tanzania","Malawi","Chad","Cameroon","Mali","Yemen, Rep.","Nigeria","Togo","Pre-demographic dividend","Tajikistan","Cote d'Ivoire","Ghana","Guinea-Bissau","Sierra Leone","Central African Republic","Rwanda","Comoros","Madagascar","Sao Tome and Principe","Zimbabwe","West Bank and Gaza","Mozambique","Niger","Sub-Saharan Africa (excluding high income)","Guinea","Sub-Saharan Africa","Sub-Saharan Africa (IDA & IBRD countries)","Mauritania","Heavily indebted poor countries (HIPC)","Somalia","Senegal","Papua New Guinea","Iraq","Liberia","Congo, Dem. Rep.","Low income","Gabon","Benin","IDA blend","Namibia","Fragile and conflict affected situations","South Sudan","IDA total","Least developed countries: UN classification","Jordan","IDA only","Ethiopia","Vanuatu","Mongolia","Sudan","Solomon Islands","Micronesia, Fed. Sts.","Lao PDR","Libya","Kiribati","Uzbekistan","Eswatini","Djibouti","Cabo Verde","Botswana","Turkmenistan","Pakistan","Brunei Darussalam","Syrian Arab Republic","Kyrgyz Republic","Timor-Leste","Cambodia","Arab World","Belize","Honduras","Pacific island small states","Bangladesh","Lesotho","Guatemala","Haiti","Middle East & North Africa","South Africa","Philippines","Nicaragua","Other small states","Samoa","Fiji","Egypt, Arab Rep.","Middle East & North Africa (excluding high income)","Middle East & North Africa (IDA & IBRD countries)","Lower middle income","Myanmar","Bhutan","Indonesia","Nepal","South Asia","South Asia (IDA & IBRD)","Early-demographic dividend","Azerbaijan","Iran, Islamic Rep.","Small states","India","Malaysia","Tonga","Guyana","Paraguay","Algeria","Suriname","Bahamas, The","Lebanon","Vietnam","Morocco","Mexico","Dominican Republic","Low & middle income","Ecuador","Seychelles","IDA & IBRD total","Venezuela, RB","Middle income","Bolivia","Kazakhstan","French Polynesia","Peru","Latin America & Caribbean (excluding high income)","Latin America & the Caribbean (IDA & IBRD countries)","Colombia","Tunisia","Panama","IBRD only","Latin America & Caribbean","Turkey","Korea, Dem. People’s Rep.","El Salvador","Antigua and Barbuda","Jamaica","Brazil","Caribbean small states","New Caledonia","World","St. Lucia","East Asia & Pacific (excluding high income)","East Asia & Pacific (IDA & IBRD countries)","St. Vincent and the Grenadines","Costa Rica","Grenada","Upper middle income","Macao SAR, China","Guam","Late-demographic dividend","East Asia & Pacific","Trinidad and Tobago","China","Singapore","Sri Lanka","Moldova","Armenia","Mauritius","Chile","Argentina","Thailand","Europe & Central Asia (excluding high income)","Europe & Central Asia (IDA & IBRD countries)","North Macedonia","Cyprus","Israel","Luxembourg","Aruba","Albania","Korea, Rep.","Ireland","Belarus","Russian Federation","Cuba","Uruguay","Montenegro","Georgia","Iceland","Slovak Republic","Barbados","Australia","Ukraine","New Zealand","United States","Hong Kong SAR, China","North America","Bosnia and Herzegovina","Europe & Central Asia","Channel Islands","OECD members","Norway","Canada","Curacao","Poland","High income","Switzerland","Serbia","Romania","Austria","Central Europe and the Baltics","United Kingdom","Belgium","Post-demographic dividend","Spain","Hungary","Netherlands","Czech Republic","Puerto Rico","Lithuania","Slovenia","Denmark","Estonia","European Union","Malta","Latvia","Croatia","Sweden","Euro area","Virgin Islands (U.S.)","France","Bulgaria","Germany","Greece","Portugal","Finland","Italy","Japan"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239],"categoryorder":"array","categoryarray":["United Arab Emirates","Qatar","Bahrain","Oman","Kuwait","Uganda","Zambia","Equatorial Guinea","Kenya","Angola","Burundi","Burkina Faso","Saudi Arabia","Maldives","Afghanistan","Gambia, The","Congo, Rep.","Tanzania","Malawi","Chad","Cameroon","Mali","Yemen, Rep.","Nigeria","Togo","Pre-demographic dividend","Tajikistan","Cote d'Ivoire","Ghana","Guinea-Bissau","Sierra Leone","Central African Republic","Rwanda","Comoros","Madagascar","Sao Tome and Principe","Zimbabwe","West Bank and Gaza","Mozambique","Niger","Sub-Saharan Africa (excluding high income)","Guinea","Sub-Saharan Africa","Sub-Saharan Africa (IDA & IBRD countries)","Mauritania","Heavily indebted poor countries (HIPC)","Somalia","Senegal","Papua New Guinea","Iraq","Liberia","Congo, Dem. Rep.","Low income","Gabon","Benin","IDA blend","Namibia","Fragile and conflict affected situations","South Sudan","IDA total","Least developed countries: UN classification","Jordan","IDA only","Ethiopia","Vanuatu","Mongolia","Sudan","Solomon Islands","Micronesia, Fed. Sts.","Lao PDR","Libya","Kiribati","Uzbekistan","Eswatini","Djibouti","Cabo Verde","Botswana","Turkmenistan","Pakistan","Brunei Darussalam","Syrian Arab Republic","Kyrgyz Republic","Timor-Leste","Cambodia","Arab World","Belize","Honduras","Pacific island small states","Bangladesh","Lesotho","Guatemala","Haiti","Middle East & North Africa","South Africa","Philippines","Nicaragua","Other small states","Samoa","Fiji","Egypt, Arab Rep.","Middle East & North Africa (excluding high income)","Middle East & North Africa (IDA & IBRD countries)","Lower middle income","Myanmar","Bhutan","Indonesia","Nepal","South Asia","South Asia (IDA & IBRD)","Early-demographic dividend","Azerbaijan","Iran, Islamic Rep.","Small states","India","Malaysia","Tonga","Guyana","Paraguay","Algeria","Suriname","Bahamas, The","Lebanon","Vietnam","Morocco","Mexico","Dominican Republic","Low & middle income","Ecuador","Seychelles","IDA & IBRD total","Venezuela, RB","Middle income","Bolivia","Kazakhstan","French Polynesia","Peru","Latin America & Caribbean (excluding high income)","Latin America & the Caribbean (IDA & IBRD countries)","Colombia","Tunisia","Panama","IBRD only","Latin America & Caribbean","Turkey","Korea, Dem. People’s Rep.","El Salvador","Antigua and Barbuda","Jamaica","Brazil","Caribbean small states","New Caledonia","World","St. Lucia","East Asia & Pacific (excluding high income)","East Asia & Pacific (IDA & IBRD countries)","St. Vincent and the Grenadines","Costa Rica","Grenada","Upper middle income","Macao SAR, China","Guam","Late-demographic dividend","East Asia & Pacific","Trinidad and Tobago","China","Singapore","Sri Lanka","Moldova","Armenia","Mauritius","Chile","Argentina","Thailand","Europe & Central Asia (excluding high income)","Europe & Central Asia (IDA & IBRD countries)","North Macedonia","Cyprus","Israel","Luxembourg","Aruba","Albania","Korea, Rep.","Ireland","Belarus","Russian Federation","Cuba","Uruguay","Montenegro","Georgia","Iceland","Slovak Republic","Barbados","Australia","Ukraine","New Zealand","United States","Hong Kong SAR, China","North America","Bosnia and Herzegovina","Europe & Central Asia","Channel Islands","OECD members","Norway","Canada","Curacao","Poland","High income","Switzerland","Serbia","Romania","Austria","Central Europe and the Baltics","United Kingdom","Belgium","Post-demographic dividend","Spain","Hungary","Netherlands","Czech Republic","Puerto Rico","Lithuania","Slovenia","Denmark","Estonia","European Union","Malta","Latvia","Croatia","Sweden","Euro area","Virgin Islands (U.S.)","France","Bulgaria","Germany","Greece","Portugal","Finland","Italy","Japan"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":false,"tickfont":{"color":null,"family":null,"size":0},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Country","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2.35608640345372,49.4778144725281],"tickmode":"array","ticktext":["0","10","20","30","40"],"tickvals":[0,10,20,30,40],"categoryorder":"array","categoryarray":["0","10","20","30","40"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":15.9402241594022}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"3ff054fa3c6":{"x":{},"y":{},"type":"bar"}},"cur_data":"3ff054fa3c6","visdat":{"3ff054fa3c6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="Chapter-6.html#cb90-1"></a>d.location &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">&quot;world&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-2"><a href="Chapter-6.html#cb90-2"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">duplicated</span>(region)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-3"><a href="Chapter-6.html#cb90-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="dt">Country =</span> region, long, lat)</span>
+<span id="cb90-4"><a href="Chapter-6.html#cb90-4"></a></span>
+<span id="cb90-5"><a href="Chapter-6.html#cb90-5"></a>d.location <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-6"><a href="Chapter-6.html#cb90-6"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-7"><a href="Chapter-6.html#cb90-7"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-8"><a href="Chapter-6.html#cb90-8"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Országok földrajzi elhelyezkedése&#39;</span>)</span></code></pre></div>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#lgaevmvaul .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lgaevmvaul .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lgaevmvaul .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lgaevmvaul .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lgaevmvaul .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lgaevmvaul .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lgaevmvaul .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lgaevmvaul .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lgaevmvaul .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lgaevmvaul .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lgaevmvaul .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lgaevmvaul .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lgaevmvaul .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#lgaevmvaul .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lgaevmvaul .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lgaevmvaul .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lgaevmvaul .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lgaevmvaul .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lgaevmvaul .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#lgaevmvaul .gt_left {
+  text-align: left;
+}
+
+#lgaevmvaul .gt_center {
+  text-align: center;
+}
+
+#lgaevmvaul .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lgaevmvaul .gt_font_normal {
+  font-weight: normal;
+}
+
+#lgaevmvaul .gt_font_bold {
+  font-weight: bold;
+}
+
+#lgaevmvaul .gt_font_italic {
+  font-style: italic;
+}
+
+#lgaevmvaul .gt_super {
+  font-size: 65%;
+}
+
+#lgaevmvaul .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="lgaevmvaul" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Országok földrajzi elhelyezkedése</th>
+    </tr>
+    <tr>
+      <th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Country</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">long</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">lat</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">Aruba</td>
+      <td class="gt_row gt_right">-69.89912</td>
+      <td class="gt_row gt_right">12.45200</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Afghanistan</td>
+      <td class="gt_row gt_right">74.89131</td>
+      <td class="gt_row gt_right">37.23164</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Angola</td>
+      <td class="gt_row gt_right">23.96650</td>
+      <td class="gt_row gt_right">-10.87178</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Anguilla</td>
+      <td class="gt_row gt_right">-63.00122</td>
+      <td class="gt_row gt_right">18.22178</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Albania</td>
+      <td class="gt_row gt_right">20.06396</td>
+      <td class="gt_row gt_right">42.54727</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Finland</td>
+      <td class="gt_row gt_right">20.61133</td>
+      <td class="gt_row gt_right">60.04068</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter-6.html#cb91-1"></a>dat &lt;-<span class="st"> </span>d.covid <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-2"><a href="Chapter-6.html#cb91-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">Country =</span> <span class="st">&#39;Country/Region&#39;</span>, <span class="dt">deathr =</span> <span class="st">&#39;Deaths / 100 Cases&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-3"><a href="Chapter-6.html#cb91-3"></a><span class="st">  </span><span class="kw">select</span>(Country,  deathr, Confirmed) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-4"><a href="Chapter-6.html#cb91-4"></a><span class="st">  </span><span class="kw">merge</span>(d.WHO, <span class="dt">all.x =</span> T) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-5"><a href="Chapter-6.html#cb91-5"></a><span class="st">  </span><span class="kw">merge</span>(d.depedency, <span class="dt">all.x =</span> T) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-6"><a href="Chapter-6.html#cb91-6"></a><span class="st">  </span><span class="kw">merge</span>(d.location, <span class="dt">all.x =</span> T) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-7"><a href="Chapter-6.html#cb91-7"></a><span class="st">  </span>na.omit <span class="co"># lost 46 observation ~ 25%</span></span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="Chapter-6.html#cb92-1"></a>p &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-2"><a href="Chapter-6.html#cb92-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-3"><a href="Chapter-6.html#cb92-3"></a><span class="st">  </span>scale <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-4"><a href="Chapter-6.html#cb92-4"></a><span class="st">  </span>princomp</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapter-6.html#cb93-1"></a>p <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-2"><a href="Chapter-6.html#cb93-2"></a><span class="st">  </span>.<span class="op">$</span>loadings <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-3"><a href="Chapter-6.html#cb93-3"></a><span class="st">  </span><span class="kw">unclass</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-4"><a href="Chapter-6.html#cb93-4"></a><span class="st">  </span><span class="kw">data.frame</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-5"><a href="Chapter-6.html#cb93-5"></a><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-6"><a href="Chapter-6.html#cb93-6"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-7"><a href="Chapter-6.html#cb93-7"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb93-8"><a href="Chapter-6.html#cb93-8"></a>    <span class="dt">name =</span> <span class="kw">str_c</span>(<span class="st">&#39;# &#39;</span>, <span class="kw">str_remove</span>(name, <span class="st">&#39;Comp.&#39;</span>))</span>
+<span id="cb93-9"><a href="Chapter-6.html#cb93-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-10"><a href="Chapter-6.html#cb93-10"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
+<span id="cb93-11"><a href="Chapter-6.html#cb93-11"></a><span class="st">  </span><span class="kw">aes</span>(rowname, value, <span class="dt">fill =</span> value <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb93-12"><a href="Chapter-6.html#cb93-12"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb93-13"><a href="Chapter-6.html#cb93-13"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">color =</span> <span class="st">&#39;black&#39;</span>) <span class="op">+</span></span>
+<span id="cb93-14"><a href="Chapter-6.html#cb93-14"></a><span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span></span>
+<span id="cb93-15"><a href="Chapter-6.html#cb93-15"></a><span class="st">  </span><span class="kw">scale_fill_discrete</span>(<span class="dt">guide =</span> F) <span class="op">+</span></span>
+<span id="cb93-16"><a href="Chapter-6.html#cb93-16"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>percent) <span class="op">+</span></span>
+<span id="cb93-17"><a href="Chapter-6.html#cb93-17"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name) <span class="op">+</span></span>
+<span id="cb93-18"><a href="Chapter-6.html#cb93-18"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="ot">NULL</span>, <span class="dt">title =</span> <span class="st">&#39;Főkomponensek&#39;</span>)</span></code></pre></div>
+<p><img src="my-book_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="Chapter-6.html#cb94-1"></a>p <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-2"><a href="Chapter-6.html#cb94-2"></a><span class="st">  </span>.<span class="op">$</span>sdev <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-3"><a href="Chapter-6.html#cb94-3"></a><span class="st">  </span>{<span class="kw">data.frame</span>(<span class="dt">Komponens =</span> <span class="kw">names</span>(.), <span class="dt">Variancia =</span> .<span class="op">^</span><span class="dv">2</span>)} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-4"><a href="Chapter-6.html#cb94-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb94-5"><a href="Chapter-6.html#cb94-5"></a>    <span class="dt">Komponens =</span> <span class="kw">str_c</span>(<span class="st">&#39;# &#39;</span>, <span class="kw">str_remove</span>(Komponens, <span class="st">&#39;Comp.&#39;</span>))</span>
+<span id="cb94-6"><a href="Chapter-6.html#cb94-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-7"><a href="Chapter-6.html#cb94-7"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-8"><a href="Chapter-6.html#cb94-8"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Főkomponensek varianciái&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-9"><a href="Chapter-6.html#cb94-9"></a><span class="st">  </span><span class="kw">fmt_number</span>(</span>
+<span id="cb94-10"><a href="Chapter-6.html#cb94-10"></a>    <span class="dt">columns =</span> <span class="kw">vars</span>(Variancia),</span>
+<span id="cb94-11"><a href="Chapter-6.html#cb94-11"></a>    <span class="dt">use_seps =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb94-12"><a href="Chapter-6.html#cb94-12"></a>    <span class="dt">dec_mark =</span> <span class="st">&#39;,&#39;</span></span>
+<span id="cb94-13"><a href="Chapter-6.html#cb94-13"></a>  ) <span class="co"># </span><span class="al">TODO</span><span class="co"> Kaiser</span></span></code></pre></div>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#rvypyximea .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rvypyximea .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rvypyximea .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rvypyximea .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rvypyximea .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rvypyximea .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rvypyximea .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rvypyximea .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rvypyximea .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rvypyximea .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rvypyximea .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rvypyximea .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rvypyximea .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rvypyximea .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rvypyximea .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rvypyximea .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rvypyximea .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#rvypyximea .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rvypyximea .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#rvypyximea .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rvypyximea .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rvypyximea .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rvypyximea .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rvypyximea .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rvypyximea .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rvypyximea .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rvypyximea .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rvypyximea .gt_left {
+  text-align: left;
+}
+
+#rvypyximea .gt_center {
+  text-align: center;
+}
+
+#rvypyximea .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rvypyximea .gt_font_normal {
+  font-weight: normal;
+}
+
+#rvypyximea .gt_font_bold {
+  font-weight: bold;
+}
+
+#rvypyximea .gt_font_italic {
+  font-style: italic;
+}
+
+#rvypyximea .gt_super {
+  font-size: 65%;
+}
+
+#rvypyximea .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="rvypyximea" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal" style>Főkomponensek varianciái</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Komponens</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Variancia</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left"># 1</td>
+      <td class="gt_row gt_right">2,35</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 2</td>
+      <td class="gt_row gt_right">2,18</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 3</td>
+      <td class="gt_row gt_right">1,17</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 4</td>
+      <td class="gt_row gt_right">0,73</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 5</td>
+      <td class="gt_row gt_right">0,58</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 6</td>
+      <td class="gt_row gt_right">0,49</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 7</td>
+      <td class="gt_row gt_right">0,37</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left"># 8</td>
+      <td class="gt_row gt_right">0,07</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="Chapter-6.html#cb95-1"></a><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i)</span>
+<span id="cb95-2"><a href="Chapter-6.html#cb95-2"></a>  p <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-3"><a href="Chapter-6.html#cb95-3"></a><span class="st">  </span>.<span class="op">$</span>scores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-4"><a href="Chapter-6.html#cb95-4"></a><span class="st">  </span><span class="kw">cbind</span>(dat) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-5"><a href="Chapter-6.html#cb95-5"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">x =</span> <span class="kw">str_c</span>(<span class="st">&#39;Comp.&#39;</span>, i)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-6"><a href="Chapter-6.html#cb95-6"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(x)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-7"><a href="Chapter-6.html#cb95-7"></a><span class="st">  </span><span class="kw">pull</span>(Country) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-8"><a href="Chapter-6.html#cb95-8"></a><span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)</span>
+<span id="cb95-9"><a href="Chapter-6.html#cb95-9"></a>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-10"><a href="Chapter-6.html#cb95-10"></a><span class="st">  </span><span class="kw">data.frame</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-11"><a href="Chapter-6.html#cb95-11"></a><span class="st">  </span>{<span class="kw">set_names</span>(., <span class="kw">str_c</span>(<span class="st">&quot;# &quot;</span>, <span class="kw">str_remove</span>(<span class="kw">names</span>(.), <span class="st">&quot;X&quot;</span>)))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-12"><a href="Chapter-6.html#cb95-12"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-13"><a href="Chapter-6.html#cb95-13"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Főkomponenseket leginkább jellemző országok&#39;</span>)</span></code></pre></div>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#yfzieuuhqk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yfzieuuhqk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yfzieuuhqk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yfzieuuhqk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yfzieuuhqk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yfzieuuhqk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yfzieuuhqk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yfzieuuhqk .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yfzieuuhqk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yfzieuuhqk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yfzieuuhqk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yfzieuuhqk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yfzieuuhqk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#yfzieuuhqk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yfzieuuhqk .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yfzieuuhqk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yfzieuuhqk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#yfzieuuhqk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yfzieuuhqk .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#yfzieuuhqk .gt_left {
+  text-align: left;
+}
+
+#yfzieuuhqk .gt_center {
+  text-align: center;
+}
+
+#yfzieuuhqk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yfzieuuhqk .gt_font_normal {
+  font-weight: normal;
+}
+
+#yfzieuuhqk .gt_font_bold {
+  font-weight: bold;
+}
+
+#yfzieuuhqk .gt_font_italic {
+  font-style: italic;
+}
+
+#yfzieuuhqk .gt_super {
+  font-size: 65%;
+}
+
+#yfzieuuhqk .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="yfzieuuhqk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal" style>Főkomponenseket leginkább jellemző országok</th>
+    </tr>
+    <tr>
+      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style></th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"># 6</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_center">China</td>
+      <td class="gt_row gt_center">Norway</td>
+      <td class="gt_row gt_center">Brazil</td>
+      <td class="gt_row gt_center">China</td>
+      <td class="gt_row gt_center">Liberia</td>
+      <td class="gt_row gt_center">Hungary</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">France</td>
+      <td class="gt_row gt_center">Switzerland</td>
+      <td class="gt_row gt_center">Mexico</td>
+      <td class="gt_row gt_center">Belize</td>
+      <td class="gt_row gt_center">New Zealand</td>
+      <td class="gt_row gt_center">Italy</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">Belgium</td>
+      <td class="gt_row gt_center">Iceland</td>
+      <td class="gt_row gt_center">Chile</td>
+      <td class="gt_row gt_center">Mexico</td>
+      <td class="gt_row gt_center">China</td>
+      <td class="gt_row gt_center">Belgium</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">Italy</td>
+      <td class="gt_row gt_center">Denmark</td>
+      <td class="gt_row gt_center">Peru</td>
+      <td class="gt_row gt_center">Guatemala</td>
+      <td class="gt_row gt_center">Argentina</td>
+      <td class="gt_row gt_center">Chad</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_center">Netherlands</td>
+      <td class="gt_row gt_center">Belgium</td>
+      <td class="gt_row gt_center">Ecuador</td>
+      <td class="gt_row gt_center">Chad</td>
+      <td class="gt_row gt_center">Uruguay</td>
+      <td class="gt_row gt_center">France</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="Chapter-6.html#cb96-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-2"><a href="Chapter-6.html#cb96-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-2</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-3"><a href="Chapter-6.html#cb96-3"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">5</span>, <span class="dt">iter.max =</span> <span class="dv">100</span>, <span class="dt">nstart =</span> <span class="dv">100</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-4"><a href="Chapter-6.html#cb96-4"></a><span class="st">  </span>.<span class="op">$</span>cluster <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-5"><a href="Chapter-6.html#cb96-5"></a><span class="st">  </span>{factoextra<span class="op">::</span><span class="kw">fviz_pca_biplot</span>(p, <span class="dt">habillage =</span> .)} <span class="co"># </span><span class="al">TODO</span><span class="co"> improve</span></span></code></pre></div>
+<p><img src="my-book_files/figure-html/biplot-1.png" width="672" /></p>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter-5.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/MarcellGranat/COVID/blob/main/Chapter-6.Rmd",
+"text": "Jump to GitHub"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+# Idősor elemzés {#Chapter-5}
+
+```{css, echo=FALSE}
+p {
+  text-align: justify;
+}
+```
+
+A következőkben sztochasztikus idősorelemzési eljárással modellezzük a magyar COVID-19 megbetegedés számot. Az adatok az Our World in Data^[https://ourworldindata.org/coronavirus-source-data] weboldalról származnak, napi új regisztrálásokat és haláleseteket tartalmaznak.
+
+```{r}
+dat <- readxl::read_excel('COVID-19-geographic-disbtribution-worldwide.xlsx')
+```
+
+```{r}
+dat %>% 
+  head %>% 
+  gt %>% 
+  tab_header(title = 'A letöltött adattábla')
+```
+
+
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN') %>% 
+  arrange(dateRep) %>% 
+  ggplot +
+  geom_line(aes(dateRep, cases)) +
+  labs(x = NULL, y = 'Új megfertőzdések', title = "Megfertőződések számának alakulása Magyarországon")
+```
+
+Érdemes strutúrális törésnek tekinteni 2020 szeptemberét, inntől jelentősen emelkednek az esetszámok. Mivel látszik, hogy nem stacioner a napi új esetek száma, így annak transzformációit is érdemes megvizsgálni (diff, log).
+
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN', dateRep > lubridate::ymd('2020-09-01')) %>% 
+  arrange(dateRep) %>% 
+  select(dateRep, cases) %>% 
+  mutate(
+    diff = c(NA, diff(cases)),
+    log = log(cases)
+  ) %T>%
+  {print(apply(select(., diff, log), 2, function(x) 
+    forecast::ndiffs(na.omit(x)) == 0
+      ))} %>% 
+  select(-cases) %>% 
+  pivot_longer(-1) %>% 
+  ggplot + 
+  geom_line(aes(dateRep, value)) +
+  facet_wrap(~name, ncol = 1, scales = 'free_y') +
+  labs(title = 'A magyar esetszámok idősorának transzformációi', x = NULL, y = NULL)
+```
+
+Mivel az esetszámok differenciázottja stacioner, így azon folytatjuk a Box-jenkins modellezést.
+
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN', dateRep > lubridate::ymd('2020-09-01')) %>% 
+  arrange(dateRep) %>% 
+  pull(cases) %>% 
+  ts %>% 
+  forecast::auto.arima() %T>%
+  {tab_header(gt(broom::tidy(.)), 'ARIMA(0,1,2) modell')} %>% 
+  forecast::checkresiduals()
+```
+
+A Ljung-Box teszt alapján elutasítjuk a nullhipotézist, miszerint a maradéktag fehérzaj folyamat lenne. A maradéktagot ACF-jéből látjuk, hogy a 7. késleltetés az, amely statisztikailag szignifikáns és ez elméleti megfontolásból is megállja a helyét (Hétvégén kevesebbet mennek el az emberek teszetlni, mert inkább otthon maradnak megpróbálni kipihenni). 
+
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN', dateRep >= lubridate::ymd('2020-09-01')) %>% 
+  arrange(dateRep) %>% 
+  pull(cases) %>% 
+  ts(frequency = 7) %>% 
+  forecast::ggmonthplot() + labs(x = NULL, y = 'Napi esetszám',
+                                 title = 'Esetszámok hét napjai szerint lebontva')
+```
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN', dateRep >= lubridate::ymd('2020-09-01')) %>% 
+  arrange(dateRep) %>% 
+  mutate(day = weekdays(dateRep)) %>% 
+  lm(formula = cases ~ day) %>% 
+  .$resid %>% 
+  ts %>% 
+  forecast::auto.arima() %>%
+  {mod <<- .}
+
+broom::tidy(mod) %>% 
+  gt %>% 
+  tab_header('Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei')
+```
+
+```{r}
+mod %>% 
+  forecast::checkresiduals()
+```
+
+## SARIMA
+
+```{r}
+dat %>% 
+  filter(countryterritoryCode == 'HUN', dateRep >= lubridate::ymd('2020-09-01')) %>% 
+  arrange(dateRep) %>% 
+  pull(cases) %>% 
+  ts(frequency = 7) %>% 
+  forecast::auto.arima() %T>% 
+  {m.sarima <<- .} %>% 
+  forecast::checkresiduals()
+```
+
+Szezonális ARIMA modellt alkalmazva lényegesen nagyobb p-értéket kaptunk a modell hibatagjain elvégzett Ljung-box teszthet.
+
+```{r}
+m.sarima %>% 
+  broom::tidy() %>% 
+  gt %>% 
+  tab_header(title = 'Illesztett SARIMA modell paraméterei')
+```
+
+```{r}
+ggpubr::ggarrange(
+  forecast::forecast(mod) %>% 
+    forecast::autoplot(showgap = F),
+  forecast::forecast(m.sarima) %>% 
+    forecast::autoplot(showgap = F),
+  nrow = 2
+)
+```

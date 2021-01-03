@@ -1,5 +1,5 @@
 ---
-title: "COVID"
+title: "A COVID járvány elemzése többáltozós statisztikai eszközkkel"
 author: "Granát Marcell & Mazzag Bálint"
 output: bookdown::gitbook
 site: bookdown::bookdown_site
@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = 
 library(tidyverse)
 library(gt)
 library(ggwordcloud)
+
 theme_set(theme_grey() + 
             theme(legend.position = "bottom", 
                   text = element_text(size = 12), 
