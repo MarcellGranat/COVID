@@ -150,7 +150,7 @@ datatable(words_monthly, filter = "none", options = list(pageLength=15, scrollX=
 A táblázatból az alábbi információk olvashatóak le:\
 -**a január-februári időszakban az Egyesült Királysággal még kevésbé foglalkoztak a cikkek**\
 -**a következő időszakban Nagy-Britannia miniszterelnöke és az ott bevezetett tier alapú módszer külcsszavai is előkerültek**\
--**a karácsonyi lezárások már novemberben is közbeszéd alapja voltak**
+-**a karácsonyi lezárások már novemberben is közbeszéd alapja voltak**\
 -**a kezdeti 'coronavirus' kifejezésről fokozatosan állt át a Guardian az egyszerűbb, COVID betűszóra**\
 
 

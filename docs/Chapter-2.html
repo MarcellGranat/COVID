@@ -770,7 +770,7 @@ p {
 <span id="cb4-9"><a href="Chapter-2.html#cb4-9"></a>                               <span class="dt">units =</span> <span class="st">&#39;days&#39;</span>)),</span>
 <span id="cb4-10"><a href="Chapter-2.html#cb4-10"></a>    <span class="dt">age =</span> <span class="kw">as.numeric</span>(<span class="kw">ifelse</span>(<span class="kw">str_detect</span>(age, <span class="st">&#39;-&#39;</span>), <span class="ot">NA</span>, age))</span>
 <span id="cb4-11"><a href="Chapter-2.html#cb4-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
+<span id="cb4-12"><a href="Chapter-2.html#cb4-12"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="co"># cleaning the depedent var</span></span>
 <span id="cb4-13"><a href="Chapter-2.html#cb4-13"></a>    <span class="dt">outcome =</span> <span class="kw">case_when</span>(</span>
 <span id="cb4-14"><a href="Chapter-2.html#cb4-14"></a>      outcome <span class="op">==</span><span class="st"> &#39;death&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>,</span>
 <span id="cb4-15"><a href="Chapter-2.html#cb4-15"></a>      outcome <span class="op">==</span><span class="st"> &#39;died&#39;</span> <span class="op">~</span><span class="st"> &#39;died&#39;</span>, </span>
@@ -1234,15 +1234,15 @@ p {
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter-2.html#cb6-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-2"><a href="Chapter-2.html#cb6-2"></a><span class="st">  </span><span class="kw">select</span>(age, sex, died) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb6-3"><a href="Chapter-2.html#cb6-3"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">color =</span> died), </span>
-<span id="cb6-4"><a href="Chapter-2.html#cb6-4"></a>    <span class="dt">title =</span> <span class="st">&#39;Életkor, nem és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
+<span id="cb6-4"><a href="Chapter-2.html#cb6-4"></a>                  <span class="dt">title =</span> <span class="st">&#39;Életkor, nem és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="Chapter-2.html#cb7-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb7-2"><a href="Chapter-2.html#cb7-2"></a><span class="st">  </span><span class="kw">select</span>(continent, date, died) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb7-3"><a href="Chapter-2.html#cb7-3"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="kw">aes</span>(<span class="dt">color =</span> died),</span>
-<span id="cb7-4"><a href="Chapter-2.html#cb7-4"></a>        <span class="dt">title =</span> <span class="st">&#39;A kontinens a rögzítés dátuma és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
+<span id="cb7-4"><a href="Chapter-2.html#cb7-4"></a>                  <span class="dt">title =</span> <span class="st">&#39;A kontinens a rögzítés dátuma és az elhalálozás kapcsolata&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-2.html#cb8-1"></a>  dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter-2.html#cb8-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-2"><a href="Chapter-2.html#cb8-2"></a><span class="st">  </span><span class="kw">group_by</span>(continent, country) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-3"><a href="Chapter-2.html#cb8-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-4"><a href="Chapter-2.html#cb8-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1258,7 +1258,7 @@ p {
 <span id="cb8-14"><a href="Chapter-2.html#cb8-14"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-15"><a href="Chapter-2.html#cb8-15"></a><span class="st">  </span><span class="kw">fmt_percent</span>(</span>
 <span id="cb8-16"><a href="Chapter-2.html#cb8-16"></a>    <span class="dt">columns =</span> <span class="st">&#39;n/sum(n)&#39;</span>,</span>
-<span id="cb8-17"><a href="Chapter-2.html#cb8-17"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-17"><a href="Chapter-2.html#cb8-17"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-18"><a href="Chapter-2.html#cb8-18"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(n), <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb8-19"><a href="Chapter-2.html#cb8-19"></a><span class="st">  </span><span class="kw">summary_rows</span>(<span class="dt">groups =</span> T, <span class="dt">columns =</span> <span class="kw">vars</span>(<span class="st">&#39;n/sum(n)&#39;</span>), </span>
 <span id="cb8-20"><a href="Chapter-2.html#cb8-20"></a>               <span class="dt">fns =</span> <span class="kw">list</span>(<span class="dt">TOTAL =</span> <span class="st">&#39;sum&#39;</span>), <span class="dt">formatter =</span> fmt_percent) <span class="op">%&gt;%</span></span>
@@ -2300,27 +2300,26 @@ p {
 </div>
 <div id="modellbecslés" class="section level2">
 <h2>Modellbecslés</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>rpart1 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> <span class="kw">as.factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) </span></code></pre></div>
-<pre><code>Error in is.factor(x): object &#39;died&#39; not found</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart1, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, </span>
-<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
-<pre><code>Error in rattle::fancyRpartPlot(rpart1, palettes = &quot;OrRd&quot;, sub = &quot;cp = .01&quot;, : object &#39;rpart1&#39; not found</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-2.html#cb15-1"></a>rpart2 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> <span class="kw">as.factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>)</span>
-<span id="cb15-2"><a href="Chapter-2.html#cb15-2"></a></span>
-<span id="cb15-3"><a href="Chapter-2.html#cb15-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart2, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, <span class="co"># plot</span></span>
-<span id="cb15-4"><a href="Chapter-2.html#cb15-4"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;2. döntési fa&#39;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="Chapter-2.html#cb11-1"></a>rpart1 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> <span class="kw">as.factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.01</span>) </span>
+<span id="cb11-2"><a href="Chapter-2.html#cb11-2"></a></span>
+<span id="cb11-3"><a href="Chapter-2.html#cb11-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart1, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, </span>
+<span id="cb11-4"><a href="Chapter-2.html#cb11-4"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .01&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;1. döntési fa&#39;</span>) </span></code></pre></div>
+<p><img src="my-book_files/figure-html/rpart1-1.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="Chapter-2.html#cb12-1"></a>rpart2 &lt;-<span class="st"> </span>rpart<span class="op">::</span><span class="kw">rpart</span>(dat, <span class="dt">formula =</span> <span class="kw">as.factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">cp =</span> <span class="fl">.003</span>)</span>
+<span id="cb12-2"><a href="Chapter-2.html#cb12-2"></a></span>
+<span id="cb12-3"><a href="Chapter-2.html#cb12-3"></a>rattle<span class="op">::</span><span class="kw">fancyRpartPlot</span>(rpart2, <span class="dt">palettes =</span> <span class="st">&#39;OrRd&#39;</span>, <span class="co"># plot</span></span>
+<span id="cb12-4"><a href="Chapter-2.html#cb12-4"></a>                       <span class="dt">sub =</span> <span class="st">&#39;cp = .003&#39;</span>, <span class="dt">main =</span> <span class="st">&#39;2. döntési fa&#39;</span>) </span></code></pre></div>
 <p><img src="my-book_files/figure-html/rpart2-1.png" width="672" /></p>
-<p>A döntési fa alapján még mindig az életkor a legfontosabb paraméter, ugyanakkor láthatjuk, hogy a földrajzi elhelyezkedés és
-a krónikus betegség is megjelenik, mint faktor.</p>
+<p>A döntési fa alapján még mindig az életkor a legfontosabb paraméter, ugyanakkor láthatjuk, hogy az indiai származás, a dátum és a krónikus betegség is megjelenik, mint meghatározó töréspont. A dátum esetében az értelmezés az alábbi: január 1-e veszi fel az egyes értéket és így az évek számát fejezi ki.</p>
 </div>
 <div id="keresztvalidáció-és-véletlen-erdő-hiperparamétere" class="section level2">
 <h2>Keresztvalidáció és véletlen erdő hiperparamétere</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="Chapter-2.html#cb16-1"></a><span class="kw">library</span>(caret)</span>
-<span id="cb16-2"><a href="Chapter-2.html#cb16-2"></a>keresztval &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)</span>
-<span id="cb16-3"><a href="Chapter-2.html#cb16-3"></a>ism_keresztval &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>, <span class="dt">repeats=</span><span class="dv">20</span>)</span>
-<span id="cb16-4"><a href="Chapter-2.html#cb16-4"></a>cp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">cp=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">by=</span><span class="fl">0.004</span>, <span class="dt">to=</span><span class="fl">0.1</span>))</span>
-<span id="cb16-5"><a href="Chapter-2.html#cb16-5"></a></span>
-<span id="cb16-6"><a href="Chapter-2.html#cb16-6"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>keresztval)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="Chapter-2.html#cb13-1"></a><span class="kw">library</span>(caret)</span>
+<span id="cb13-2"><a href="Chapter-2.html#cb13-2"></a>keresztval &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="dt">number =</span> <span class="dv">10</span>)</span>
+<span id="cb13-3"><a href="Chapter-2.html#cb13-3"></a>ism_keresztval &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>, <span class="dt">repeats=</span><span class="dv">20</span>)</span>
+<span id="cb13-4"><a href="Chapter-2.html#cb13-4"></a>cp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">cp=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">by=</span><span class="fl">0.01</span>, <span class="dt">to=</span><span class="fl">0.2</span>))</span>
+<span id="cb13-5"><a href="Chapter-2.html#cb13-5"></a></span>
+<span id="cb13-6"><a href="Chapter-2.html#cb13-6"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>keresztval)</span></code></pre></div>
 <pre><code>CART 
 
 5324 samples
@@ -2339,7 +2338,7 @@ Resampling results across tuning parameters:
 
 Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was cp = 0.06853583.</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter-2.html#cb18-1"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>ism_keresztval)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="Chapter-2.html#cb15-1"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>ism_keresztval)</span></code></pre></div>
 <pre><code>CART 
 
 5324 samples
@@ -2358,9 +2357,9 @@ Resampling results across tuning parameters:
 
 Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was cp = 0.06853583.</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="Chapter-2.html#cb20-1"></a>trained_hyperparam &lt;-<span class="st"> </span><span class="kw">as.double</span>(<span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>ism_keresztval)<span class="op">$</span>bestTune[<span class="st">&quot;cp&quot;</span>])</span>
-<span id="cb20-2"><a href="Chapter-2.html#cb20-2"></a></span>
-<span id="cb20-3"><a href="Chapter-2.html#cb20-3"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>keresztval, <span class="dt">tuneGrid=</span>cp)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="Chapter-2.html#cb17-1"></a>trained_hyperparam &lt;-<span class="st"> </span><span class="kw">as.double</span>(<span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>ism_keresztval)<span class="op">$</span>bestTune[<span class="st">&quot;cp&quot;</span>])</span>
+<span id="cb17-2"><a href="Chapter-2.html#cb17-2"></a></span>
+<span id="cb17-3"><a href="Chapter-2.html#cb17-3"></a><span class="kw">train</span>(<span class="kw">as.factor</span>(died)<span class="op">~</span>., <span class="dt">data=</span><span class="kw">na.omit</span>(dat), <span class="dt">method=</span><span class="st">&quot;rpart&quot;</span>, <span class="dt">trControl=</span>keresztval, <span class="dt">tuneGrid=</span>cp)</span></code></pre></div>
 <pre><code>CART 
 
 5324 samples
@@ -2372,74 +2371,69 @@ Resampling: Cross-Validated (10 fold)
 Summary of sample sizes: 4792, 4792, 4791, 4792, 4791, 4792, ... 
 Resampling results across tuning parameters:
 
-  cp     Accuracy   Kappa    
-  0.000  0.8358352  0.5193256
-  0.004  0.8456044  0.5214059
-  0.008  0.8439134  0.5256205
-  0.012  0.8441010  0.5248815
-  0.016  0.8431629  0.5213622
-  0.020  0.8416609  0.5146244
-  0.024  0.8364006  0.4895630
-  0.028  0.8350855  0.4818633
-  0.032  0.8337722  0.4760154
-  0.036  0.8285125  0.4532494
-  0.040  0.8285125  0.4532494
-  0.044  0.8285125  0.4532494
-  0.048  0.8285125  0.4532494
-  0.052  0.8285125  0.4532494
-  0.056  0.8172396  0.4006058
-  0.060  0.8134838  0.3808459
-  0.064  0.8078552  0.3415765
-  0.068  0.7954492  0.3282154
-  0.072  0.7924417  0.3401751
-  0.076  0.7864358  0.3406189
-  0.080  0.7824885  0.3170844
-  0.084  0.7807999  0.2750812
-  0.088  0.7798618  0.2347138
-  0.092  0.7785460  0.1171419
-  0.096  0.7785460  0.1171419
-  0.100  0.7588286  0.0000000
+  cp    Accuracy   Kappa    
+  0.00  0.8358352  0.5193256
+  0.01  0.8433505  0.5232988
+  0.02  0.8416609  0.5146244
+  0.03  0.8337722  0.4760154
+  0.04  0.8285125  0.4532494
+  0.05  0.8285125  0.4532494
+  0.06  0.8134838  0.3808459
+  0.07  0.7954492  0.3282154
+  0.08  0.7824885  0.3170844
+  0.09  0.7785460  0.1546364
+  0.10  0.7588286  0.0000000
+  0.11  0.7588286  0.0000000
+  0.12  0.7588286  0.0000000
+  0.13  0.7588286  0.0000000
+  0.14  0.7588286  0.0000000
+  0.15  0.7588286  0.0000000
+  0.16  0.7588286  0.0000000
+  0.17  0.7588286  0.0000000
+  0.18  0.7588286  0.0000000
+  0.19  0.7588286  0.0000000
+  0.20  0.7588286  0.0000000
 
 Accuracy was used to select the optimal model using the largest value.
-The final value used for the model was cp = 0.004.</code></pre>
+The final value used for the model was cp = 0.01.</code></pre>
 <p>A keresztvalidáció alapján a véletlen erdő hiperparaméterét kalibráljuk. Mind a sima, mind az ismétléses módszerrel nagyjából 0.0685358
 a kalibrációs paraméter értéke.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter-2.html#cb22-1"></a><span class="kw">library</span>(randomForest)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter-2.html#cb23-1"></a>erdo &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="kw">factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">ntree=</span><span class="dv">500</span>, <span class="dt">cp =</span> <span class="fl">.069</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter-2.html#cb24-1"></a><span class="kw">plot</span>(erdo)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter-2.html#cb19-1"></a><span class="kw">library</span>(randomForest)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="Chapter-2.html#cb20-1"></a>erdo &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="kw">factor</span>(died) <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> dat, <span class="dt">ntree=</span><span class="dv">500</span>, <span class="dt">cp =</span> <span class="fl">.069</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter-2.html#cb21-1"></a><span class="kw">plot</span>(erdo)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="Chapter-2.html#cb25-1"></a><span class="kw">varImpPlot</span>(erdo)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="Chapter-2.html#cb22-1"></a><span class="kw">varImpPlot</span>(erdo)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 <p>A modell hibája nagyjából 100 fa után stabilizálódik, így az 500 ismétlést éreztük helyénvalónak.
 Ez alapján pedig a legfontosabb paraméter az év, azonban a korábbi döntési fán nem megtalálható
 dátum változó is fontos a kimenetel szempontjából.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="Chapter-2.html#cb26-1"></a>pred_tree &lt;-<span class="st"> </span><span class="kw">predict</span>(rpart1, <span class="kw">na.omit</span>(dat), <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)</span>
-<span id="cb26-2"><a href="Chapter-2.html#cb26-2"></a>pred_tree_table &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">na.omit</span>(dat)<span class="op">$</span>died, pred_tree)</span>
-<span id="cb26-3"><a href="Chapter-2.html#cb26-3"></a></span>
-<span id="cb26-4"><a href="Chapter-2.html#cb26-4"></a>pred_tree_table</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter-2.html#cb23-1"></a>pred_tree &lt;-<span class="st"> </span><span class="kw">predict</span>(rpart1, <span class="kw">na.omit</span>(dat), <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)</span>
+<span id="cb23-2"><a href="Chapter-2.html#cb23-2"></a>pred_tree_table &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">na.omit</span>(dat)<span class="op">$</span>died, pred_tree)</span>
+<span id="cb23-3"><a href="Chapter-2.html#cb23-3"></a></span>
+<span id="cb23-4"><a href="Chapter-2.html#cb23-4"></a>pred_tree_table</span></code></pre></div>
 <pre><code>       pred_tree
         FALSE TRUE
   FALSE  3879  161
   TRUE    633  651</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="Chapter-2.html#cb28-1"></a>pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(erdo, <span class="kw">na.omit</span>(dat), <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)</span>
-<span id="cb28-2"><a href="Chapter-2.html#cb28-2"></a></span>
-<span id="cb28-3"><a href="Chapter-2.html#cb28-3"></a>pred_forest_table &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">na.omit</span>(dat)<span class="op">$</span>died, pred_forest)</span>
-<span id="cb28-4"><a href="Chapter-2.html#cb28-4"></a></span>
-<span id="cb28-5"><a href="Chapter-2.html#cb28-5"></a>pred_forest_table</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="Chapter-2.html#cb25-1"></a>pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(erdo, <span class="kw">na.omit</span>(dat), <span class="dt">type=</span><span class="st">&quot;class&quot;</span>)</span>
+<span id="cb25-2"><a href="Chapter-2.html#cb25-2"></a></span>
+<span id="cb25-3"><a href="Chapter-2.html#cb25-3"></a>pred_forest_table &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">na.omit</span>(dat)<span class="op">$</span>died, pred_forest)</span>
+<span id="cb25-4"><a href="Chapter-2.html#cb25-4"></a></span>
+<span id="cb25-5"><a href="Chapter-2.html#cb25-5"></a>pred_forest_table</span></code></pre></div>
 <pre><code>       pred_forest
         FALSE TRUE
   FALSE  3993   47
   TRUE    617  667</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="Chapter-2.html#cb30-1"></a><span class="kw">confusionMatrix</span>(pred_tree_table)<span class="op">$</span>overall[<span class="kw">c</span>(<span class="st">&quot;Accuracy&quot;</span>, <span class="st">&quot;Kappa&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="Chapter-2.html#cb27-1"></a><span class="kw">confusionMatrix</span>(pred_tree_table)<span class="op">$</span>overall[<span class="kw">c</span>(<span class="st">&quot;Accuracy&quot;</span>, <span class="st">&quot;Kappa&quot;</span>)]</span></code></pre></div>
 <pre><code> Accuracy     Kappa 
 0.8508640 0.5341296 </code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="Chapter-2.html#cb32-1"></a><span class="kw">confusionMatrix</span>(pred_forest_table)<span class="op">$</span>overall[<span class="kw">c</span>(<span class="st">&quot;Accuracy&quot;</span>, <span class="st">&quot;Kappa&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="Chapter-2.html#cb29-1"></a><span class="kw">confusionMatrix</span>(pred_forest_table)<span class="op">$</span>overall[<span class="kw">c</span>(<span class="st">&quot;Accuracy&quot;</span>, <span class="st">&quot;Kappa&quot;</span>)]</span></code></pre></div>
 <pre><code> Accuracy     Kappa 
 0.8752817 0.5984534 </code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="Chapter-2.html#cb34-1"></a><span class="kw">confusionMatrix</span>(pred_tree_table)<span class="op">$</span>byClass[<span class="kw">c</span>(<span class="st">&quot;Sensitivity&quot;</span>, <span class="st">&quot;Specificity&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="Chapter-2.html#cb31-1"></a><span class="kw">confusionMatrix</span>(pred_tree_table)<span class="op">$</span>byClass[<span class="kw">c</span>(<span class="st">&quot;Sensitivity&quot;</span>, <span class="st">&quot;Specificity&quot;</span>)]</span></code></pre></div>
 <pre><code>Sensitivity Specificity 
   0.8597074   0.8017241 </code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="Chapter-2.html#cb36-1"></a><span class="kw">confusionMatrix</span>(pred_forest_table)<span class="op">$</span>byClass[<span class="kw">c</span>( <span class="st">&quot;Sensitivity&quot;</span>, <span class="st">&quot;Specificity&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="Chapter-2.html#cb33-1"></a><span class="kw">confusionMatrix</span>(pred_forest_table)<span class="op">$</span>byClass[<span class="kw">c</span>( <span class="st">&quot;Sensitivity&quot;</span>, <span class="st">&quot;Specificity&quot;</span>)]</span></code></pre></div>
 <pre><code>Sensitivity Specificity 
   0.8661605   0.9341737 </code></pre>
 <p>A döntési fa és véletlen erdő összehasonlításakor mind a kappa, mind pedig a találati arány

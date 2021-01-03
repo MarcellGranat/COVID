@@ -52,15 +52,15 @@ dat %>%
 ```
 
 Az adatok hiányosságának és felhasználhatóságának figyelembevételével az alábbi változókat érdemes bevonni a modellbe: \
- - **életkor**\
- - **nem**\
- - **ország**\
- - **van-e krónikus betegsége**\
- - **fertőződöttség kimutatásának ideje**\
- - **földrajzi szélesség**\
- - **földrajzi hosszúság**\
- - **megbetegedés kimenete**\
- 
+- **életkor**\
+- **nem**\
+- **ország**\
+- **van-e krónikus betegsége**\
+- **fertőződöttség kimutatásának ideje**\
+- **földrajzi szélesség**\
+- **földrajzi hosszúság**\
+- **megbetegedés kimenete**\
+
 A változók tisztítása során egyik legfontosabb, hogy a kimenet oszlopban összevontuk minden elhalálozásra megfelelő szinonímát egységesen az elhunyt kategóriába, és minden felépültnek megfelelőt a felépültbe. Mivel jelen elemzés kutatási kérdése, hogy mi a valószínűsége, hogy valaki túléli, így elvetettünk minden megfigyelést, amely esetében az alany még betegség alatt áll, vagy a kimenet ismeretlen. Az ország oszlopból kontinensként új magyarázó változót határoztunk meg, és az évek esetében ismeretlennek vetük azokat, ahol intervallum került megadásra^[Az intervallumok hossza nem egyezett meg.].
 
 ```{r data-prep}
@@ -75,7 +75,7 @@ dat %>%
                                units = 'days')),
     age = as.numeric(ifelse(str_detect(age, '-'), NA, age))
   ) %>% 
-    mutate( # cleaning the depedent var
+  mutate( # cleaning the depedent var
     outcome = case_when(
       outcome == 'death' ~ 'died',
       outcome == 'died' ~ 'died', 
@@ -119,20 +119,20 @@ dat %>%
 dat %>% 
   select(age, sex, died) %>% 
   GGally::ggpairs(mapping = aes(color = died), 
-    title = 'Életkor, nem és az elhalálozás kapcsolata')
+                  title = 'Életkor, nem és az elhalálozás kapcsolata')
 ```
 
 ```{r}
 dat %>% 
   select(continent, date, died) %>% 
   GGally::ggpairs(aes(color = died),
-        title = 'A kontinens a rögzítés dátuma és az elhalálozás kapcsolata')
+                  title = 'A kontinens a rögzítés dátuma és az elhalálozás kapcsolata')
 ```
 
 Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrést követően az adattáblában már jórészt csak ázsiai országok képviseltetik magukat. Más kontintensekről származó adatok esetében ez az oszlop nem került megfelelően dokumentálásra.
 
 ```{r}
-  dat %>% 
+dat %>% 
   group_by(continent, country) %>% 
   summarise(n = n()) %>% 
   ungroup() %>% 
@@ -148,7 +148,7 @@ Az ábrákból sajnos gyorsan kiderül, hogy a kimeneti adatra való rászűrés
   ) %>% 
   fmt_percent(
     columns = 'n/sum(n)',
-    ) %>% 
+  ) %>% 
   summary_rows(groups = T, columns = vars(n), fns = list(TOTAL = 'sum')) %>% 
   summary_rows(groups = T, columns = vars('n/sum(n)'), 
                fns = list(TOTAL = 'sum'), formatter = fmt_percent) %>%
@@ -196,17 +196,16 @@ rattle::fancyRpartPlot(rpart2, palettes = 'OrRd', # plot
                        sub = 'cp = .003', main = '2. döntési fa') 
 ```
 
-A döntési fa alapján még mindig az életkor a legfontosabb paraméter, ugyanakkor láthatjuk, hogy a földrajzi elhelyezkedés és
-a krónikus betegség is megjelenik, mint faktor.
+A döntési fa alapján még mindig az életkor a legfontosabb paraméter, ugyanakkor láthatjuk, hogy az indiai származás, a dátum és a krónikus betegség is megjelenik, mint meghatározó töréspont. A dátum esetében az értelmezés az alábbi: január 1-e veszi fel az egyes értéket és így az évek számát fejezi ki.
 
 
 ## Keresztvalidáció és véletlen erdő hiperparamétere
 
 ```{r}
 library(caret)
-keresztval <- trainControl(method="cv", number=10)
-ism_keresztval <- trainControl(method="repeatedcv", number=10, repeats=20)
-cp <- data.frame(cp=seq(from=0, by=0.004, to=0.1))
+keresztval <- trainControl(method = "cv", number = 10)
+ism_keresztval <- trainControl(method = "repeatedcv", number=10, repeats=20)
+cp <- data.frame(cp=seq(from=0, by=0.01, to=0.2))
 
 train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=keresztval)
 train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=ism_keresztval)

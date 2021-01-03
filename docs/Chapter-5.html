@@ -193,11 +193,11 @@ p {
 }
 </style>
 <p>A következőkben sztochasztikus idősorelemzési eljárással modellezzük a magyar COVID-19 megbetegedés számot. Az adatok az Our World in Data<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> weboldalról származnak, napi új regisztrálásokat és haláleseteket tartalmaznak.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter-5.html#cb88-1"></a>dat &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;COVID-19-geographic-disbtribution-worldwide.xlsx&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter-5.html#cb89-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-2"><a href="Chapter-5.html#cb89-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-3"><a href="Chapter-5.html#cb89-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-4"><a href="Chapter-5.html#cb89-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;A letöltött adattábla&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="Chapter-5.html#cb85-1"></a>dat &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;COVID-19-geographic-disbtribution-worldwide.xlsx&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="Chapter-5.html#cb86-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-2"><a href="Chapter-5.html#cb86-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-3"><a href="Chapter-5.html#cb86-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb86-4"><a href="Chapter-5.html#cb86-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;A letöltött adattábla&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -648,42 +648,42 @@ p {
   
   
 </table></div>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="Chapter-5.html#cb90-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb90-2"><a href="Chapter-5.html#cb90-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb90-3"><a href="Chapter-5.html#cb90-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb90-4"><a href="Chapter-5.html#cb90-4"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
-<span id="cb90-5"><a href="Chapter-5.html#cb90-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, cases)) <span class="op">+</span></span>
-<span id="cb90-6"><a href="Chapter-5.html#cb90-6"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Új megfertőzdések&#39;</span>, <span class="dt">title =</span> <span class="st">&quot;Megfertőződések számának alakulása Magyarországon&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="Chapter-5.html#cb87-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb87-2"><a href="Chapter-5.html#cb87-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb87-3"><a href="Chapter-5.html#cb87-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb87-4"><a href="Chapter-5.html#cb87-4"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
+<span id="cb87-5"><a href="Chapter-5.html#cb87-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, cases)) <span class="op">+</span></span>
+<span id="cb87-6"><a href="Chapter-5.html#cb87-6"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Új megfertőzdések&#39;</span>, <span class="dt">title =</span> <span class="st">&quot;Megfertőződések számának alakulása Magyarországon&quot;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <p>Érdemes strutúrális törésnek tekinteni 2020 szeptemberét, inntől jelentősen emelkednek az esetszámok. Mivel látszik, hogy nem stacioner a napi új esetek száma, így annak transzformációit is érdemes megvizsgálni (diff, log).</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter-5.html#cb91-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-2"><a href="Chapter-5.html#cb91-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-3"><a href="Chapter-5.html#cb91-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-4"><a href="Chapter-5.html#cb91-4"></a><span class="st">  </span><span class="kw">select</span>(dateRep, cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-5"><a href="Chapter-5.html#cb91-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb91-6"><a href="Chapter-5.html#cb91-6"></a>    <span class="dt">diff =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">diff</span>(cases)),</span>
-<span id="cb91-7"><a href="Chapter-5.html#cb91-7"></a>    <span class="dt">log =</span> <span class="kw">log</span>(cases)</span>
-<span id="cb91-8"><a href="Chapter-5.html#cb91-8"></a>  ) <span class="op">%T&gt;%</span></span>
-<span id="cb91-9"><a href="Chapter-5.html#cb91-9"></a><span class="st">  </span>{<span class="kw">print</span>(<span class="kw">apply</span>(<span class="kw">select</span>(., diff, log), <span class="dv">2</span>, <span class="cf">function</span>(x) </span>
-<span id="cb91-10"><a href="Chapter-5.html#cb91-10"></a>    forecast<span class="op">::</span><span class="kw">ndiffs</span>(<span class="kw">na.omit</span>(x)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span>
-<span id="cb91-11"><a href="Chapter-5.html#cb91-11"></a>      ))} <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-12"><a href="Chapter-5.html#cb91-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-13"><a href="Chapter-5.html#cb91-13"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-14"><a href="Chapter-5.html#cb91-14"></a><span class="st">  </span>ggplot <span class="op">+</span><span class="st"> </span></span>
-<span id="cb91-15"><a href="Chapter-5.html#cb91-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, value)) <span class="op">+</span></span>
-<span id="cb91-16"><a href="Chapter-5.html#cb91-16"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&#39;free_y&#39;</span>) <span class="op">+</span></span>
-<span id="cb91-17"><a href="Chapter-5.html#cb91-17"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;A magyar esetszámok idősorának transzformációi&#39;, x = NULL, y = NULL)</span></span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter-5.html#cb88-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-2"><a href="Chapter-5.html#cb88-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-3"><a href="Chapter-5.html#cb88-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-4"><a href="Chapter-5.html#cb88-4"></a><span class="st">  </span><span class="kw">select</span>(dateRep, cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-5"><a href="Chapter-5.html#cb88-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb88-6"><a href="Chapter-5.html#cb88-6"></a>    <span class="dt">diff =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">diff</span>(cases)),</span>
+<span id="cb88-7"><a href="Chapter-5.html#cb88-7"></a>    <span class="dt">log =</span> <span class="kw">log</span>(cases)</span>
+<span id="cb88-8"><a href="Chapter-5.html#cb88-8"></a>  ) <span class="op">%T&gt;%</span></span>
+<span id="cb88-9"><a href="Chapter-5.html#cb88-9"></a><span class="st">  </span>{<span class="kw">print</span>(<span class="kw">apply</span>(<span class="kw">select</span>(., diff, log), <span class="dv">2</span>, <span class="cf">function</span>(x) </span>
+<span id="cb88-10"><a href="Chapter-5.html#cb88-10"></a>    forecast<span class="op">::</span><span class="kw">ndiffs</span>(<span class="kw">na.omit</span>(x)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb88-11"><a href="Chapter-5.html#cb88-11"></a>      ))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-12"><a href="Chapter-5.html#cb88-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-13"><a href="Chapter-5.html#cb88-13"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb88-14"><a href="Chapter-5.html#cb88-14"></a><span class="st">  </span>ggplot <span class="op">+</span><span class="st"> </span></span>
+<span id="cb88-15"><a href="Chapter-5.html#cb88-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, value)) <span class="op">+</span></span>
+<span id="cb88-16"><a href="Chapter-5.html#cb88-16"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&#39;free_y&#39;</span>) <span class="op">+</span></span>
+<span id="cb88-17"><a href="Chapter-5.html#cb88-17"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;A magyar esetszámok idősorának transzformációi&#39;, x = NULL, y = NULL)</span></span></code></pre></div>
 <pre><code> diff   log 
  TRUE FALSE </code></pre>
 <p><img src="my-book_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <p>Mivel az esetszámok differenciázottja stacioner, így azon folytatjuk a Box-jenkins modellezést.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapter-5.html#cb93-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-2"><a href="Chapter-5.html#cb93-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-3"><a href="Chapter-5.html#cb93-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-4"><a href="Chapter-5.html#cb93-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-5"><a href="Chapter-5.html#cb93-5"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-6"><a href="Chapter-5.html#cb93-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-7"><a href="Chapter-5.html#cb93-7"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="Chapter-5.html#cb90-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-2"><a href="Chapter-5.html#cb90-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-3"><a href="Chapter-5.html#cb90-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-4"><a href="Chapter-5.html#cb90-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-5"><a href="Chapter-5.html#cb90-5"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-6"><a href="Chapter-5.html#cb90-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-7"><a href="Chapter-5.html#cb90-7"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -693,27 +693,27 @@ Q* = 17.63, df = 7, p-value = 0.01376
 
 Model df: 3.   Total lags used: 10</code></pre>
 <p>A Ljung-Box teszt alapján elutasítjuk a nullhipotézist, miszerint a maradéktag fehérzaj folyamat lenne. A maradéktagot ACF-jéből látjuk, hogy a 7. késleltetés az, amely statisztikailag szignifikáns és ez elméleti megfontolásból is megállja a helyét (Hétvégén kevesebbet mennek el az emberek teszetlni, mert inkább otthon maradnak megpróbálni kipihenni).</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="Chapter-5.html#cb95-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-2"><a href="Chapter-5.html#cb95-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-3"><a href="Chapter-5.html#cb95-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-4"><a href="Chapter-5.html#cb95-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-5"><a href="Chapter-5.html#cb95-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-6"><a href="Chapter-5.html#cb95-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">ggmonthplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Napi esetszám&#39;</span>,</span>
-<span id="cb95-7"><a href="Chapter-5.html#cb95-7"></a>                                 <span class="dt">title =</span> <span class="st">&#39;Esetszámok hét napjai szerint lebontva&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="Chapter-5.html#cb92-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-2"><a href="Chapter-5.html#cb92-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-3"><a href="Chapter-5.html#cb92-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-4"><a href="Chapter-5.html#cb92-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-5"><a href="Chapter-5.html#cb92-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-6"><a href="Chapter-5.html#cb92-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">ggmonthplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Napi esetszám&#39;</span>,</span>
+<span id="cb92-7"><a href="Chapter-5.html#cb92-7"></a>                                 <span class="dt">title =</span> <span class="st">&#39;Esetszámok hét napjai szerint lebontva&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="Chapter-5.html#cb96-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-2"><a href="Chapter-5.html#cb96-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-3"><a href="Chapter-5.html#cb96-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-4"><a href="Chapter-5.html#cb96-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day =</span> <span class="kw">weekdays</span>(dateRep)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-5"><a href="Chapter-5.html#cb96-5"></a><span class="st">  </span><span class="kw">lm</span>(<span class="dt">formula =</span> cases <span class="op">~</span><span class="st"> </span>day) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-6"><a href="Chapter-5.html#cb96-6"></a><span class="st">  </span>.<span class="op">$</span>resid <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-7"><a href="Chapter-5.html#cb96-7"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-8"><a href="Chapter-5.html#cb96-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span></span>
-<span id="cb96-9"><a href="Chapter-5.html#cb96-9"></a><span class="st">  </span>{mod &lt;&lt;-<span class="st"> </span>.}</span>
-<span id="cb96-10"><a href="Chapter-5.html#cb96-10"></a></span>
-<span id="cb96-11"><a href="Chapter-5.html#cb96-11"></a>broom<span class="op">::</span><span class="kw">tidy</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-12"><a href="Chapter-5.html#cb96-12"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb96-13"><a href="Chapter-5.html#cb96-13"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapter-5.html#cb93-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-2"><a href="Chapter-5.html#cb93-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-3"><a href="Chapter-5.html#cb93-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-4"><a href="Chapter-5.html#cb93-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day =</span> <span class="kw">weekdays</span>(dateRep)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-5"><a href="Chapter-5.html#cb93-5"></a><span class="st">  </span><span class="kw">lm</span>(<span class="dt">formula =</span> cases <span class="op">~</span><span class="st"> </span>day) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-6"><a href="Chapter-5.html#cb93-6"></a><span class="st">  </span>.<span class="op">$</span>resid <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-7"><a href="Chapter-5.html#cb93-7"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-8"><a href="Chapter-5.html#cb93-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span></span>
+<span id="cb93-9"><a href="Chapter-5.html#cb93-9"></a><span class="st">  </span>{mod &lt;&lt;-<span class="st"> </span>.}</span>
+<span id="cb93-10"><a href="Chapter-5.html#cb93-10"></a></span>
+<span id="cb93-11"><a href="Chapter-5.html#cb93-11"></a>broom<span class="op">::</span><span class="kw">tidy</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-12"><a href="Chapter-5.html#cb93-12"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-13"><a href="Chapter-5.html#cb93-13"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -1086,8 +1086,8 @@ Model df: 3.   Total lags used: 10</code></pre>
   
   
 </table></div>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="Chapter-5.html#cb97-1"></a>mod <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-2"><a href="Chapter-5.html#cb97-2"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="Chapter-5.html#cb94-1"></a>mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb94-2"><a href="Chapter-5.html#cb94-2"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -1098,14 +1098,14 @@ Q* = 11.929, df = 7, p-value = 0.1029
 Model df: 3.   Total lags used: 10</code></pre>
 <div id="sarima" class="section level2">
 <h2>SARIMA</h2>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="Chapter-5.html#cb99-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-2"><a href="Chapter-5.html#cb99-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-3"><a href="Chapter-5.html#cb99-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-4"><a href="Chapter-5.html#cb99-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-5"><a href="Chapter-5.html#cb99-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-6"><a href="Chapter-5.html#cb99-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%T&gt;%</span><span class="st"> </span></span>
-<span id="cb99-7"><a href="Chapter-5.html#cb99-7"></a><span class="st">  </span>{m.sarima &lt;&lt;-<span class="st"> </span>.} <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-8"><a href="Chapter-5.html#cb99-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="Chapter-5.html#cb96-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-2"><a href="Chapter-5.html#cb96-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-3"><a href="Chapter-5.html#cb96-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-4"><a href="Chapter-5.html#cb96-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-5"><a href="Chapter-5.html#cb96-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-6"><a href="Chapter-5.html#cb96-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%T&gt;%</span><span class="st"> </span></span>
+<span id="cb96-7"><a href="Chapter-5.html#cb96-7"></a><span class="st">  </span>{m.sarima &lt;&lt;-<span class="st"> </span>.} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-8"><a href="Chapter-5.html#cb96-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -1115,10 +1115,10 @@ Q* = 9.397, df = 10, p-value = 0.4949
 
 Model df: 4.   Total lags used: 14</code></pre>
 <p>Szezonális ARIMA modellt alkalmazva lényegesen nagyobb p-értéket kaptunk a modell hibatagjain elvégzett Ljung-box teszthet.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="Chapter-5.html#cb101-1"></a>m.sarima <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb101-2"><a href="Chapter-5.html#cb101-2"></a><span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb101-3"><a href="Chapter-5.html#cb101-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb101-4"><a href="Chapter-5.html#cb101-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Illesztett SARIMA modell paraméterei&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="Chapter-5.html#cb98-1"></a>m.sarima <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb98-2"><a href="Chapter-5.html#cb98-2"></a><span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb98-3"><a href="Chapter-5.html#cb98-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb98-4"><a href="Chapter-5.html#cb98-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Illesztett SARIMA modell paraméterei&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
@@ -1496,13 +1496,13 @@ Model df: 4.   Total lags used: 14</code></pre>
   
   
 </table></div>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="Chapter-5.html#cb102-1"></a>ggpubr<span class="op">::</span><span class="kw">ggarrange</span>(</span>
-<span id="cb102-2"><a href="Chapter-5.html#cb102-2"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb102-3"><a href="Chapter-5.html#cb102-3"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
-<span id="cb102-4"><a href="Chapter-5.html#cb102-4"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(m.sarima) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb102-5"><a href="Chapter-5.html#cb102-5"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
-<span id="cb102-6"><a href="Chapter-5.html#cb102-6"></a>  <span class="dt">nrow =</span> <span class="dv">2</span></span>
-<span id="cb102-7"><a href="Chapter-5.html#cb102-7"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="Chapter-5.html#cb99-1"></a>ggpubr<span class="op">::</span><span class="kw">ggarrange</span>(</span>
+<span id="cb99-2"><a href="Chapter-5.html#cb99-2"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-3"><a href="Chapter-5.html#cb99-3"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
+<span id="cb99-4"><a href="Chapter-5.html#cb99-4"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(m.sarima) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-5"><a href="Chapter-5.html#cb99-5"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
+<span id="cb99-6"><a href="Chapter-5.html#cb99-6"></a>  <span class="dt">nrow =</span> <span class="dv">2</span></span>
+<span id="cb99-7"><a href="Chapter-5.html#cb99-7"></a>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 
 </div>

@@ -1,8 +1,8 @@
 # Klaszterezés és főkomponens elemzés {#Chapter-6}
 
 Az országok klaszterezése és a trendek megállapítása fontos feladat, hiszen a vírus lefutása földrajzilag változó a különböző területeken.
-Ezen kívül az alábbi elemzés célja az is, hogy egy-egy országegy főre jutó GDP és az egészségügyi kiadások GDP arányos értékével próbálja 
-magyarázni a halálozási rátát. Ennek intuíciója, hogy a gazdagabb és egészségügyre többet költp országok jobban fel lehettek készülve egy
+Ezen kívül az alábbi elemzés célja az is, hogy egy-egy ország egy főre jutó GDP és az egészségügyi kiadások GDP arányos értékével próbálja 
+magyarázni a halálozási rátát. Ennek intuíciója, hogy a gazdagabb és egészségügyre többet költő országok jobban fel lehettek készülve egy
 esetleges járványra.
 
 ```{r, include =FALSE}
@@ -39,7 +39,7 @@ country_data_merge <- left_join(country_data_merge, population, by=c("countrycod
 
 country_data_merge[, c(2:8, 12:13)] <- country_data_merge[ , c(2:8,12:13)]/country_data_merge$Population*100000
 
-1
+
 #A 15 legnépesebb és leggazdagabb országot fogjuk plotolni, az átláhatóság kedvéért
 biggest_countries <- 
   unique(c(head(country_data_merge[order(-country_data_merge$Population),]$`Country/Region`,15),
