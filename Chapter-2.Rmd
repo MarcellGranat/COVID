@@ -180,37 +180,63 @@ dat %>%
 
 ## Modellbecslés
 
-```{r rpart1, fig.height=4}
-rpart1 <- rpart::rpart(dat, formula = died ~ ., cp = .01)
+```{r rpart2, fig.height=7}
+rpart2 <- rpart::rpart(dat, formula = as.factor(died) ~ ., cp = .003)
 
-rattle::fancyRpartPlot(rpart1, palettes = 'OrRd',
-                       sub = 'cp = .01', main = '1. döntési fa')
+rattle::fancyRpartPlot(rpart2, palettes = 'OrRd', # plot
+                       sub = 'cp = .003', main = '2. döntési fa') 
 ```
 
-A komplexitási paraméter .01-nek választva a döntési fánk egyetlen bontásból áll: **"Kisebb-e az életkor, mint 60?"**. Az eredmény validálható is azzal, ha megfigyeljük, hogy miként változik a mintában szereplő halálozási ráta életkoroknként.
+A döntési fa alapján még mindig az életkor a legfontosabb paraméter, ugyanakkor láthatjuk, hogy a földrajzi elhelyezkedés és
+a krónikus betegség is megjelenik, mint faktor.
+
+
+## Keresztvalidáció és véletlen erdő hiperparamétere
 
 ```{r}
-dat %>% 
-  group_by(age) %>% 
-  summarise(deathr = mean(died)) %>% 
-  ggplot(aes(age, deathr)) + 
-  geom_point(shape = 21, fill = 'coral', alpha = .7, color = 'black') +
-  geom_smooth() +
-  labs(title = 'Az életkor és a halálozási ráta között összefüggés', x = 'életkor', y = 'halálozási ráta')
+library(caret)
+keresztval <- trainControl(method="cv", number=10)
+ism_keresztval <- trainControl(method="repeatedcv", number=10, repeats=20)
+cp <- data.frame(cp=seq(from=0, by=0.004, to=0.1))
+
+train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=keresztval)
+train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=ism_keresztval)
+
+trained_hyperparam <- as.double(train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=ism_keresztval)$bestTune["cp"])
+
+train(as.factor(died)~., data=na.omit(dat), method="rpart", trControl=keresztval, tuneGrid=cp)
 ```
 
+A keresztvalidáció alapján a véletlen erdő hiperparaméterét kalibráljuk. Mind a sima, mind az ismétléses módszerrel nagyjából `r trained_hyperparam`
+a kalibrációs paraméter értéke.
 
-
-Mindazonáltal ismerve, hogy a megfigyelések `r scales::percent(1-mean(dat$died), accuracy = 1, decimal.mark = ',')`-a túlélte a vírust, így érdemes lehet kisebb komplexitási paramétert választani.
-
-
-```{r rpart2, fig.height=7}
-rpart2 <- rpart::rpart(dat, formula = died ~ ., cp = .003)
-  
-rattle::fancyRpartPlot(rpart2, palettes = 'OrRd', # plot
-                         sub = 'cp = .003', main = '2. döntési fa') 
+```{r}
+library(randomForest)
+erdo <- randomForest(as.factor(died)~., data=na.omit(dat), ntree=1000, cp = .0069)
+plot(erdo)
+varImpPlot(erdo)
 ```
 
+A modell hibája nagyjából 200 fa után stabilizálódik, így az 1000 ismétlést éreztük helyénvalónak.
+Ez alapján pedig a legfontosabb paraméter az év, azonban a korábbi döntési fán nem megtalálható
+dátum változó is fontos a kimenetel szempontjából.
 
 
+```{r, echo = FALSE}
 
+pred_tree <- predict(rpart2, na.omit(dat), type="class")
+pred_tree_table <- table(na.omit(dat)$died, pred_tree)
+
+pred_forest <- predict(erdo, na.omit(dat), type="class")
+pred_forest_table <- table(na.omit(dat)$died, pred_forest)
+
+confusionMatrix(pred_tree_table)$overall[c("Accuracy", "Kappa")]
+confusionMatrix(pred_forest_table)$overall[c("Accuracy", "Kappa")]
+
+confusionMatrix(pred_tree_table)$byClass[c("Sensitivity", "Specificity")]
+confusionMatrix(pred_forest_table)$byClass[c( "Sensitivity", "Specificity")]
+
+```
+
+A döntési fa és véletlen erdő összehasonlításakor mind a kappa, mind pedig a találati arány
+értékét összehasonlítva az erdő lenne a jobb modell.
