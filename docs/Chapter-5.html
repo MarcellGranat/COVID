@@ -193,16 +193,16 @@ p {
 }
 </style>
 <p>A következőkben sztochasztikus idősorelemzési eljárással modellezzük a magyar COVID-19 megbetegedés számot. Az adatok az Our World in Data<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> weboldalról származnak, napi új regisztrálásokat és haláleseteket tartalmaznak.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="Chapter-5.html#cb86-1"></a>dat &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;COVID-19-geographic-disbtribution-worldwide.xlsx&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="Chapter-5.html#cb87-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb87-2"><a href="Chapter-5.html#cb87-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb87-3"><a href="Chapter-5.html#cb87-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb87-4"><a href="Chapter-5.html#cb87-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;A letöltött adattábla&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter-5.html#cb88-1"></a>dat &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&#39;COVID-19-geographic-disbtribution-worldwide.xlsx&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter-5.html#cb89-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-2"><a href="Chapter-5.html#cb89-2"></a><span class="st">  </span>head <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-3"><a href="Chapter-5.html#cb89-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb89-4"><a href="Chapter-5.html#cb89-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;A letöltött adattábla&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#nrrlcvpuuh .gt_table {
+#rofxjfffhr .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -227,7 +227,7 @@ p {
   border-left-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_heading {
+#rofxjfffhr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -239,7 +239,7 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_title {
+#rofxjfffhr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -249,7 +249,7 @@ p {
   border-bottom-width: 0;
 }
 
-#nrrlcvpuuh .gt_subtitle {
+#rofxjfffhr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -259,13 +259,13 @@ p {
   border-top-width: 0;
 }
 
-#nrrlcvpuuh .gt_bottom_border {
+#rofxjfffhr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_col_headings {
+#rofxjfffhr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -280,7 +280,7 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_col_heading {
+#rofxjfffhr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -300,7 +300,7 @@ p {
   overflow-x: hidden;
 }
 
-#nrrlcvpuuh .gt_column_spanner_outer {
+#rofxjfffhr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -312,15 +312,15 @@ p {
   padding-right: 4px;
 }
 
-#nrrlcvpuuh .gt_column_spanner_outer:first-child {
+#rofxjfffhr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nrrlcvpuuh .gt_column_spanner_outer:last-child {
+#rofxjfffhr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nrrlcvpuuh .gt_column_spanner {
+#rofxjfffhr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -332,7 +332,7 @@ p {
   width: 100%;
 }
 
-#nrrlcvpuuh .gt_group_heading {
+#rofxjfffhr .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -354,7 +354,7 @@ p {
   vertical-align: middle;
 }
 
-#nrrlcvpuuh .gt_empty_group_heading {
+#rofxjfffhr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -369,15 +369,15 @@ p {
   vertical-align: middle;
 }
 
-#nrrlcvpuuh .gt_from_md > :first-child {
+#rofxjfffhr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nrrlcvpuuh .gt_from_md > :last-child {
+#rofxjfffhr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nrrlcvpuuh .gt_row {
+#rofxjfffhr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -396,7 +396,7 @@ p {
   overflow-x: hidden;
 }
 
-#nrrlcvpuuh .gt_stub {
+#rofxjfffhr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -408,7 +408,7 @@ p {
   padding-left: 12px;
 }
 
-#nrrlcvpuuh .gt_summary_row {
+#rofxjfffhr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -418,7 +418,7 @@ p {
   padding-right: 5px;
 }
 
-#nrrlcvpuuh .gt_first_summary_row {
+#rofxjfffhr .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -428,7 +428,7 @@ p {
   border-top-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_grand_summary_row {
+#rofxjfffhr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -438,7 +438,7 @@ p {
   padding-right: 5px;
 }
 
-#nrrlcvpuuh .gt_first_grand_summary_row {
+#rofxjfffhr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -448,11 +448,11 @@ p {
   border-top-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_striped {
+#rofxjfffhr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nrrlcvpuuh .gt_table_body {
+#rofxjfffhr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -461,7 +461,7 @@ p {
   border-bottom-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_footnotes {
+#rofxjfffhr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -475,13 +475,13 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_footnote {
+#rofxjfffhr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#nrrlcvpuuh .gt_sourcenotes {
+#rofxjfffhr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -495,46 +495,46 @@ p {
   border-right-color: #D3D3D3;
 }
 
-#nrrlcvpuuh .gt_sourcenote {
+#rofxjfffhr .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#nrrlcvpuuh .gt_left {
+#rofxjfffhr .gt_left {
   text-align: left;
 }
 
-#nrrlcvpuuh .gt_center {
+#rofxjfffhr .gt_center {
   text-align: center;
 }
 
-#nrrlcvpuuh .gt_right {
+#rofxjfffhr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nrrlcvpuuh .gt_font_normal {
+#rofxjfffhr .gt_font_normal {
   font-weight: normal;
 }
 
-#nrrlcvpuuh .gt_font_bold {
+#rofxjfffhr .gt_font_bold {
   font-weight: bold;
 }
 
-#nrrlcvpuuh .gt_font_italic {
+#rofxjfffhr .gt_font_italic {
   font-style: italic;
 }
 
-#nrrlcvpuuh .gt_super {
+#rofxjfffhr .gt_super {
   font-size: 65%;
 }
 
-#nrrlcvpuuh .gt_footnote_marks {
+#rofxjfffhr .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="nrrlcvpuuh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="rofxjfffhr" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="12" class="gt_heading gt_title gt_font_normal" style>A letöltött adattábla</th>
@@ -648,42 +648,42 @@ p {
   
   
 </table></div>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter-5.html#cb88-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb88-2"><a href="Chapter-5.html#cb88-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb88-3"><a href="Chapter-5.html#cb88-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb88-4"><a href="Chapter-5.html#cb88-4"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
-<span id="cb88-5"><a href="Chapter-5.html#cb88-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, cases)) <span class="op">+</span></span>
-<span id="cb88-6"><a href="Chapter-5.html#cb88-6"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Új megfertőzdések&#39;</span>, <span class="dt">title =</span> <span class="st">&quot;Megfertőződések számának alakulása Magyarországon&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="Chapter-5.html#cb90-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-2"><a href="Chapter-5.html#cb90-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-3"><a href="Chapter-5.html#cb90-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb90-4"><a href="Chapter-5.html#cb90-4"></a><span class="st">  </span>ggplot <span class="op">+</span></span>
+<span id="cb90-5"><a href="Chapter-5.html#cb90-5"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, cases)) <span class="op">+</span></span>
+<span id="cb90-6"><a href="Chapter-5.html#cb90-6"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Új megfertőzdések&#39;</span>, <span class="dt">title =</span> <span class="st">&quot;Megfertőződések számának alakulása Magyarországon&quot;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <p>Érdemes strutúrális törésnek tekinteni 2020 szeptemberét, inntől jelentősen emelkednek az esetszámok. Mivel látszik, hogy nem stacioner a napi új esetek száma, így annak transzformációit is érdemes megvizsgálni (diff, log).</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter-5.html#cb89-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-2"><a href="Chapter-5.html#cb89-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-3"><a href="Chapter-5.html#cb89-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-4"><a href="Chapter-5.html#cb89-4"></a><span class="st">  </span><span class="kw">select</span>(dateRep, cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-5"><a href="Chapter-5.html#cb89-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb89-6"><a href="Chapter-5.html#cb89-6"></a>    <span class="dt">diff =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">diff</span>(cases)),</span>
-<span id="cb89-7"><a href="Chapter-5.html#cb89-7"></a>    <span class="dt">log =</span> <span class="kw">log</span>(cases)</span>
-<span id="cb89-8"><a href="Chapter-5.html#cb89-8"></a>  ) <span class="op">%T&gt;%</span></span>
-<span id="cb89-9"><a href="Chapter-5.html#cb89-9"></a><span class="st">  </span>{<span class="kw">print</span>(<span class="kw">apply</span>(<span class="kw">select</span>(., diff, log), <span class="dv">2</span>, <span class="cf">function</span>(x) </span>
-<span id="cb89-10"><a href="Chapter-5.html#cb89-10"></a>    forecast<span class="op">::</span><span class="kw">ndiffs</span>(<span class="kw">na.omit</span>(x)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span>
-<span id="cb89-11"><a href="Chapter-5.html#cb89-11"></a>      ))} <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-12"><a href="Chapter-5.html#cb89-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-13"><a href="Chapter-5.html#cb89-13"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb89-14"><a href="Chapter-5.html#cb89-14"></a><span class="st">  </span>ggplot <span class="op">+</span><span class="st"> </span></span>
-<span id="cb89-15"><a href="Chapter-5.html#cb89-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, value)) <span class="op">+</span></span>
-<span id="cb89-16"><a href="Chapter-5.html#cb89-16"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&#39;free_y&#39;</span>) <span class="op">+</span></span>
-<span id="cb89-17"><a href="Chapter-5.html#cb89-17"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;A magyar esetszámok idősorának transzformációi&#39;, x = NULL, y = NULL)</span></span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter-5.html#cb91-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-2"><a href="Chapter-5.html#cb91-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-3"><a href="Chapter-5.html#cb91-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-4"><a href="Chapter-5.html#cb91-4"></a><span class="st">  </span><span class="kw">select</span>(dateRep, cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-5"><a href="Chapter-5.html#cb91-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb91-6"><a href="Chapter-5.html#cb91-6"></a>    <span class="dt">diff =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw">diff</span>(cases)),</span>
+<span id="cb91-7"><a href="Chapter-5.html#cb91-7"></a>    <span class="dt">log =</span> <span class="kw">log</span>(cases)</span>
+<span id="cb91-8"><a href="Chapter-5.html#cb91-8"></a>  ) <span class="op">%T&gt;%</span></span>
+<span id="cb91-9"><a href="Chapter-5.html#cb91-9"></a><span class="st">  </span>{<span class="kw">print</span>(<span class="kw">apply</span>(<span class="kw">select</span>(., diff, log), <span class="dv">2</span>, <span class="cf">function</span>(x) </span>
+<span id="cb91-10"><a href="Chapter-5.html#cb91-10"></a>    forecast<span class="op">::</span><span class="kw">ndiffs</span>(<span class="kw">na.omit</span>(x)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb91-11"><a href="Chapter-5.html#cb91-11"></a>      ))} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-12"><a href="Chapter-5.html#cb91-12"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-13"><a href="Chapter-5.html#cb91-13"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb91-14"><a href="Chapter-5.html#cb91-14"></a><span class="st">  </span>ggplot <span class="op">+</span><span class="st"> </span></span>
+<span id="cb91-15"><a href="Chapter-5.html#cb91-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(dateRep, value)) <span class="op">+</span></span>
+<span id="cb91-16"><a href="Chapter-5.html#cb91-16"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>name, <span class="dt">ncol =</span> <span class="dv">1</span>, <span class="dt">scales =</span> <span class="st">&#39;free_y&#39;</span>) <span class="op">+</span></span>
+<span id="cb91-17"><a href="Chapter-5.html#cb91-17"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;A magyar esetszámok idősorának transzformációi&#39;, x = NULL, y = NULL)</span></span></code></pre></div>
 <pre><code> diff   log 
  TRUE FALSE </code></pre>
 <p><img src="my-book_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <p>Mivel az esetszámok differenciázottja stacioner, így azon folytatjuk a Box-jenkins modellezést.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter-5.html#cb91-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-2"><a href="Chapter-5.html#cb91-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-3"><a href="Chapter-5.html#cb91-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-4"><a href="Chapter-5.html#cb91-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-5"><a href="Chapter-5.html#cb91-5"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-6"><a href="Chapter-5.html#cb91-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb91-7"><a href="Chapter-5.html#cb91-7"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapter-5.html#cb93-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-2"><a href="Chapter-5.html#cb93-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-3"><a href="Chapter-5.html#cb93-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-4"><a href="Chapter-5.html#cb93-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-5"><a href="Chapter-5.html#cb93-5"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-6"><a href="Chapter-5.html#cb93-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb93-7"><a href="Chapter-5.html#cb93-7"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -693,32 +693,32 @@ Q* = 17.63, df = 7, p-value = 0.01376
 
 Model df: 3.   Total lags used: 10</code></pre>
 <p>A Ljung-Box teszt alapján elutasítjuk a nullhipotézist, miszerint a maradéktag fehérzaj folyamat lenne. A maradéktagot ACF-jéből látjuk, hogy a 7. késleltetés az, amely statisztikailag szignifikáns és ez elméleti megfontolásból is megállja a helyét (Hétvégén kevesebbet mennek el az emberek teszetlni, mert inkább otthon maradnak megpróbálni kipihenni).</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="Chapter-5.html#cb93-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-2"><a href="Chapter-5.html#cb93-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-3"><a href="Chapter-5.html#cb93-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-4"><a href="Chapter-5.html#cb93-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-5"><a href="Chapter-5.html#cb93-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb93-6"><a href="Chapter-5.html#cb93-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">ggmonthplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Napi esetszám&#39;</span>,</span>
-<span id="cb93-7"><a href="Chapter-5.html#cb93-7"></a>                                 <span class="dt">title =</span> <span class="st">&#39;Esetszámok hét napjai szerint lebontva&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="Chapter-5.html#cb95-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-2"><a href="Chapter-5.html#cb95-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-3"><a href="Chapter-5.html#cb95-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-4"><a href="Chapter-5.html#cb95-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-5"><a href="Chapter-5.html#cb95-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb95-6"><a href="Chapter-5.html#cb95-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">ggmonthplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&#39;Napi esetszám&#39;</span>,</span>
+<span id="cb95-7"><a href="Chapter-5.html#cb95-7"></a>                                 <span class="dt">title =</span> <span class="st">&#39;Esetszámok hét napjai szerint lebontva&#39;</span>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="Chapter-5.html#cb94-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-2"><a href="Chapter-5.html#cb94-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-3"><a href="Chapter-5.html#cb94-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-4"><a href="Chapter-5.html#cb94-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day =</span> <span class="kw">weekdays</span>(dateRep)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-5"><a href="Chapter-5.html#cb94-5"></a><span class="st">  </span><span class="kw">lm</span>(<span class="dt">formula =</span> cases <span class="op">~</span><span class="st"> </span>day) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-6"><a href="Chapter-5.html#cb94-6"></a><span class="st">  </span>.<span class="op">$</span>resid <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-7"><a href="Chapter-5.html#cb94-7"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-8"><a href="Chapter-5.html#cb94-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-9"><a href="Chapter-5.html#cb94-9"></a><span class="st">  </span>{mod &lt;&lt;-<span class="st"> </span>.}</span>
-<span id="cb94-10"><a href="Chapter-5.html#cb94-10"></a></span>
-<span id="cb94-11"><a href="Chapter-5.html#cb94-11"></a>broom<span class="op">::</span><span class="kw">tidy</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-12"><a href="Chapter-5.html#cb94-12"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb94-13"><a href="Chapter-5.html#cb94-13"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="Chapter-5.html#cb96-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-2"><a href="Chapter-5.html#cb96-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-3"><a href="Chapter-5.html#cb96-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-4"><a href="Chapter-5.html#cb96-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day =</span> <span class="kw">weekdays</span>(dateRep)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-5"><a href="Chapter-5.html#cb96-5"></a><span class="st">  </span><span class="kw">lm</span>(<span class="dt">formula =</span> cases <span class="op">~</span><span class="st"> </span>day) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-6"><a href="Chapter-5.html#cb96-6"></a><span class="st">  </span>.<span class="op">$</span>resid <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-7"><a href="Chapter-5.html#cb96-7"></a><span class="st">  </span>ts <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-8"><a href="Chapter-5.html#cb96-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span></span>
+<span id="cb96-9"><a href="Chapter-5.html#cb96-9"></a><span class="st">  </span>{mod &lt;&lt;-<span class="st"> </span>.}</span>
+<span id="cb96-10"><a href="Chapter-5.html#cb96-10"></a></span>
+<span id="cb96-11"><a href="Chapter-5.html#cb96-11"></a>broom<span class="op">::</span><span class="kw">tidy</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-12"><a href="Chapter-5.html#cb96-12"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb96-13"><a href="Chapter-5.html#cb96-13"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="st">&#39;Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vajgyysstc .gt_table {
+#fbtbtlmlbm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -743,7 +743,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_heading {
+#fbtbtlmlbm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -755,7 +755,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_title {
+#fbtbtlmlbm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -765,7 +765,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-bottom-width: 0;
 }
 
-#vajgyysstc .gt_subtitle {
+#fbtbtlmlbm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -775,13 +775,13 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-top-width: 0;
 }
 
-#vajgyysstc .gt_bottom_border {
+#fbtbtlmlbm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_col_headings {
+#fbtbtlmlbm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -796,7 +796,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_col_heading {
+#fbtbtlmlbm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -816,7 +816,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   overflow-x: hidden;
 }
 
-#vajgyysstc .gt_column_spanner_outer {
+#fbtbtlmlbm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -828,15 +828,15 @@ Model df: 3.   Total lags used: 10</code></pre>
   padding-right: 4px;
 }
 
-#vajgyysstc .gt_column_spanner_outer:first-child {
+#fbtbtlmlbm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vajgyysstc .gt_column_spanner_outer:last-child {
+#fbtbtlmlbm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vajgyysstc .gt_column_spanner {
+#fbtbtlmlbm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -848,7 +848,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   width: 100%;
 }
 
-#vajgyysstc .gt_group_heading {
+#fbtbtlmlbm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -870,7 +870,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   vertical-align: middle;
 }
 
-#vajgyysstc .gt_empty_group_heading {
+#fbtbtlmlbm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -885,15 +885,15 @@ Model df: 3.   Total lags used: 10</code></pre>
   vertical-align: middle;
 }
 
-#vajgyysstc .gt_from_md > :first-child {
+#fbtbtlmlbm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vajgyysstc .gt_from_md > :last-child {
+#fbtbtlmlbm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vajgyysstc .gt_row {
+#fbtbtlmlbm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -912,7 +912,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   overflow-x: hidden;
 }
 
-#vajgyysstc .gt_stub {
+#fbtbtlmlbm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -924,7 +924,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   padding-left: 12px;
 }
 
-#vajgyysstc .gt_summary_row {
+#fbtbtlmlbm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -934,7 +934,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   padding-right: 5px;
 }
 
-#vajgyysstc .gt_first_summary_row {
+#fbtbtlmlbm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -944,7 +944,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_grand_summary_row {
+#fbtbtlmlbm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -954,7 +954,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   padding-right: 5px;
 }
 
-#vajgyysstc .gt_first_grand_summary_row {
+#fbtbtlmlbm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -964,11 +964,11 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_striped {
+#fbtbtlmlbm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vajgyysstc .gt_table_body {
+#fbtbtlmlbm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -977,7 +977,7 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_footnotes {
+#fbtbtlmlbm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -991,13 +991,13 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_footnote {
+#fbtbtlmlbm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#vajgyysstc .gt_sourcenotes {
+#fbtbtlmlbm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1011,46 +1011,46 @@ Model df: 3.   Total lags used: 10</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#vajgyysstc .gt_sourcenote {
+#fbtbtlmlbm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#vajgyysstc .gt_left {
+#fbtbtlmlbm .gt_left {
   text-align: left;
 }
 
-#vajgyysstc .gt_center {
+#fbtbtlmlbm .gt_center {
   text-align: center;
 }
 
-#vajgyysstc .gt_right {
+#fbtbtlmlbm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vajgyysstc .gt_font_normal {
+#fbtbtlmlbm .gt_font_normal {
   font-weight: normal;
 }
 
-#vajgyysstc .gt_font_bold {
+#fbtbtlmlbm .gt_font_bold {
   font-weight: bold;
 }
 
-#vajgyysstc .gt_font_italic {
+#fbtbtlmlbm .gt_font_italic {
   font-style: italic;
 }
 
-#vajgyysstc .gt_super {
+#fbtbtlmlbm .gt_super {
   font-size: 65%;
 }
 
-#vajgyysstc .gt_footnote_marks {
+#fbtbtlmlbm .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="vajgyysstc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="fbtbtlmlbm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Heti szezonalitással szűrt ARIMA(0,1,2) modell paraméterei</th>
@@ -1086,8 +1086,8 @@ Model df: 3.   Total lags used: 10</code></pre>
   
   
 </table></div>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="Chapter-5.html#cb95-1"></a>mod <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb95-2"><a href="Chapter-5.html#cb95-2"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="Chapter-5.html#cb97-1"></a>mod <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb97-2"><a href="Chapter-5.html#cb97-2"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -1098,14 +1098,14 @@ Q* = 11.929, df = 7, p-value = 0.1029
 Model df: 3.   Total lags used: 10</code></pre>
 <div id="sarima" class="section level2">
 <h2>SARIMA</h2>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="Chapter-5.html#cb97-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-2"><a href="Chapter-5.html#cb97-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-3"><a href="Chapter-5.html#cb97-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-4"><a href="Chapter-5.html#cb97-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-5"><a href="Chapter-5.html#cb97-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-6"><a href="Chapter-5.html#cb97-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%T&gt;%</span><span class="st"> </span></span>
-<span id="cb97-7"><a href="Chapter-5.html#cb97-7"></a><span class="st">  </span>{m.sarima &lt;&lt;-<span class="st"> </span>.} <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb97-8"><a href="Chapter-5.html#cb97-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="Chapter-5.html#cb99-1"></a>dat <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-2"><a href="Chapter-5.html#cb99-2"></a><span class="st">  </span><span class="kw">filter</span>(countryterritoryCode <span class="op">==</span><span class="st"> &#39;HUN&#39;</span>, dateRep <span class="op">&gt;=</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw">ymd</span>(<span class="st">&#39;2020-09-01&#39;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-3"><a href="Chapter-5.html#cb99-3"></a><span class="st">  </span><span class="kw">arrange</span>(dateRep) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-4"><a href="Chapter-5.html#cb99-4"></a><span class="st">  </span><span class="kw">pull</span>(cases) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-5"><a href="Chapter-5.html#cb99-5"></a><span class="st">  </span><span class="kw">ts</span>(<span class="dt">frequency =</span> <span class="dv">7</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-6"><a href="Chapter-5.html#cb99-6"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">auto.arima</span>() <span class="op">%T&gt;%</span><span class="st"> </span></span>
+<span id="cb99-7"><a href="Chapter-5.html#cb99-7"></a><span class="st">  </span>{m.sarima &lt;&lt;-<span class="st"> </span>.} <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb99-8"><a href="Chapter-5.html#cb99-8"></a><span class="st">  </span>forecast<span class="op">::</span><span class="kw">checkresiduals</span>()</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <pre><code>
     Ljung-Box test
@@ -1115,15 +1115,15 @@ Q* = 9.397, df = 10, p-value = 0.4949
 
 Model df: 4.   Total lags used: 14</code></pre>
 <p>Szezonális ARIMA modellt alkalmazva lényegesen nagyobb p-értéket kaptunk a modell hibatagjain elvégzett Ljung-box teszthet.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="Chapter-5.html#cb99-1"></a>m.sarima <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-2"><a href="Chapter-5.html#cb99-2"></a><span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-3"><a href="Chapter-5.html#cb99-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb99-4"><a href="Chapter-5.html#cb99-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Illesztett SARIMA modell paraméterei&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="Chapter-5.html#cb101-1"></a>m.sarima <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb101-2"><a href="Chapter-5.html#cb101-2"></a><span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb101-3"><a href="Chapter-5.html#cb101-3"></a><span class="st">  </span>gt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb101-4"><a href="Chapter-5.html#cb101-4"></a><span class="st">  </span><span class="kw">tab_header</span>(<span class="dt">title =</span> <span class="st">&#39;Illesztett SARIMA modell paraméterei&#39;</span>)</span></code></pre></div>
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ygzujoeyft .gt_table {
+#jfqvviveyl .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1148,7 +1148,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_heading {
+#jfqvviveyl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1160,7 +1160,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_title {
+#jfqvviveyl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1170,7 +1170,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-bottom-width: 0;
 }
 
-#ygzujoeyft .gt_subtitle {
+#jfqvviveyl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1180,13 +1180,13 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-top-width: 0;
 }
 
-#ygzujoeyft .gt_bottom_border {
+#jfqvviveyl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_col_headings {
+#jfqvviveyl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1201,7 +1201,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_col_heading {
+#jfqvviveyl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1221,7 +1221,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   overflow-x: hidden;
 }
 
-#ygzujoeyft .gt_column_spanner_outer {
+#jfqvviveyl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1233,15 +1233,15 @@ Model df: 4.   Total lags used: 14</code></pre>
   padding-right: 4px;
 }
 
-#ygzujoeyft .gt_column_spanner_outer:first-child {
+#jfqvviveyl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ygzujoeyft .gt_column_spanner_outer:last-child {
+#jfqvviveyl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ygzujoeyft .gt_column_spanner {
+#jfqvviveyl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1253,7 +1253,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   width: 100%;
 }
 
-#ygzujoeyft .gt_group_heading {
+#jfqvviveyl .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1275,7 +1275,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   vertical-align: middle;
 }
 
-#ygzujoeyft .gt_empty_group_heading {
+#jfqvviveyl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1290,15 +1290,15 @@ Model df: 4.   Total lags used: 14</code></pre>
   vertical-align: middle;
 }
 
-#ygzujoeyft .gt_from_md > :first-child {
+#jfqvviveyl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ygzujoeyft .gt_from_md > :last-child {
+#jfqvviveyl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ygzujoeyft .gt_row {
+#jfqvviveyl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1317,7 +1317,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   overflow-x: hidden;
 }
 
-#ygzujoeyft .gt_stub {
+#jfqvviveyl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1329,7 +1329,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   padding-left: 12px;
 }
 
-#ygzujoeyft .gt_summary_row {
+#jfqvviveyl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1339,7 +1339,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   padding-right: 5px;
 }
 
-#ygzujoeyft .gt_first_summary_row {
+#jfqvviveyl .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1349,7 +1349,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_grand_summary_row {
+#jfqvviveyl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1359,7 +1359,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   padding-right: 5px;
 }
 
-#ygzujoeyft .gt_first_grand_summary_row {
+#jfqvviveyl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1369,11 +1369,11 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_striped {
+#jfqvviveyl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ygzujoeyft .gt_table_body {
+#jfqvviveyl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1382,7 +1382,7 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_footnotes {
+#jfqvviveyl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1396,13 +1396,13 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_footnote {
+#jfqvviveyl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ygzujoeyft .gt_sourcenotes {
+#jfqvviveyl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1416,46 +1416,46 @@ Model df: 4.   Total lags used: 14</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#ygzujoeyft .gt_sourcenote {
+#jfqvviveyl .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ygzujoeyft .gt_left {
+#jfqvviveyl .gt_left {
   text-align: left;
 }
 
-#ygzujoeyft .gt_center {
+#jfqvviveyl .gt_center {
   text-align: center;
 }
 
-#ygzujoeyft .gt_right {
+#jfqvviveyl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ygzujoeyft .gt_font_normal {
+#jfqvviveyl .gt_font_normal {
   font-weight: normal;
 }
 
-#ygzujoeyft .gt_font_bold {
+#jfqvviveyl .gt_font_bold {
   font-weight: bold;
 }
 
-#ygzujoeyft .gt_font_italic {
+#jfqvviveyl .gt_font_italic {
   font-style: italic;
 }
 
-#ygzujoeyft .gt_super {
+#jfqvviveyl .gt_super {
   font-size: 65%;
 }
 
-#ygzujoeyft .gt_footnote_marks {
+#jfqvviveyl .gt_footnote_marks {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="ygzujoeyft" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+<div id="jfqvviveyl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
   <thead class="gt_header">
     <tr>
       <th colspan="3" class="gt_heading gt_title gt_font_normal" style>Illesztett SARIMA modell paraméterei</th>
@@ -1496,13 +1496,13 @@ Model df: 4.   Total lags used: 14</code></pre>
   
   
 </table></div>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="Chapter-5.html#cb100-1"></a>ggpubr<span class="op">::</span><span class="kw">ggarrange</span>(</span>
-<span id="cb100-2"><a href="Chapter-5.html#cb100-2"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb100-3"><a href="Chapter-5.html#cb100-3"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
-<span id="cb100-4"><a href="Chapter-5.html#cb100-4"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(m.sarima) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb100-5"><a href="Chapter-5.html#cb100-5"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
-<span id="cb100-6"><a href="Chapter-5.html#cb100-6"></a>  <span class="dt">nrow =</span> <span class="dv">2</span></span>
-<span id="cb100-7"><a href="Chapter-5.html#cb100-7"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="Chapter-5.html#cb102-1"></a>ggpubr<span class="op">::</span><span class="kw">ggarrange</span>(</span>
+<span id="cb102-2"><a href="Chapter-5.html#cb102-2"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(mod) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb102-3"><a href="Chapter-5.html#cb102-3"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
+<span id="cb102-4"><a href="Chapter-5.html#cb102-4"></a>  forecast<span class="op">::</span><span class="kw">forecast</span>(m.sarima) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb102-5"><a href="Chapter-5.html#cb102-5"></a><span class="st">    </span>forecast<span class="op">::</span><span class="kw">autoplot</span>(<span class="dt">showgap =</span> F),</span>
+<span id="cb102-6"><a href="Chapter-5.html#cb102-6"></a>  <span class="dt">nrow =</span> <span class="dv">2</span></span>
+<span id="cb102-7"><a href="Chapter-5.html#cb102-7"></a>)</span></code></pre></div>
 <p><img src="my-book_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 
 </div>

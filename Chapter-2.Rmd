@@ -182,6 +182,13 @@ dat %>%
 
 ## Modellbecslés
 
+```{r rpart1, fig.height=7}
+rpart1 <- rpart::rpart(dat, formula = as.factor(died) ~ ., cp = .01) 
+
+rattle::fancyRpartPlot(rpart1, palettes = 'OrRd', 
+                       sub = 'cp = .01', main = '1. döntési fa') 
+```
+
 ```{r rpart2, fig.height=7}
 rpart2 <- rpart::rpart(dat, formula = as.factor(died) ~ ., cp = .003)
 
@@ -217,10 +224,7 @@ library(randomForest)
 ```
 
 ```{r}
-erdo <- dat %>% 
-  mutate_if(is.character, as.factor) %>% 
-  na.omit() %>% 
-  randomForest(formula = died ~ ., ntree=1000, cp = .0069)
+erdo <- randomForest(factor(died) ~ ., data = dat, ntree=500, cp = .069)
 ```
 
 
@@ -229,22 +233,28 @@ plot(erdo)
 varImpPlot(erdo)
 ```
 
-A modell hibája nagyjából 200 fa után stabilizálódik, így az 1000 ismétlést éreztük helyénvalónak.
+A modell hibája nagyjából 100 fa után stabilizálódik, így az 500 ismétlést éreztük helyénvalónak.
 Ez alapján pedig a legfontosabb paraméter az év, azonban a korábbi döntési fán nem megtalálható
 dátum változó is fontos a kimenetel szempontjából.
 
 
 ```{r}
-pred_tree <- predict(rpart2, na.omit(dat), type="class")
+pred_tree <- predict(rpart1, na.omit(dat), type="class")
 pred_tree_table <- table(na.omit(dat)$died, pred_tree)
 
+pred_tree_table
+
 pred_forest <- predict(erdo, na.omit(dat), type="class")
+
 pred_forest_table <- table(na.omit(dat)$died, pred_forest)
+
+pred_forest_table
 
 confusionMatrix(pred_tree_table)$overall[c("Accuracy", "Kappa")]
 confusionMatrix(pred_forest_table)$overall[c("Accuracy", "Kappa")]
 
 confusionMatrix(pred_tree_table)$byClass[c("Sensitivity", "Specificity")]
+
 confusionMatrix(pred_forest_table)$byClass[c( "Sensitivity", "Specificity")]
 
 ```

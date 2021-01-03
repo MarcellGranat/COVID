@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = T, comment = "", warning = F, message = F, cache = 
 library(tidyverse)
 library(gt)
 library(ggwordcloud)
+options(scipen = 999)
 
 theme_set(theme_grey() + 
             theme(legend.position = "bottom", 

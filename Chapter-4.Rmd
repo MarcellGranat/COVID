@@ -42,9 +42,9 @@ havonta és az egy év során leggyakoribb szavakat kerestük meg, sentiment ana
 pedig az AFINN szótár érzelmi skálája segítségével elemeztük a napi hírek korpuszait.
 
 
-```{r get_headlines, warning=FALSE}
+```{r get_headlines, eval=T, include=FALSE, echo = T}
 
-nr_of_pages=528
+nr_of_pages=534
 
 #528 lapig lehetett visszamenni a keresésben
 for (i in 1:nr_of_pages) {

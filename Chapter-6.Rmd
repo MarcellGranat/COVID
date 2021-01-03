@@ -39,7 +39,7 @@ country_data_merge <- left_join(country_data_merge, population, by=c("countrycod
 
 country_data_merge[, c(2:8, 12:13)] <- country_data_merge[ , c(2:8,12:13)]/country_data_merge$Population*100000
 
-
+1
 #A 15 legnépesebb és leggazdagabb országot fogjuk plotolni, az átláhatóság kedvéért
 biggest_countries <- 
   unique(c(head(country_data_merge[order(-country_data_merge$Population),]$`Country/Region`,15),
@@ -55,7 +55,14 @@ country_data_merge[,c("countrycode","WHO Region", "Country/Region")] <- NULL
 country_data_merge$`Deaths / 100 Recovered` <- replace(country_data_merge$`Deaths / 100 Recovered`, is.infinite(country_data_merge$`Deaths / 100 Recovered`),NA)
 rownames(country_data_merge) <- country_data$`Country/Region`
 
-datatable(country_data_merge %>% mutate_if(is.numeric, ~round(., 1)), rownames=TRUE, filter = "none", options = list(pageLength=15, scrollX='400px', scrollY='400px', dom='ltp'), fillContainer = TRUE) %>% formatStyle(names(head(country_data_merge, 15)), font="bold", fontSize = '9.5pt')
+datatable(country_data_merge %>%
+            rownames_to_column('country') %>%
+            mutate_if(is.numeric, ~round(., 1)) %>%
+            column_to_rownames('country'), rownames=TRUE,
+          filter = "none", options = list(pageLength=15, scrollX='400px',
+                                          scrollY='400px', dom='ltp'), 
+          fillContainer = TRUE) %>% formatStyle(names(head(country_data_merge, 15)),
+                                                font="bold", fontSize = '9.5pt')
 ```
 
 Ezeket az adatokat a főkomponens elemzéshez és a klaszterezéshez le kell normáljuk.
@@ -75,7 +82,7 @@ hier <- hclust(dist(country_data_filter), method="ward.D")
 plot(hier)
 
 library(factoextra)
-fviz_dend(hier, k=4, repel=TRUE, select.ind = list(name=biggest_countries), type="rectangle")
+fviz_dend(hier, k=4, repel=TRUE, select.ind = list(name=biggest_countries), type="rectangle") # TODO ggflip?
 ```
 
 
@@ -97,7 +104,11 @@ set.seed(42)
 country_data_filter_na <- na.omit(country_data_filter)
 
 fviz_nbclust(country_data_filter_na[,c("Deaths / 100 Cases", "HealthExpperGDP", "GDPperCapita")], FUNcluster=kmeans, method="gap_stat")
+```
 
+
+```{r}
+set.seed(42)
 kkozep <- kmeans(country_data_filter_na[,c("Deaths / 100 Cases", "HealthExpperGDP", "GDPperCapita")], centers=3, nstart=100, iter.max=100)
 kkozep$centers
 
@@ -108,9 +119,7 @@ levels(country_data_filter_na$klaszter) <- c( "Gazdag ország, magas halálozás
 ## Főkomponens elemzés
 
 
-Ez következhet az adatok minőségéből, valamint abból, hogy ezekbe az országokba korábban ért el a vírus a globalizáció miatt,
-így az első hullám alatti halálesetekben még nem volt annyira felkészülve az egészségügy.
-(Az előzetes magas arányú költekezés ellenére.)
+Ez következhet az adatok minőségéből, valamint abból, hogy ezekbe az országokba korábban ért el a vírus a globalizáció miatt, így az első hullám alatti halálesetekben még nem volt annyira felkészülve az egészségügy. (Az előzetes magas arányú költekezés ellenére.)
 
 ```{r}
 fokomp <- princomp(country_data_filter_na[ , 1:15])
