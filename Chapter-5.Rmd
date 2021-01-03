@@ -59,8 +59,7 @@ dat %>%
   arrange(dateRep) %>% 
   pull(cases) %>% 
   ts %>% 
-  forecast::auto.arima() %T>%
-  {tab_header(gt(broom::tidy(.)), 'ARIMA(0,1,2) modell')} %>% 
+  forecast::auto.arima() %>% 
   forecast::checkresiduals()
 ```
 

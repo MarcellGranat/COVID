@@ -168,6 +168,8 @@ dat %>%
     india = country == 'India'
   ) %>% 
   select(-country, -continent, -latitude, -longitude) %>% 
+  mutate_if(is.character, as.factor) %>% 
+  na.omit %>% 
   {dat <<- .}
 ```
 
@@ -212,7 +214,17 @@ a kalibrációs paraméter értéke.
 
 ```{r}
 library(randomForest)
-erdo <- randomForest(as.factor(died)~., data=na.omit(dat), ntree=1000, cp = .0069)
+```
+
+```{r}
+erdo <- dat %>% 
+  mutate_if(is.character, as.factor) %>% 
+  na.omit() %>% 
+  randomForest(formula = died ~ ., ntree=1000, cp = .0069)
+```
+
+
+```{r}
 plot(erdo)
 varImpPlot(erdo)
 ```
@@ -222,8 +234,7 @@ Ez alapján pedig a legfontosabb paraméter az év, azonban a korábbi döntési
 dátum változó is fontos a kimenetel szempontjából.
 
 
-```{r, echo = FALSE}
-
+```{r}
 pred_tree <- predict(rpart2, na.omit(dat), type="class")
 pred_tree_table <- table(na.omit(dat)$died, pred_tree)
 
